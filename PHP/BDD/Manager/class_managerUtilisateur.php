@@ -4,6 +4,12 @@ require_once "../class_utilisateur.php";
 
 class ManagerUtilisateur extends Manager{
 
+    //Constructeur
+    public function __construct($Db)
+    {
+        parent::__construct($Db);
+	}
+
     //Procédure qui ajoute un utilisateur dans la BDD
     public function add($objet)
     {
@@ -39,7 +45,7 @@ class ManagerUtilisateur extends Manager{
         $utilisateurs = array();
 
         $requete = $this->getDb()->query('SELECT IdUtilisateur, nom, prenom, mail, password FROM Utilisateur');
-        
+
         $i=0;
         while ($donnees = $requete->fetch(PDO::FETCH_ASSOC))
         {
