@@ -95,9 +95,22 @@ CREATE TABLE Competition(
         Id_Type_Competition Numeric NOT NULL,
         Id_Categorie        Numeric NOT NULL,
         Id_Specialite       Numeric NOT NULL,
+        Id_Club_Organisateur Numeric NOT NULL,
         PRIMARY KEY (Id_Competition )
 )ENGINE=InnoDB;
 
+
+#------------------------------------------------------------
+# Table: Club_Organisateur
+#------------------------------------------------------------
+
+CREATE TABLE Club_Organisateur(
+        ID_Club_Organisateur Numeric NOT NULL ,
+        Nom                  Varchar (25) ,
+        President            Varchar (25) ,
+        PRIMARY KEY (ID_Club_Organisateur ) ,
+        UNIQUE (Nom )
+)ENGINE=InnoDB;
 
 #------------------------------------------------------------
 # Table: Categorie
@@ -175,8 +188,10 @@ CREATE TABLE Palmares(
 #------------------------------------------------------------
 
 CREATE TABLE Voyage(
-        Id_Voyage      Numeric NOT NULL ,
-        Id_Competition Numeric ,
+        Id_Voyage         Numeric NOT NULL ,
+        Transport_Propose Varchar (25) ,
+        Hebergement       Varchar (25) ,
+        Id_Competition    Numeric ,
         PRIMARY KEY (Id_Voyage )
 )ENGINE=InnoDB;
 
@@ -249,6 +264,17 @@ CREATE TABLE Recois(
 
 
 #------------------------------------------------------------
+# Table: Tache
+#------------------------------------------------------------
+
+CREATE TABLE Tache(
+        Id_Tache Numeric NOT NULL ,
+        Nom          Varchar (100) ,
+        PRIMARY KEY (Id_Tache ) ,
+        UNIQUE (Nom )
+)ENGINE=InnoDB;
+
+#------------------------------------------------------------
 # Table: Charger
 #------------------------------------------------------------
 
@@ -256,6 +282,7 @@ CREATE TABLE Charger(
         Id_Voyage      Numeric NOT NULL ,
         Id_Utilisateur Numeric NOT NULL ,
         Id_Role        Numeric ,
+        Id_Tache       Numeric ,
         PRIMARY KEY (Id_Voyage ,Id_Utilisateur )
 )ENGINE=InnoDB;
 
@@ -347,6 +374,9 @@ FOREIGN KEY (Id_Categorie) REFERENCES Categorie(Id_Categorie);
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Specialite
 FOREIGN KEY (Id_Specialite) REFERENCES Specialite(Id_Specialite);
 
+ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Club_Organisateur
+FOREIGN KEY (Id_Club_Organisateur) REFERENCES Club_Organisateur(Id_Club_Organisateur);
+
 ALTER TABLE Palmares ADD CONSTRAINT FK_Palmares_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
@@ -385,6 +415,9 @@ FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
 
 ALTER TABLE Charger ADD CONSTRAINT FK_Charger_Id_Role
 FOREIGN KEY (Id_Role) REFERENCES Role(Id_Role);
+
+ALTER TABLE Charger ADD CONSTRAINT FK_Charger_Id_Tache
+FOREIGN KEY (Id_Tache) REFERENCES Tache(Id_Tache);
 
 ALTER TABLE ParticipeVoyage ADD CONSTRAINT FK_ParticipeVoyage_Id_Voyage
 FOREIGN KEY (Id_Voyage) REFERENCES Voyage(Id_Voyage);
@@ -485,6 +518,11 @@ INSERT INTO Categorie VALUES(0,"Minime"),(1,"Cadet"),(2,"Junior"),(3,"Senior"),(
 # Insertion: Role
 #------------------------------------------------------------
 INSERT INTO Role VALUES(0,"Responsable officiel"),(1,"Juge"),(2,"Entraineur"),(3,"Benevole");
+
+#------------------------------------------------------------
+# Insertion: Tache
+#------------------------------------------------------------
+INSERT INTO Tache VALUES(0,"Reunion de confirmation des inscriptions"),(1,"Depot des reclamation"),(2,"Transport"),(3,"Gestion alimentation"),(4,"Gestion hebergement");
 
 #------------------------------------------------------------
 # Insertion: Droit_Acces
