@@ -8,15 +8,17 @@
 #------------------------------------------------------------
 
 CREATE TABLE Utilisateur(
-        Id_Utilisateur Numeric NOT NULL ,
+        Id_Utilisateur INT NOT NULL AUTO_INCREMENT,
         Nom            Varchar (25) ,
         Prenom         Varchar (25) ,
+        Password       Varchar (100),
         DateNaissance  Date ,
         Adresse        Varchar (25) ,
-        Mail           Varchar (25) ,
+        Mail           Varchar (25) NOT NULL,
         Telephone      Varchar (25) ,
-        Id_Sexe        Numeric ,
-        PRIMARY KEY (Id_Utilisateur )
+        Id_Sexe        INT NOT NULL,
+        PRIMARY KEY (Id_Utilisateur ),
+        UNIQUE (Mail )
 )ENGINE=InnoDB;
 
 
@@ -25,10 +27,10 @@ CREATE TABLE Utilisateur(
 #------------------------------------------------------------
 
 CREATE TABLE Adherent(
-        Id_Adherent     Numeric NOT NULL ,
-        NumeroLicence   Numeric ,
-        DateInscription Date ,
-        Id_Utilisateur  Numeric NOT NULL ,
+        Id_Adherent     INT NOT NULL AUTO_INCREMENT,
+        NumeroLicence   INT NOT NULL,
+        DateInscription Date NOT NULL,
+        Id_Utilisateur  INT NOT NULL ,
         PRIMARY KEY (Id_Adherent ) ,
         UNIQUE (NumeroLicence )
 )ENGINE=InnoDB;
@@ -39,11 +41,11 @@ CREATE TABLE Adherent(
 #------------------------------------------------------------
 
 CREATE TABLE Competiteur(
-        Id_Competiteur Numeric NOT NULL ,
-        Id_Adherent    Numeric NOT NULL ,
-        Id_Specialite  Numeric ,
-        Id_Objectif    Numeric ,
-        Id_Categorie   Numeric ,
+        Id_Competiteur INT NOT NULL AUTO_INCREMENT,
+        Id_Adherent    INT NOT NULL ,
+        Id_Specialite  INT ,
+        Id_Objectif    INT ,
+        Id_Categorie   INT ,
         PRIMARY KEY (Id_Competiteur )
 )ENGINE=InnoDB;
 
@@ -53,7 +55,7 @@ CREATE TABLE Competiteur(
 #------------------------------------------------------------
 
 CREATE TABLE Sexe(
-        Id_Sexe Numeric NOT NULL ,
+        Id_Sexe INT NOT NULL ,
         Type    Varchar (1) ,
         PRIMARY KEY (Id_Sexe ) ,
         UNIQUE (Type )
@@ -65,7 +67,7 @@ CREATE TABLE Sexe(
 #------------------------------------------------------------
 
 CREATE TABLE Specialite(
-        Id_Specialite Numeric NOT NULL ,
+        Id_Specialite INT NOT NULL ,
         Nom           Varchar (25) ,
         PRIMARY KEY (Id_Specialite ) ,
         UNIQUE (Nom )
@@ -77,7 +79,7 @@ CREATE TABLE Specialite(
 #------------------------------------------------------------
 
 CREATE TABLE Objectif(
-        Id_Objectif Numeric NOT NULL ,
+        Id_Objectif INT NOT NULL AUTO_INCREMENT,
         Type        Varchar (25) ,
         PRIMARY KEY (Id_Objectif )
 )ENGINE=InnoDB;
@@ -88,14 +90,14 @@ CREATE TABLE Objectif(
 #------------------------------------------------------------
 
 CREATE TABLE Competition(
-        Id_Competition      Numeric NOT NULL ,
-        Lieu                Varchar (25) ,
+        Id_Competition      INT NOT NULL AUTO_INCREMENT,
+        Adresse             Varchar (25) ,
         DateCompetition     Date ,
-        Id_Sexe             Numeric ,
-        Id_Type_Competition Numeric NOT NULL,
-        Id_Categorie        Numeric NOT NULL,
-        Id_Specialite       Numeric NOT NULL,
-        Id_Club_Organisateur Numeric NOT NULL,
+        Id_Sexe             INT ,
+        Id_Type_Competition INT NOT NULL,
+        Id_Categorie        INT NOT NULL,
+        Id_Specialite       INT NOT NULL,
+        Id_Club_Organisateur INT NOT NULL,
         PRIMARY KEY (Id_Competition )
 )ENGINE=InnoDB;
 
@@ -105,7 +107,7 @@ CREATE TABLE Competition(
 #------------------------------------------------------------
 
 CREATE TABLE Club_Organisateur(
-        ID_Club_Organisateur Numeric NOT NULL ,
+        ID_Club_Organisateur INT NOT NULL AUTO_INCREMENT,
         Nom                  Varchar (25) ,
         President            Varchar (25) ,
         PRIMARY KEY (ID_Club_Organisateur ) ,
@@ -117,7 +119,7 @@ CREATE TABLE Club_Organisateur(
 #------------------------------------------------------------
 
 CREATE TABLE Categorie(
-        Id_Categorie Numeric NOT NULL ,
+        Id_Categorie INT NOT NULL ,
         Nom          Varchar (25) ,
         PRIMARY KEY (Id_Categorie ) ,
         UNIQUE (Nom )
@@ -129,8 +131,8 @@ CREATE TABLE Categorie(
 #------------------------------------------------------------
 
 CREATE TABLE Equipe(
-        Id_equipe Numeric NOT NULL ,
-        PRIMARY KEY (Id_equipe )
+        Id_Equipe INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (Id_Equipe )
 )ENGINE=InnoDB;
 
 
@@ -139,7 +141,7 @@ CREATE TABLE Equipe(
 #------------------------------------------------------------
 
 CREATE TABLE Role(
-        Id_Role Numeric NOT NULL ,
+        Id_Role INT NOT NULL ,
         Titre   Varchar (25) ,
         PRIMARY KEY (Id_Role ) ,
         UNIQUE (Titre )
@@ -151,7 +153,7 @@ CREATE TABLE Role(
 #------------------------------------------------------------
 
 CREATE TABLE Message(
-        Id_Message Numeric NOT NULL ,
+        Id_Message INT NOT NULL AUTO_INCREMENT,
         Sujet      Varchar (100) ,
         Corps      Varchar (500) ,
         PRIMARY KEY (Id_Message )
@@ -163,7 +165,7 @@ CREATE TABLE Message(
 #------------------------------------------------------------
 
 CREATE TABLE Type_Competition(
-        Id_Type_Competition Numeric NOT NULL ,
+        Id_Type_Competition INT NOT NULL AUTO_INCREMENT,
         Nom                 Varchar (25) ,
         Selectif            Bool ,
         PRIMARY KEY (Id_Type_Competition ) ,
@@ -176,9 +178,9 @@ CREATE TABLE Type_Competition(
 #------------------------------------------------------------
 
 CREATE TABLE Palmares(
-        Id_Palmares    Numeric NOT NULL ,
-        Classement     Numeric ,
-        Id_Competition Numeric ,
+        Id_Palmares    INT NOT NULL AUTO_INCREMENT,
+        Classement     INT ,
+        Id_Competition INT ,
         PRIMARY KEY (Id_Palmares )
 )ENGINE=InnoDB;
 
@@ -188,10 +190,10 @@ CREATE TABLE Palmares(
 #------------------------------------------------------------
 
 CREATE TABLE Voyage(
-        Id_Voyage         Numeric NOT NULL ,
+        Id_Voyage         INT NOT NULL AUTO_INCREMENT,
         Transport_Propose Varchar (25) ,
         Hebergement       Varchar (25) ,
-        Id_Competition    Numeric ,
+        Id_Competition    INT ,
         PRIMARY KEY (Id_Voyage )
 )ENGINE=InnoDB;
 
@@ -201,7 +203,7 @@ CREATE TABLE Voyage(
 #------------------------------------------------------------
 
 CREATE TABLE Type_Voyage(
-        Id_Voyage Numeric NOT NULL ,
+        Id_Voyage INT NOT NULL ,
         Nom       Varchar (25) ,
         PRIMARY KEY (Id_Voyage )
 )ENGINE=InnoDB;
@@ -212,7 +214,7 @@ CREATE TABLE Type_Voyage(
 #------------------------------------------------------------
 
 CREATE TABLE Droit_Acces(
-        Id_Droit_Acces Numeric NOT NULL ,
+        Id_Droit_Acces INT NOT NULL ,
         Nom            Varchar (25) ,
         PRIMARY KEY (Id_Droit_Acces ) ,
         UNIQUE (Nom )
@@ -220,13 +222,13 @@ CREATE TABLE Droit_Acces(
 
 
 #------------------------------------------------------------
-# Table: ParticipeCompetitionEquipe
+# Table: Participe_Competition_Equipe
 #------------------------------------------------------------
 
-CREATE TABLE ParticipeCompetitionEquipe(
-        Id_equipe      Numeric NOT NULL ,
-        Id_Competition Numeric NOT NULL ,
-        PRIMARY KEY (Id_equipe ,Id_Competition )
+CREATE TABLE Participe_Competition_Equipe(
+        Id_Equipe      INT NOT NULL ,
+        Id_Competition INT NOT NULL ,
+        PRIMARY KEY (Id_Equipe ,Id_Competition )
 )ENGINE=InnoDB;
 
 
@@ -235,9 +237,9 @@ CREATE TABLE ParticipeCompetitionEquipe(
 #------------------------------------------------------------
 
 CREATE TABLE Participant_Equipe(
-        Id_Competiteur Numeric NOT NULL ,
-        Id_equipe      Numeric NOT NULL ,
-        PRIMARY KEY (Id_Competiteur ,Id_equipe )
+        Id_Competiteur INT NOT NULL ,
+        Id_Equipe      INT NOT NULL ,
+        PRIMARY KEY (Id_Competiteur ,Id_Equipe )
 )ENGINE=InnoDB;
 
 
@@ -246,8 +248,8 @@ CREATE TABLE Participant_Equipe(
 #------------------------------------------------------------
 
 CREATE TABLE Envoie(
-        Id_Utilisateur Numeric NOT NULL ,
-        Id_Message     Numeric NOT NULL ,
+        Id_Utilisateur INT NOT NULL ,
+        Id_Message     INT NOT NULL ,
         PRIMARY KEY (Id_Utilisateur ,Id_Message )
 )ENGINE=InnoDB;
 
@@ -257,8 +259,8 @@ CREATE TABLE Envoie(
 #------------------------------------------------------------
 
 CREATE TABLE Recois(
-        Id_Message     Numeric NOT NULL ,
-        Id_Utilisateur Numeric NOT NULL ,
+        Id_Message     INT NOT NULL ,
+        Id_Utilisateur INT NOT NULL ,
         PRIMARY KEY (Id_Message ,Id_Utilisateur )
 )ENGINE=InnoDB;
 
@@ -268,7 +270,7 @@ CREATE TABLE Recois(
 #------------------------------------------------------------
 
 CREATE TABLE Tache(
-        Id_Tache Numeric NOT NULL ,
+        Id_Tache INT NOT NULL ,
         Nom          Varchar (100) ,
         PRIMARY KEY (Id_Tache ) ,
         UNIQUE (Nom )
@@ -279,10 +281,10 @@ CREATE TABLE Tache(
 #------------------------------------------------------------
 
 CREATE TABLE Charger(
-        Id_Voyage      Numeric NOT NULL ,
-        Id_Utilisateur Numeric NOT NULL ,
-        Id_Role        Numeric ,
-        Id_Tache       Numeric ,
+        Id_Voyage      INT NOT NULL ,
+        Id_Utilisateur INT NOT NULL ,
+        Id_Role        INT ,
+        Id_Tache       INT ,
         PRIMARY KEY (Id_Voyage ,Id_Utilisateur )
 )ENGINE=InnoDB;
 
@@ -291,12 +293,12 @@ CREATE TABLE Charger(
 # Table: ParticipeVoyage
 #------------------------------------------------------------
 
-CREATE TABLE ParticipeVoyage(
+CREATE TABLE Participe_Voyage(
         Autoriser             Bool ,
-        Id_Voyage             Numeric NOT NULL ,
-        Id_Competiteur        Numeric NOT NULL ,
-        Id_Voyage_Type_Voyage Numeric NOT NULL ,
-        Id_Utilisateur        Numeric ,
+        Id_Voyage             INT NOT NULL ,
+        Id_Competiteur        INT NOT NULL ,
+        Id_Voyage_Type_Voyage INT NOT NULL ,
+        Id_Utilisateur        INT ,
         PRIMARY KEY (Id_Voyage ,Id_Competiteur ,Id_Voyage_Type_Voyage)
 )ENGINE=InnoDB;
 
@@ -306,9 +308,9 @@ CREATE TABLE ParticipeVoyage(
 #------------------------------------------------------------
 
 CREATE TABLE Palmares_Equipe(
-        Id_equipe   Numeric NOT NULL ,
-        Id_Palmares Numeric NOT NULL ,
-        PRIMARY KEY (Id_equipe ,Id_Palmares )
+        Id_Equipe   INT NOT NULL ,
+        Id_Palmares INT NOT NULL ,
+        PRIMARY KEY (Id_Equipe ,Id_Palmares )
 )ENGINE=InnoDB;
 
 
@@ -317,8 +319,8 @@ CREATE TABLE Palmares_Equipe(
 #------------------------------------------------------------
 
 CREATE TABLE Palmares_Competiteur(
-        Id_Competiteur Numeric NOT NULL ,
-        Id_Palmares    Numeric NOT NULL ,
+        Id_Competiteur INT NOT NULL ,
+        Id_Palmares    INT NOT NULL ,
         PRIMARY KEY (Id_Competiteur ,Id_Palmares )
 )ENGINE=InnoDB;
 
@@ -327,9 +329,9 @@ CREATE TABLE Palmares_Competiteur(
 # Table: ParticipeCompetitionSolo
 #------------------------------------------------------------
 
-CREATE TABLE ParticipeCompetitionSolo(
-        Id_Competition Numeric NOT NULL ,
-        Id_Competiteur Numeric NOT NULL ,
+CREATE TABLE Participe_Competition_Solo(
+        Id_Competition INT NOT NULL ,
+        Id_Competiteur INT NOT NULL ,
         PRIMARY KEY (Id_Competition ,Id_Competiteur )
 )ENGINE=InnoDB;
 
@@ -339,8 +341,8 @@ CREATE TABLE ParticipeCompetitionSolo(
 #------------------------------------------------------------
 
 CREATE TABLE Droits(
-        Id_Droit_Acces Numeric NOT NULL ,
-        Id_Adherent    Numeric NOT NULL ,
+        Id_Droit_Acces INT NOT NULL ,
+        Id_Adherent    INT NOT NULL ,
         PRIMARY KEY (Id_Droit_Acces ,Id_Adherent )
 )ENGINE=InnoDB;
 
@@ -383,17 +385,17 @@ FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 ALTER TABLE Voyage ADD CONSTRAINT FK_Voyage_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
-ALTER TABLE ParticipeCompetitionEquipe ADD CONSTRAINT FK_ParticipeCompetitionEquipe_Id_equipe
-FOREIGN KEY (Id_equipe) REFERENCES Equipe(Id_equipe);
+ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Equipe
+FOREIGN KEY (Id_Equipe) REFERENCES Equipe(Id_Equipe);
 
-ALTER TABLE ParticipeCompetitionEquipe ADD CONSTRAINT FK_ParticipeCompetitionEquipe_Id_Competition
+ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
 ALTER TABLE Participant_Equipe ADD CONSTRAINT FK_Participant_Equipe_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 
-ALTER TABLE Participant_Equipe ADD CONSTRAINT FK_Participant_Equipe_Id_equipe
-FOREIGN KEY (Id_equipe) REFERENCES Equipe(Id_equipe);
+ALTER TABLE Participant_Equipe ADD CONSTRAINT FK_Participant_Equipe_Id_Equipe
+FOREIGN KEY (Id_Equipe) REFERENCES Equipe(Id_Equipe);
 
 ALTER TABLE Envoie ADD CONSTRAINT FK_Envoie_Id_Utilisateur
 FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
@@ -419,20 +421,20 @@ FOREIGN KEY (Id_Role) REFERENCES Role(Id_Role);
 ALTER TABLE Charger ADD CONSTRAINT FK_Charger_Id_Tache
 FOREIGN KEY (Id_Tache) REFERENCES Tache(Id_Tache);
 
-ALTER TABLE ParticipeVoyage ADD CONSTRAINT FK_ParticipeVoyage_Id_Voyage
+ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Voyage
 FOREIGN KEY (Id_Voyage) REFERENCES Voyage(Id_Voyage);
 
-ALTER TABLE ParticipeVoyage ADD CONSTRAINT FK_ParticipeVoyage_Id_Competiteur
+ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 
-ALTER TABLE ParticipeVoyage ADD CONSTRAINT FK_ParticipeVoyage_Id_Voyage_Type_Voyage
+ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Voyage_Type_Voyage
 FOREIGN KEY (Id_Voyage_Type_Voyage) REFERENCES Type_Voyage(Id_Voyage);
 
-ALTER TABLE ParticipeVoyage ADD CONSTRAINT FK_ParticipeVoyage_Id_Utilisateur
+ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Utilisateur
 FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
 
-ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_equipe
-FOREIGN KEY (Id_equipe) REFERENCES Equipe(Id_equipe);
+ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_Equipe
+FOREIGN KEY (Id_Equipe) REFERENCES Equipe(Id_Equipe);
 
 ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_Palmares
 FOREIGN KEY (Id_Palmares) REFERENCES Palmares(Id_Palmares);
@@ -443,10 +445,10 @@ FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 ALTER TABLE Palmares_Competiteur ADD CONSTRAINT FK_Palmares_Competiteur_Id_Palmares
 FOREIGN KEY (Id_Palmares) REFERENCES Palmares(Id_Palmares);
 
-ALTER TABLE ParticipeCompetitionSolo ADD CONSTRAINT FK_ParticipeCompetitionSolo_Id_Competition
+ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
-ALTER TABLE ParticipeCompetitionSolo ADD CONSTRAINT FK_ParticipeCompetitionSolo_Id_Competiteur
+ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 
 ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Droit_Acces
@@ -454,50 +456,6 @@ FOREIGN KEY (Id_Droit_Acces) REFERENCES Droit_Acces(Id_Droit_Acces);
 
 ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Adherent
 FOREIGN KEY (Id_Adherent) REFERENCES Adherent(Id_Adherent);
-
-#------------------------------------------------------------
-# View: Uiilisateur
-#------------------------------------------------------------
-CREATE VIEW V_Utilisateur AS
-SELECT Id_Utilisateur,Nom,Prenom,DateNaissance,Adresse,Mail,Telephone,Sexe.Type "Sexe"
-FROM Utilisateur JOIN Sexe
-ON Utilisateur.Id_Sexe = Sexe.Id_Sexe;
-
-#------------------------------------------------------------
-# View: Adherent
-#------------------------------------------------------------
-CREATE VIEW V_Adherent AS
-SELECT Id_Adherent,V_Utilisateur.Nom,V_Utilisateur.Prenom,V_Utilisateur.DateNaissance,V_Utilisateur.Adresse,V_Utilisateur.Mail,V_Utilisateur.Telephone,V_Utilisateur.Sexe,NumeroLicence,DateInscription
-FROM Adherent JOIN V_Utilisateur
-ON Adherent.Id_Utilisateur = V_Utilisateur.Id_Utilisateur;
-
-#------------------------------------------------------------
-# View: Competiteur
-#------------------------------------------------------------
-CREATE VIEW V_Competiteur AS
-SELECT Id_Competiteur,V_Adherent.Nom,V_Adherent.Prenom,V_Adherent.DateNaissance,V_Adherent.Adresse,V_Adherent.Mail,V_Adherent.Telephone,V_Adherent.Sexe,V_Adherent.NumeroLicence,V_Adherent.DateInscription, Specialite.Nom "Specialite", Categorie.Nom "Categorie", Objectif.Type "Objectif"
-FROM Competiteur JOIN V_Adherent
-ON Competiteur.Id_Adherent = V_Adherent.Id_Adherent
-JOIN Specialite
-ON Competiteur.Id_Specialite = Specialite.Id_Specialite
-JOIN Categorie
-ON Competiteur.Id_Categorie = Categorie.Id_Categorie
-JOIN Objectif
-ON Competiteur.Id_Objectif = Objectif.Id_Objectif;
-
-#------------------------------------------------------------
-# View: Competition
-#------------------------------------------------------------
-CREATE VIEW V_Competition AS
-SELECT Id_Competition,Lieu,DateCompetition,Type_Competition.Nom "Nom",Type_Competition.Selectif,Sexe.Type "Restriction",Categorie.Nom "Categorie", Specialite.Nom "Specialite"
-FROM Competition JOIN Type_Competition
-ON Competition.Id_Type_Competition = Type_Competition.Id_Type_Competition
-JOIN Sexe
-ON Competition.Id_Sexe = Sexe.Id_Sexe
-JOIN Categorie
-ON Competition.Id_Categorie = Categorie.Id_Categorie
-JOIN Specialite
-ON Competition.Id_Specialite = Specialite.Id_Specialite;
 
 #------------------------------------------------------------
 # Insertion: Sexe

@@ -13,28 +13,63 @@ class ManagerUtilisateur extends Manager{
     //Procédure qui ajoute un utilisateur dans la BDD
     public function add($objet)
     {
-        $requete = $this->getDb()->prepare('INSERT INTO Utilisateur SET nom = :nom, prenom = :prenom, mail = :mail, password = :password');
+
+        //Recupere l'id du sexe de l'utilisateur
+        $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
+        $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
+
+        $requete = $this->getDb()->prepare('INSERT INTO Utilisateur (Nom,Prenom,Password,DateNaissance,Adresse,Mail,Telephone,Id_Sexe) VALUES(:nom,:prenom,:password,:dateNaissance,:adresse,:mail,:telephone,:id_Sexe)');
 
         $requete->execute(array('nom' => $objet->getNom(),
-                                'prenom' => $entite->getPrenom(),
-                                'mail' => $entite->getMail(),
-                                'password' => $entite->getPassword(),
+                                'prenom' => $objet->getPrenom(),
+                                'password' => $objet->getPassword(),
+                                'dateNaissance' => $objet->getDateNaissance(),
+                                'adresse' => $objet->getAdresse(),
+                                'mail' => $objet->getMail(),
+                                'telephone' => $objet->getTelephone(),
+                                'id_Sexe' => $donneId_Sexe['Id_Sexe'],
                                ));
+
+        //Recupere l'id de l'utilisateur genere par la base
+        $requeteId_Utilisateur = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = '.$objet->getMail());
+        $donneId_Utilisateur = $requeteId_Utilisateur->fetch(PDO::FETCH_ASSOC);
+
+        $objet->setId_Utilisateur($donneId_Utilisateur['Id_Utilisateur']);
 
     }
 
     //Suppression d'un utilisateur dans la BDD
     public function remove($objet)
     {
-        $id = $objet->getId();
-        $this->getDb()->exec('DELETE FROM Utilisateur WHERE IdUtilisateur = '.$id);
+        $this->getDb()->exec('DELETE FROM Utilisateur WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
     }
 
-    //Fonction qui retourne un utilisateur à partir de son mail
-    public function get($objet)
+    //Fonction qui retourne un utilisateur à partir de son id
+    public function getId($id)
     {
-        $requete = $this->getDb()->query('SELECT IdUtilisateur, nom, prenom, mail, password FROM Utilisateur WHERE mail = '.$objet);
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur WHERE Id_Utilisateur = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        //Recupere le type du sexe de l'utilisateur
+        $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
+        $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
+
+        $donnees['Sexe'] = $donneType_Sexe['Type'];
+        unset($donnees['Id_Sexe']);
+
+        return new Utilisateur($donnees);
+    }
+
+    public function getMail($mail){
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur WHERE Mail = '.$mail);
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        //Recupere le type du sexe de l'utilisateur
+        $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
+        $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
+
+        $donnees['Sexe'] = $donneType_Sexe['Type'];
+        unset($donnees['Id_Sexe']);
 
         return new Utilisateur($donnees);
     }
@@ -44,11 +79,18 @@ class ManagerUtilisateur extends Manager{
     {
         $utilisateurs = array();
 
-        $requete = $this->getDb()->query('SELECT IdUtilisateur, nom, prenom, mail, password FROM Utilisateur');
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur');
 
         $i=0;
         while ($donnees = $requete->fetch(PDO::FETCH_ASSOC))
         {
+            //Recupere le type du sexe de l'utilisateur
+            $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
+            $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
+
+            $donnees['Sexe'] = $donneType_Sexe['Type'];
+            unset($donnees['Id_Sexe']);
+
             $utilisateurs[] = new Utilisateur($donnees);
             $i++;
         }
@@ -59,13 +101,20 @@ class ManagerUtilisateur extends Manager{
     //Procédure qui met à jour un utilisateur donné en paramètre dans la BDD
     public function update($objet)
     {
-        $requete = $this->getDb()->prepare('UPDATE Utilisateur SET nom = :nom, prenom = :prenom, mail = :mail, password = :password WHERE IdUtilisateur = :IdUtilisateur');
+        //Recupere l'id du sexe de l'utilisateur
+        $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
+        $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
+
+        $requete = $this->getDb()->prepare('UPDATE Utilisateur SET Nom = :nom, Prenom = :prenom, Password = :password, DateNaissance = :dateNaissance, Adresse = :adresse, Mail = :mail, Telephone = :telephone, Id_Sexe = :id_sexe WHERE Id_Utilisateur = :Id_Utilisateur');
 
         $requete->execute(array('nom' => $objet->getNom(),
                                 'prenom' => $objet->getPrenom(),
-                                'mail' => $objet->getMail(),
                                 'password' => $objet->getPassword(),
-                                'IdUtilisateur' => $objet->getIdUtilisateur(),
+                                'dateNaissance' => $objet->getDateNaissance(),
+                                'adresse' => $objet->getAdresse(),
+                                'mail' => $objet->getMail(),
+                                'telephone' => $objet->getTelephone(),
+                                'id_Sexe' => $donneId_Sexe['Id_Sexe'],
                                ));
     }
 

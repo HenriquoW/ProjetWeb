@@ -62,7 +62,7 @@ abstract class Manager{
     abstract public function update($objet);
 
     //Fonction abstraite qui renverra un objet à partir de la BDD
-    abstract public function get($objet);
+    abstract public function getId($id);
 
     //Fonction abstraite qui retournera plusieur objet présentes dans la BDD
     abstract public function getList();
