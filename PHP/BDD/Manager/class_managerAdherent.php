@@ -1,0 +1,128 @@
+<?php
+require_once "class_manager.php";
+require_once "../class_adherent.php";
+
+class ManagerUtilisateur extends Utilisateur{
+
+    //Constructeur
+    public function __construct($Db)
+    {
+        parent::__construct($Db);
+	}
+
+    //Procédure qui ajoute un adherent dans la BDD
+    public function add($objet)
+    {
+        if($objet->getId_Utilisateur == NULL){
+            parent::add($objet);
+        }else{
+            parent::update($objet);
+        }
+
+        $requete = $this->getDb()->prepare('INSERT INTO Adherent (NumeroLicence,DateInscription,Id_Utilisateur) VALUES(:numeroLicence,:dateInscription,:id_Utilisateur)');
+
+        $requete->execute(array('numeroLicence' => $objet->getNumeroLicence(),
+                                'dateInscription' => $objet->getDateInscription(),
+                                'id_Utilisateur' => $objet->getId_Utilisateur(),
+                               ));
+
+        addDroit($objet);
+
+    }
+
+    //Ajoute les droits de l'adherent
+    public function addDroit($objet){
+
+        //on recupere les droits de l'adherent deja dans la base
+        $requeteDroits = $this->getDb()->query('SELECT Id_Droit_Access FROM Droits WHERE Id_Adherent = '.$objet->getId_Adherent());
+
+        $donneDroits = array();
+        while ($donne = $requeteDroits->fetch(PDO::FETCH_ASSOC))
+        {
+            $donneDroits[] = $donne;
+        }
+
+        foreach($objet->getDroit() as $droit){
+            $requeteDroit_Acces = $this->getDb()->query('SELECT Id_Droit_Acces FROM Droit_Acces WHERE Nom = '.$droit);
+            $donneDroit_Acces = $requeteDroit_Acces->fetch(PDO::FETCH_ASSOC);
+
+            if(!in_array($donneDroit_Acces['Id_Droit_Acces'],$donneDroits)){
+                $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Adherent) VALUES(:id_Droit_Acces,:id_Adherent)');
+
+                $requete->execute(array('id_Droit_Acces' => $donneDroit_Acces['Id_Droit_Acces'],
+                                        'id_Adherent' => $objet->getId_Adherent,
+                                        ));
+            }
+
+        }
+
+    }
+
+    //Suppression d'un adherent dans la BDD
+    public function remove($objet)
+    {
+        $this->getDb()->exec('DELETE FROM Adherent WHERE Id_Adherent = '.$objet->getId_Adherent());
+
+        removeDroits($objet);
+    }
+
+    //Suppression de tous les droits de l'adherent
+    public function removeDroits($objet){
+        $this->getDb()->exec('DELETE FROM Droits WHERE Id_Adherent = '.$objet->getId_Adherent());
+    }
+
+    //Fonction qui retourne un adherent à partir de son id
+    public function getId($id)
+    {
+        $requete = $this->getDb()->query('SELECT Id_Adherent, NumeroLicence, DateInscription, Id_Utilisateur FROM Adherent WHERE Id_Adherent = '.$id);
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        $user = parent::getId($donnees['Id_Utilisateur']);
+
+        unset($donnees['Id_Utilisateur']);
+
+        return new Adherent($user,$donnees);
+    }
+
+    public function getMail($mail){
+        $requeteId = $this->getDb()->query('SELECT Id_Adherent FROM Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur WHERE Utilisateur.Mail = '.$mail);
+        $donneId = $requeteId->fetch(PDO::FETCH_ASSOC);
+
+        return getId($donneId['Id_Adherent']);
+    }
+
+    //Fonction qui retourne la liste de tous les adherent présents dans la BDD
+    public function getList()
+    {
+        $adherents = array();
+
+        $requete = $this->getDb()->query('SELECT Id_Adherent FROM Adherent');
+
+        while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
+        {
+            $utilisateurs[] = getId($donneId['Id_Adherent']);
+        }
+
+        return $utilisateurs;
+    }
+
+    //Procédure qui met à jour un utilisateur donné en paramètre dans la BDD
+    public function update($objet)
+    {
+        if($objet->getId_Utilisateur == NULL){
+            parent::add($objet);
+        }else{
+            parent::update($objet);
+        }
+
+        $requete = $this->getDb()->prepare('UPDATE Adherent SET NumeroLicence = :numeroLicence, DateInscription = :dateInscription, Id_Utilisateur = :id_Utilisateur WHERE Id_Adherent = :id_Adherent');
+
+        $requete->execute(array('numeroLicence' => $objet->getNumeroLicence(),
+                                'dateInscription' => $objet->getDateInscription(),
+                                'id_Utilisateur' => $objet->getId_Utilisateur(),
+                                'id_Adherent' => $objet->getId_Adherent(),
+                               ));
+    }
+
+}
+?>

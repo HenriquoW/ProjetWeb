@@ -105,7 +105,7 @@ class ManagerUtilisateur extends Manager{
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
         $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
 
-        $requete = $this->getDb()->prepare('UPDATE Utilisateur SET Nom = :nom, Prenom = :prenom, Password = :password, DateNaissance = :dateNaissance, Adresse = :adresse, Mail = :mail, Telephone = :telephone, Id_Sexe = :id_sexe WHERE Id_Utilisateur = :Id_Utilisateur');
+        $requete = $this->getDb()->prepare('UPDATE Utilisateur SET Nom = :nom, Prenom = :prenom, Password = :password, DateNaissance = :dateNaissance, Adresse = :adresse, Mail = :mail, Telephone = :telephone, Id_Sexe = :id_sexe WHERE Id_Utilisateur = :id_Utilisateur');
 
         $requete->execute(array('nom' => $objet->getNom(),
                                 'prenom' => $objet->getPrenom(),
@@ -115,6 +115,7 @@ class ManagerUtilisateur extends Manager{
                                 'mail' => $objet->getMail(),
                                 'telephone' => $objet->getTelephone(),
                                 'id_Sexe' => $donneId_Sexe['Id_Sexe'],
+                                'id_Utilisateur' => $objet->getId_Utilisateur(),
                                ));
     }
 

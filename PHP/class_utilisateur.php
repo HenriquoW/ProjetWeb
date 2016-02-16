@@ -8,7 +8,7 @@ class Utilisateur{
     *----------------------------------------------------------------
     */
 
-    private $_IdUtilisateur;
+    private $_Id_Utilisateur;
     private $_Nom;
     private $_Prenom;
     private $_Mail;
@@ -24,6 +24,14 @@ class Utilisateur{
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);
+    }
+
+    public function __construct(Utilisateur $user)
+    {
+        //Copie les valeurs
+
+        //Detruit ancienne utilisateur
+        unset($user);
     }
 
     /*
@@ -123,13 +131,29 @@ class Utilisateur{
             $this->_Password = $Password;  
         }
     }
-    
+
     /*
     *----------------------------------------------------------------
     *BODY
     *----------------------------------------------------------------
     */
-    
+
+    /**
+    * Fonction qui initialise tous les attributs à partir de variables données en paramètres sous la forme d'un tableau
+    */
+    public function hydrate(array $donnees)
+    {
+        foreach($donnees as $key => $value)
+        {
+            $method = 'set'.ucfirst($key);
+
+            if(method_exists($this, $method))
+            {
+                $this->$method($value);
+            }
+        }
+    }
+
 }
 
 ?>
