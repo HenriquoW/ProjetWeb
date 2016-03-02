@@ -14,6 +14,8 @@ class ManagerUtilisateur extends Manager{
     public function add($objet)
     {
 
+        $this->addParente($objet);
+
         //Recupere l'id du sexe de l'utilisateur
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
         $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
@@ -36,6 +38,23 @@ class ManagerUtilisateur extends Manager{
 
         $objet->setId_Utilisateur($donneId_Utilisateur['Id_Utilisateur']);
 
+    }
+
+    public function addParente($objet){
+
+        $requeteEnfant = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$objet->getId_Utilisateur());
+        $donneEnfant = $requeteEnfant->fetch(PDO::FETCH_ASSOC);
+
+        foreach($objet->getParente() as $enfant){
+
+            if(!in_array($donneEnfant['Id_Enfant'],$enfant)){
+                $requete = $this->getDb()->prepare('INSERT INTO Parente (Id_Parent,Id_Enfant) VALUES(:id_Parent,:id_Enfant)');
+
+                $requete->execute(array('id_Parent' => $objet->GetId_Utilisateur(),
+                                        'id_Enfant' => $enfant,
+                                        ));
+            }
+        }
     }
 
     //Suppression d'un utilisateur dans la BDD

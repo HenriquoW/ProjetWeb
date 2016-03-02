@@ -56,10 +56,8 @@ class ManagerAdherent extends ManagerUtilisateur{
                 $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Adherent) VALUES(:id_Droit_Acces,:id_Adherent)');
 
                 $requete->execute(array('id_Droit_Acces' => $donneDroit_Acces['Id_Droit_Acces'],
-                                        'id_Adherent' => $objet->getId_Adherent,
+                                        'id_Adherent' => $objet->getId_Adherent(),
                                         ));
-            }else{
-                $this->updateDroit($objet);
             }
 
         }
@@ -130,10 +128,6 @@ class ManagerAdherent extends ManagerUtilisateur{
                                 'id_Utilisateur' => $objet->getId_Utilisateur(),
                                 'id_Adherent' => $objet->getId_Adherent(),
                                ));
-    }
-
-    public function updateDroit($objet){
-
     }
 
 }

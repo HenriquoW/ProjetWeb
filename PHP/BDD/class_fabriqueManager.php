@@ -27,7 +27,6 @@ class FabriqueManager{
         $this->_Constructeurs["Adherent"] = new ConstructeurManagerAdherent();
         $this->_Constructeurs["Competiteur"] = new ConstructeurManagerCompetiteur();
         $this->_Constructeurs["Equipe"] = new ConstructeurManagerEquipe();
-        $this->_Constructeurs["Epreuve"] = new ConstructeurManagerEpreuve();
         $this->_Constructeurs["Competition"] = new ConstructeurManagerCompetition();
 	}
 

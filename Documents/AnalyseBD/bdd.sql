@@ -42,13 +42,24 @@ CREATE TABLE Adherent(
 
 CREATE TABLE Competiteur(
         Id_Competiteur INT NOT NULL AUTO_INCREMENT,
+        Photo          Varchar (25) NOT NULL,
         Id_Adherent    INT NOT NULL ,
         Id_Specialite  INT ,
         Id_Objectif    INT ,
         Id_Categorie   INT ,
-        PRIMARY KEY (Id_Competiteur )
+        PRIMARY KEY (Id_Competiteur ) ,
+        UNIQUE (Photo )
 )ENGINE=InnoDB;
 
+#------------------------------------------------------------
+# Table: Parente
+#------------------------------------------------------------
+
+CREATE TABLE Parente(
+        Id_Parent    INT NOT NULL ,
+        Id_Enfant    INT NOT NULL ,
+        PRIMARY KEY (Id_Parent ,Id_Enfant )
+)ENGINE=InnoDB;
 
 #------------------------------------------------------------
 # Table: Sexe
@@ -90,15 +101,23 @@ CREATE TABLE Objectif(
 #------------------------------------------------------------
 
 CREATE TABLE Competition(
-        Id_Competition      INT NOT NULL AUTO_INCREMENT,
-        Adresse             Varchar (25) ,
-        DateCompetition     Date ,
-        Id_Sexe             INT ,
-        Id_Type_Competition INT NOT NULL,
-        Id_Categorie        INT NOT NULL,
-        Id_Specialite       INT NOT NULL,
-        Id_Club_Organisateur INT NOT NULL,
+        Id_Competition       INT NOT NULL ,
+        Adresse              Varchar (25) ,
+        DateCompetition      Date ,
+        Id_Sexe              INT ,
+        Id_Type_Competition  INT NOT NULL,
+        ID_Club_Organisateur INT NOT NULL,
         PRIMARY KEY (Id_Competition )
+)ENGINE=InnoDB;
+
+#------------------------------------------------------------
+# Table: Type_Specialite
+#------------------------------------------------------------
+CREATE TABLE Type_Specialite(
+        Id_Type_Specialite INT NOT NULL ,
+        Nom          Varchar (25) ,
+        PRIMARY KEY (Id_Type_Specialite ) ,
+        UNIQUE (Nom )
 )ENGINE=InnoDB;
 
 
@@ -220,6 +239,19 @@ CREATE TABLE Droit_Acces(
         UNIQUE (Nom )
 )ENGINE=InnoDB;
 
+#------------------------------------------------------------
+# Table: Course
+#------------------------------------------------------------
+
+CREATE TABLE Course(
+        Id_Course      INT NOT NULL ,
+        Distance       INT ,
+        Id_Categorie   INT ,
+        Id_Competition       INT ,
+        Id_Type_Specialite   INT ,
+        PRIMARY KEY (Id_Course )
+)ENGINE=InnoDB;
+
 
 #------------------------------------------------------------
 # Table: Participe_Competition_Equipe
@@ -228,6 +260,7 @@ CREATE TABLE Droit_Acces(
 CREATE TABLE Participe_Competition_Equipe(
         Id_Equipe      INT NOT NULL ,
         Id_Competition INT NOT NULL ,
+        Validation     Bool,
         PRIMARY KEY (Id_Equipe ,Id_Competition )
 )ENGINE=InnoDB;
 
@@ -270,7 +303,7 @@ CREATE TABLE Recois(
 #------------------------------------------------------------
 
 CREATE TABLE Tache(
-        Id_Tache INT NOT NULL ,
+        Id_Tache     INT NOT NULL ,
         Nom          Varchar (100) ,
         PRIMARY KEY (Id_Tache ) ,
         UNIQUE (Nom )
@@ -290,7 +323,7 @@ CREATE TABLE Charger(
 
 
 #------------------------------------------------------------
-# Table: ParticipeVoyage
+# Table: Participe_Voyage
 #------------------------------------------------------------
 
 CREATE TABLE Participe_Voyage(
@@ -326,12 +359,13 @@ CREATE TABLE Palmares_Competiteur(
 
 
 #------------------------------------------------------------
-# Table: ParticipeCompetitionSolo
+# Table: Participe_Competition_Solo
 #------------------------------------------------------------
 
 CREATE TABLE Participe_Competition_Solo(
         Id_Competition INT NOT NULL ,
         Id_Competiteur INT NOT NULL ,
+        Validation Bool,
         PRIMARY KEY (Id_Competition ,Id_Competiteur )
 )ENGINE=InnoDB;
 
@@ -370,12 +404,6 @@ FOREIGN KEY (Id_Sexe) REFERENCES Sexe(Id_Sexe);
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Type_Competition
 FOREIGN KEY (Id_Type_Competition) REFERENCES Type_Competition(Id_Type_Competition);
 
-ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Categorie
-FOREIGN KEY (Id_Categorie) REFERENCES Categorie(Id_Categorie);
-
-ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Specialite
-FOREIGN KEY (Id_Specialite) REFERENCES Specialite(Id_Specialite);
-
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Club_Organisateur
 FOREIGN KEY (Id_Club_Organisateur) REFERENCES Club_Organisateur(Id_Club_Organisateur);
 
@@ -383,6 +411,15 @@ ALTER TABLE Palmares ADD CONSTRAINT FK_Palmares_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
 ALTER TABLE Voyage ADD CONSTRAINT FK_Voyage_Id_Competition
+FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
+
+ALTER TABLE Course ADD CONSTRAINT FK_Course_Id_Categorie
+FOREIGN KEY (Id_Categorie) REFERENCES Categorie(Id_Categorie);
+
+ALTER TABLE Course ADD CONSTRAINT FK_Course_Id_Type_Specialite
+FOREIGN KEY (Id_Type_Specialite) REFERENCES Type_Specialite(Id_Type_Specialite);
+
+ALTER TABLE Course ADD CONSTRAINT FK_Course_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
 ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Equipe
@@ -457,6 +494,12 @@ FOREIGN KEY (Id_Droit_Acces) REFERENCES Droit_Acces(Id_Droit_Acces);
 ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Adherent
 FOREIGN KEY (Id_Adherent) REFERENCES Adherent(Id_Adherent);
 
+ALTER TABLE Parente ADD CONSTRAINT FK_Parente_Id_Parent
+FOREIGN KEY (Id_Parent) REFERENCES Utilisateur(Id_Utilisateur);
+
+ALTER TABLE Parente ADD CONSTRAINT FK_Parente_Id_Enfant
+FOREIGN KEY (Id_Enfant) REFERENCES Adherent(Id_Adherent);
+
 #------------------------------------------------------------
 # Insertion: Sexe
 #------------------------------------------------------------
@@ -466,6 +509,11 @@ INSERT INTO Sexe VALUES(0,'M'),(1,'F'),(2,'O');
 # Insertion: Specialite
 #------------------------------------------------------------
 INSERT INTO Specialite VALUES(0,"Canoe"),(1,"Kayak");
+
+#------------------------------------------------------------
+# Insertion: Type_Specialite
+#------------------------------------------------------------
+INSERT INTO Type_Specialite VALUES(0,"C1"),(1,"C2"),(2,"C4"),(3,"K1"),(4,"K2"),(5,"K4");
 
 #------------------------------------------------------------
 # Insertion: Categorie

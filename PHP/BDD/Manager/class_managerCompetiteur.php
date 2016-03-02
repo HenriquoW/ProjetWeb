@@ -30,9 +30,10 @@ class ManagerCompetiteur extends ManagerAdherent{
         $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
         $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
 
-        $requete = $this->getDb()->prepare('INSERT INTO Competiteur (Id_Adherent,Id_Specialite,Id_Objectif,Id_Categorie) VALUES(:id_Adherent,:id_Specialite,:id_Objectif,:id_Categorie)');
+        $requete = $this->getDb()->prepare('INSERT INTO Competiteur (Photo,Id_Adherent,Id_Specialite,Id_Objectif,Id_Categorie) VALUES(:photo,:id_Adherent,:id_Specialite,:id_Objectif,:id_Categorie)');
 
-        $requete->execute(array('id_Adherent' => $objet->getId_Adherent(),
+        $requete->execute(array('photo' => $objet->getPhoto(),
+                                'id_Adherent' => $objet->getId_Adherent(),
                                 'id_Specialite' => $donneId_Specialite['Id_Specialite'],
                                 'id_Objectif' => $donneId_Obj['Id_Objectif'],
                                 'id_Categorie' => $donneId_Categorie['Id_Categorie'],
@@ -46,7 +47,7 @@ class ManagerCompetiteur extends ManagerAdherent{
 
     }
 
-    //Ajoute les objectifs de l'Competiteur
+    //Ajoute les objectifs du Competiteur
     public function addObjectif($objet){
         //on recupere l'objectif du Competiteur deja dans la base
         $requeteId_Obj = $this->getDb()->query('SELECT Id_Objectif FROM Objectif WHERE Type = '.$objet->getObjectif());
@@ -70,7 +71,7 @@ class ManagerCompetiteur extends ManagerAdherent{
         $this->removeObjectif($objet);
     }
 
-    //Suppression de tous les droits de l'Competiteur
+    //Suppression de tous les objectif du Competiteur
     public function removeObjectif($objet){
         $requeteId_Obj = $this->getDb()->query('SELECT Id_Objectif FROM Competiteur WHERE Id_Competiteur = '.$objet->getId_Competiteur());
         $donneId_Obj = $requeteId_Obj->fetch(PDO::FETCH_ASSOC);
@@ -81,7 +82,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     //Fonction qui retourne un Competiteur à partir de son id
     public function getId($id)
     {
-        $requete = $this->getDb()->query('SELECT Id_Competiteur, Id_Adherent, Id_Specialite, Id_Objectif, Id_Categorie FROM Competiteur WHERE Id_Competiteur = '.$id);
+        $requete = $this->getDb()->query('SELECT Id_Competiteur, Photo, Id_Adherent, Id_Specialite, Id_Objectif, Id_Categorie FROM Competiteur WHERE Id_Competiteur = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         $user = parent::getId($donnees['Id_Adherent']);
@@ -98,9 +99,9 @@ class ManagerCompetiteur extends ManagerAdherent{
         $requeteNom_Cat = $this->getDb()->query('SELECT Nom FROM Categorie WHERE Id_Categorie = '.$donnees['Id_Categorie']);
         $donneNom_Cat = $requeteNom_Cat->fetch(PDO::FETCH_ASSOC);
 
-        $donnees['Id_Specialite'] = $donneNom_Spe['Specialite'];
-        $donnees['Id_Objectif'] = $donneType_Obj['Objectif'];
-        $donnees['Id_Categorie'] = $donneNom_Cat['Categorie'];
+        $donnees['Specialite'] = $donneNom_Spe['Nom'];
+        $donnees['Objectif'] = $donneType_Obj['Type'];
+        $donnees['Categorie'] = $donneNom_Cat['Nom'];
 
         unset($donnees['Id_Specialite']);
         unset($donnees['Id_Objectif']);
@@ -131,7 +132,7 @@ class ManagerCompetiteur extends ManagerAdherent{
         return $competiteurs;
     }
 
-    //Procédure qui met à jour un Adherent donné en paramètre dans la BDD
+    //Procédure qui met à jour un Competiteur donné en paramètre dans la BDD
     public function update($objet)
     {
         if($objet->getId_Adherent() == NULL){
@@ -151,9 +152,10 @@ class ManagerCompetiteur extends ManagerAdherent{
         $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
         $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
 
-        $requete = $this->getDb()->prepare('UPDATE Competiteur SET Id_Adherent = :id_Adherent, Id_Specialite = :id_Specialite, Id_Objectif = :id_Objectif, Id_Categorie = :id_Categorie WHERE Id_Competiteur = :id_Competiteur');
+        $requete = $this->getDb()->prepare('UPDATE Competiteur SET Photo =:photo, Id_Adherent = :id_Adherent, Id_Specialite = :id_Specialite, Id_Objectif = :id_Objectif, Id_Categorie = :id_Categorie WHERE Id_Competiteur = :id_Competiteur');
 
-        $requete->execute(array('id_Adherent' => $objet->getId_Adherent(),
+        $requete->execute(array('photo' => $objet->getPhoto(),
+                                'id_Adherent' => $objet->getId_Adherent(),
                                 'id_Specialite' => $donneId_Specialite['Id_Specialite'],
                                 'id_Objectif' => $donneId_Obj['Id_Objectif'],
                                 'id_Categorie' => $donneId_Categorie['Id_Categorie'],
