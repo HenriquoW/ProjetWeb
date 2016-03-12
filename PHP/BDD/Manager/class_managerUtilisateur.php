@@ -16,6 +16,8 @@ class ManagerUtilisateur extends Manager{
 
         $this->addParente($objet);
 
+        $this->addDroits($objet);
+
         //Recupere l'id du sexe de l'utilisateur
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
         $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
@@ -57,10 +59,52 @@ class ManagerUtilisateur extends Manager{
         }
     }
 
+    //Ajoute les droits de l'adherent
+    public function addDroits($objet){
+
+        //on recupere les droits de l'adherent deja dans la base
+        $requeteDroits = $this->getDb()->query('SELECT Id_Droit_Access FROM Droits WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
+
+        $donneDroits = array();
+        while ($donne = $requeteDroits->fetch(PDO::FETCH_ASSOC))
+        {
+            $donneDroits[] = $donne;
+        }
+
+        foreach($objet->getDroit() as $droit){
+            $requeteDroit_Acces = $this->getDb()->query('SELECT Id_Droit_Acces FROM Droit_Acces WHERE Nom = '.$droit);
+            $donneDroit_Acces = $requeteDroit_Acces->fetch(PDO::FETCH_ASSOC);
+
+            if(!in_array($donneDroit_Acces['Id_Droit_Acces'],$donneDroits)){
+                $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Utilisateur) VALUES(:id_Droit_Acces,:id_Utilisateur)');
+
+                $requete->execute(array('id_Droit_Acces' => $donneDroit_Acces['Id_Droit_Acces'],
+                                        'id_Utilisateur' => $objet->getId_Utilisateur(),
+                                        ));
+            }
+
+        }
+
+    }
+
     //Suppression d'un utilisateur dans la BDD
     public function remove($objet)
     {
         $this->getDb()->exec('DELETE FROM Utilisateur WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
+
+        $this->removeDroits($objet);
+
+        $this->removeParente($objet);
+    }
+
+    //Suppression de tous les droits de l'adherent
+    public function removeDroits($objet){
+        $this->getDb()->exec('DELETE FROM Droits WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
+    }
+
+    //Suppression de tous les droits de l'adherent
+    public function removeParente($objet){
+        $this->getDb()->exec('DELETE FROM Parente WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
     }
 
     //Fonction qui retourne un utilisateur à partir de son id
@@ -120,6 +164,11 @@ class ManagerUtilisateur extends Manager{
     //Procédure qui met à jour un utilisateur donné en paramètre dans la BDD
     public function update($objet)
     {
+
+        this->updateDroits($objet);
+
+        this->updateParente($objet);
+
         //Recupere l'id du sexe de l'utilisateur
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
         $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
@@ -136,6 +185,16 @@ class ManagerUtilisateur extends Manager{
                                 'id_Sexe' => $donneId_Sexe['Id_Sexe'],
                                 'id_Utilisateur' => $objet->getId_Utilisateur(),
                                ));
+    }
+
+    public function updateDroit($objet){
+        this->removeDroits($objet);
+        this->addDroits($objet);
+    }
+
+    public function updateParente($objet){
+        this->removeParente($objet);
+        this->addParente($objet);
     }
 
 }

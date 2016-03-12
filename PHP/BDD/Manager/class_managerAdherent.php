@@ -26,8 +26,6 @@ class ManagerAdherent extends ManagerUtilisateur{
                                 'id_Utilisateur' => $objet->getId_Utilisateur(),
                                ));
 
-        $this->addDroit($objet);
-
         //Recupere l'id de l'adherent genere par la base
         $requeteId_Adherent = $this->getDb()->query('SELECT Id_Adherent FROM Adherent WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
         $donneId_Adherent = $requeteId_Adherent->fetch(PDO::FETCH_ASSOC);
@@ -36,45 +34,11 @@ class ManagerAdherent extends ManagerUtilisateur{
 
     }
 
-    //Ajoute les droits de l'adherent
-    public function addDroit($objet){
-
-        //on recupere les droits de l'adherent deja dans la base
-        $requeteDroits = $this->getDb()->query('SELECT Id_Droit_Access FROM Droits WHERE Id_Adherent = '.$objet->getId_Adherent());
-
-        $donneDroits = array();
-        while ($donne = $requeteDroits->fetch(PDO::FETCH_ASSOC))
-        {
-            $donneDroits[] = $donne;
-        }
-
-        foreach($objet->getDroit() as $droit){
-            $requeteDroit_Acces = $this->getDb()->query('SELECT Id_Droit_Acces FROM Droit_Acces WHERE Nom = '.$droit);
-            $donneDroit_Acces = $requeteDroit_Acces->fetch(PDO::FETCH_ASSOC);
-
-            if(!in_array($donneDroit_Acces['Id_Droit_Acces'],$donneDroits)){
-                $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Adherent) VALUES(:id_Droit_Acces,:id_Adherent)');
-
-                $requete->execute(array('id_Droit_Acces' => $donneDroit_Acces['Id_Droit_Acces'],
-                                        'id_Adherent' => $objet->getId_Adherent(),
-                                        ));
-            }
-
-        }
-
-    }
 
     //Suppression d'un adherent dans la BDD
     public function remove($objet)
     {
         $this->getDb()->exec('DELETE FROM Adherent WHERE Id_Adherent = '.$objet->getId_Adherent());
-
-        $this->removeDroits($objet);
-    }
-
-    //Suppression de tous les droits de l'adherent
-    public function removeDroits($objet){
-        $this->getDb()->exec('DELETE FROM Droits WHERE Id_Adherent = '.$objet->getId_Adherent());
     }
 
     //Fonction qui retourne un adherent à partir de son id

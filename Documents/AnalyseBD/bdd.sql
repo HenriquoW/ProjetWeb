@@ -376,8 +376,8 @@ CREATE TABLE Participe_Competition_Solo(
 
 CREATE TABLE Droits(
         Id_Droit_Acces INT NOT NULL ,
-        Id_Adherent    INT NOT NULL ,
-        PRIMARY KEY (Id_Droit_Acces ,Id_Adherent )
+        Id_Utilisateur    INT NOT NULL ,
+        PRIMARY KEY (Id_Droit_Acces ,Id_Utilisateur )
 )ENGINE=InnoDB;
 
 ALTER TABLE Utilisateur ADD CONSTRAINT FK_Utilisateur_Id_Sexe
@@ -491,8 +491,8 @@ FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Droit_Acces
 FOREIGN KEY (Id_Droit_Acces) REFERENCES Droit_Acces(Id_Droit_Acces);
 
-ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Adherent
-FOREIGN KEY (Id_Adherent) REFERENCES Adherent(Id_Adherent);
+ALTER TABLE Droits ADD CONSTRAINT FK_Droits_Id_Utilisateur
+FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
 
 ALTER TABLE Parente ADD CONSTRAINT FK_Parente_Id_Parent
 FOREIGN KEY (Id_Parent) REFERENCES Utilisateur(Id_Utilisateur);
@@ -533,7 +533,7 @@ INSERT INTO Tache VALUES(0,"Reunion de confirmation des inscriptions"),(1,"Depot
 #------------------------------------------------------------
 # Insertion: Droit_Acces
 #------------------------------------------------------------
-INSERT INTO Droit_Acces VALUES(0,"Administrateurs"),(1,"Entraineur"),(2,"Secretaire");
+INSERT INTO Droit_Acces VALUES(0,"Visiteur"),(1,"Inscrit"),(2,"Adherent"),(4,"Entraineur"),(5,"Secretaire"),(6,"Administrateurs");
 
 #------------------------------------------------------------
 # Insertion: Type_Voyage
