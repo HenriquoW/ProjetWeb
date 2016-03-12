@@ -1,0 +1,9 @@
+utilisateur
+droit
+parente
+adherent
+competiteur
+competition
+course
+participe_competition_solo
+participe_competition_equipe
