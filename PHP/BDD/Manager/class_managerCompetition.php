@@ -33,7 +33,7 @@ class ManagerCompetition extends Manager{
                                ));
 
         //Recupere l'id de la competition genere par la base
-        $requeteId_Competition = $this->getDb()->prepare('SELECT Id_Competition FROM Competition WHERE Adresse = :adresse AND DateCompetition = :dateCompetition AND Id_Sexe = :id_Sexe AND Id_Type_Competition = :id_Type_Competition AND Id_Club_Organisateur = :id_Club_Organisateur';
+        $requeteId_Competition = $this->getDb()->prepare('SELECT Id_Competition FROM Competition WHERE Adresse = :adresse AND DateCompetition = :dateCompetition AND Id_Sexe = :id_Sexe AND Id_Type_Competition = :id_Type_Competition AND Id_Club_Organisateur = :id_Club_Organisateur');
 
         $requeteId_Competition->execute(array('adresse' => $objet->getAdresse(),
                                                 'dateCompetition' => $objet->getDateCompetition(),

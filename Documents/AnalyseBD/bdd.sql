@@ -260,9 +260,9 @@ CREATE TABLE Course(
 
 CREATE TABLE Participe_Competition_Equipe(
         Id_Equipe      INT NOT NULL ,
-        Id_Competition INT NOT NULL ,
+        Id_Course INT NOT NULL ,
         Validation     Bool,
-        PRIMARY KEY (Id_Equipe ,Id_Competition )
+        PRIMARY KEY (Id_Equipe ,Id_Course )
 )ENGINE=InnoDB;
 
 
@@ -364,10 +364,10 @@ CREATE TABLE Palmares_Competiteur(
 #------------------------------------------------------------
 
 CREATE TABLE Participe_Competition_Solo(
-        Id_Competition INT NOT NULL ,
+        Id_Course INT NOT NULL ,
         Id_Competiteur INT NOT NULL ,
         Validation Bool,
-        PRIMARY KEY (Id_Competition ,Id_Competiteur )
+        PRIMARY KEY (Id_Course ,Id_Competiteur )
 )ENGINE=InnoDB;
 
 
@@ -426,8 +426,8 @@ FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Equipe
 FOREIGN KEY (Id_Equipe) REFERENCES Equipe(Id_Equipe);
 
-ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Competition
-FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
+ALTER TABLE Participe_Competition_Equipe ADD CONSTRAINT FK_Participe_Competition_Equipe_Id_Course
+FOREIGN KEY (Id_Course) REFERENCES Course(Id_Course);
 
 ALTER TABLE Participant_Equipe ADD CONSTRAINT FK_Participant_Equipe_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
@@ -483,8 +483,8 @@ FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 ALTER TABLE Palmares_Competiteur ADD CONSTRAINT FK_Palmares_Competiteur_Id_Palmares
 FOREIGN KEY (Id_Palmares) REFERENCES Palmares(Id_Palmares);
 
-ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Competition
-FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
+ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Course
+FOREIGN KEY (Id_Course) REFERENCES Course(Id_Course);
 
 ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);

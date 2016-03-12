@@ -19,7 +19,6 @@ class ManagerCompetiteur extends ManagerAdherent{
             parent::update($objet);
         }
 
-        addObjectif($objet);
 
         $requeteId_Obj = $this->getDb()->query('SELECT Id_Objectif FROM Objectif WHERE Type = '.$objet->getObjectif());
         $donneId_Obj = $requeteId_Obj->fetch(PDO::FETCH_ASSOC);
@@ -38,6 +37,8 @@ class ManagerCompetiteur extends ManagerAdherent{
                                 'id_Objectif' => $donneId_Obj['Id_Objectif'],
                                 'id_Categorie' => $donneId_Categorie['Id_Categorie'],
                                ));
+
+        addObjectif($objet);
 
         //Recupere l'id du competiteur genere par la base
         $requeteId_Competiteur = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Adherent = '.$objet->getId_Adherent());
@@ -66,9 +67,9 @@ class ManagerCompetiteur extends ManagerAdherent{
     //Suppression d'un Competiteur dans la BDD
     public function remove($objet)
     {
-        $this->getDb()->exec('DELETE FROM Competiteur WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+         $this->removeObjectif($objet);
 
-        $this->removeObjectif($objet);
+        $this->getDb()->exec('DELETE FROM Competiteur WHERE Id_Competiteur = '.$objet->getId_Competiteur());
     }
 
     //Suppression de tous les objectif du Competiteur

@@ -13,11 +13,6 @@ class ManagerUtilisateur extends Manager{
     //Procédure qui ajoute un utilisateur dans la BDD
     public function add($objet)
     {
-
-        $this->addParente($objet);
-
-        $this->addDroits($objet);
-
         //Recupere l'id du sexe de l'utilisateur
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
         $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
@@ -33,6 +28,10 @@ class ManagerUtilisateur extends Manager{
                                 'telephone' => $objet->getTelephone(),
                                 'id_Sexe' => $donneId_Sexe['Id_Sexe'],
                                ));
+
+        $this->addParente($objet);
+
+        $this->addDroits($objet);
 
         //Recupere l'id de l'utilisateur genere par la base
         $requeteId_Utilisateur = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = '.$objet->getMail());
@@ -52,7 +51,7 @@ class ManagerUtilisateur extends Manager{
             if(!in_array($donneEnfant['Id_Enfant'],$enfant)){
                 $requete = $this->getDb()->prepare('INSERT INTO Parente (Id_Parent,Id_Enfant) VALUES(:id_Parent,:id_Enfant)');
 
-                $requete->execute(array('id_Parent' => $objet->GetId_Utilisateur(),
+                $requete->execute(array('id_Parent' => $objet->getId_Utilisateur(),
                                         'id_Enfant' => $enfant,
                                         ));
             }
@@ -90,11 +89,11 @@ class ManagerUtilisateur extends Manager{
     //Suppression d'un utilisateur dans la BDD
     public function remove($objet)
     {
-        $this->getDb()->exec('DELETE FROM Utilisateur WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
-
         $this->removeDroits($objet);
 
         $this->removeParente($objet);
+
+        $this->getDb()->exec('DELETE FROM Utilisateur WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
     }
 
     //Suppression de tous les droits de l'adherent
@@ -118,23 +117,45 @@ class ManagerUtilisateur extends Manager{
         $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
 
         $donnees['Sexe'] = $donneType_Sexe['Type'];
+        $donnees['Droit'] = $this->getDroit($id);
+        $donnees['Parente'] = $this->getParente($id);
+
         unset($donnees['Id_Sexe']);
 
         return new Utilisateur($donnees);
     }
 
+    public function getDroit($id){
+        $droits
+
+        $requeteDroits = $this->getDb()->query('SELECT Nom FROM Droits WHERE Id_Utilisateur = '.$id);
+
+        while ($donne = $requeteDroits->fetch(PDO::FETCH_ASSOC))
+        {
+            $droits[] = $donne;
+        }
+
+        return $droits;
+    }
+
+    public function getParente($id){
+        $enfants
+
+        $requeteEnfants = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$id);
+
+        while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
+        {
+            $enfants[] = $donne;
+        }
+
+        return $enfants;
+    }
+
     public function getMail($mail){
-        $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur WHERE Mail = '.$mail);
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = '.$mail);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        //Recupere le type du sexe de l'utilisateur
-        $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
-        $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
-
-        $donnees['Sexe'] = $donneType_Sexe['Type'];
-        unset($donnees['Id_Sexe']);
-
-        return new Utilisateur($donnees);
+        return $this->getId($donnees['Id_Utilisateur']);
     }
 
     //Fonction qui retourne la liste de tous les utilisateur présents dans la BDD
@@ -142,20 +163,11 @@ class ManagerUtilisateur extends Manager{
     {
         $utilisateurs = array();
 
-        $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur');
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur');
 
-        $i=0;
         while ($donnees = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            //Recupere le type du sexe de l'utilisateur
-            $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
-            $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
-
-            $donnees['Sexe'] = $donneType_Sexe['Type'];
-            unset($donnees['Id_Sexe']);
-
-            $utilisateurs[] = new Utilisateur($donnees);
-            $i++;
+            $utilisateurs[] = $this->getId($donnees['Id_Utilisateur']);
         }
 
         return $utilisateurs;
