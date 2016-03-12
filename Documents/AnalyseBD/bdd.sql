@@ -244,8 +244,9 @@ CREATE TABLE Droit_Acces(
 #------------------------------------------------------------
 
 CREATE TABLE Course(
-        Id_Course      INT NOT NULL ,
+        Id_Course      INT NOT NULL AUTO_INCREMENT,
         Distance       INT ,
+        Equipe         BOOL,
         Id_Categorie   INT ,
         Id_Competition       INT ,
         Id_Type_Specialite   INT ,

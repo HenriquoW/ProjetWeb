@@ -10,7 +10,7 @@ class ManagerCompetition extends Manager{
         parent::__construct($Db);
     }
 
-    //Procédure qui ajoute un Competiteur dans la BDD
+    //Procédure qui ajoute une competition dans la BDD
     public function add($objet)
     {
         $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
