@@ -1,9 +1,29 @@
-utilisateur
-droit
-parente
 adherent
+categorie
 competiteur
 competition
-course
-participe_competition_solo
-participe_competition_equipe
+course -> participe_competition_solo,participe_competition_equipe
+droit_acces
+role
+sexe
+specialite
+tache
+type_competition
+type_specialite
+type_voyage
+utilisateur -> droit,parente
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_utilisateur.php";
+require_once "../class_Utilisateur.php";
 
 class ManagerUtilisateur extends Manager{
 

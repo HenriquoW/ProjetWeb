@@ -1,6 +1,6 @@
 <?php
 require_once "class_managerAdherent.php";
-require_once "../class_competiteur.php";
+require_once "../class_Competiteur.php";
 
 class ManagerCompetiteur extends ManagerAdherent{
 
