@@ -47,15 +47,21 @@ class BDD{
     /**
 	 *  Fonction qui retourne l'attribut contenant le lien servant à accerder à la BDD
 	 */
-    public function Bdd(){
+    public function bdd(){
         return $this->_Bdd;
     }
 
-    public function Types(){
+    /**
+	 *  Fonction qui retourne tous les types des managers
+	 */
+    public function types(){
         return $this->_Fabrique->Types();
     }
     
-    public function GetManager($Type){
+    /**
+	 *  Fonction qui retourne le manager en fonction du type passer en parametre
+	 */
+    public function getManager($Type){
         $manager = $this->_Manager[$Type];
 
         if(is_null($manager)){
