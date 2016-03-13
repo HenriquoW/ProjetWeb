@@ -90,9 +90,9 @@ CREATE TABLE Specialite(
 #------------------------------------------------------------
 
 CREATE TABLE Objectif(
-        Id_Objectif INT NOT NULL AUTO_INCREMENT,
-        Type        Varchar (25) ,
-        PRIMARY KEY (Id_Objectif )
+        Id_Competiteur INT NOT NULL,
+        Id_Competition INT NOT NULL,
+        PRIMARY KEY (Id_Competiteur,Id_Competition )
 )ENGINE=InnoDB;
 
 
@@ -398,6 +398,12 @@ FOREIGN KEY (Id_Objectif) REFERENCES Objectif(Id_Objectif);
 
 ALTER TABLE Competiteur ADD CONSTRAINT FK_Competiteur_Id_Categorie
 FOREIGN KEY (Id_Categorie) REFERENCES Categorie(Id_Categorie);
+
+ALTER TABLE Objectif ADD CONSTRAINT FK_Objectif_Id_Competiteur
+FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
+
+ALTER TABLE Objectif ADD CONSTRAINT FK_Objectif_Id_Competition
+FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Sexe
 FOREIGN KEY (Id_Sexe) REFERENCES Sexe(Id_Sexe);
