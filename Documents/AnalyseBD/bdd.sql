@@ -101,7 +101,7 @@ CREATE TABLE Objectif(
 #------------------------------------------------------------
 
 CREATE TABLE Competition(
-        Id_Competition       INT NOT NULL ,
+        Id_Competition       INT NOT NULL AUTO_INCREMENT,
         Adresse              Varchar (25) ,
         DateCompetition      Date ,
         Id_Sexe              INT ,
@@ -222,9 +222,9 @@ CREATE TABLE Voyage(
 #------------------------------------------------------------
 
 CREATE TABLE Type_Voyage(
-        Id_Voyage INT NOT NULL ,
+        Id_Type_Voyage INT NOT NULL ,
         Nom       Varchar (25) ,
-        PRIMARY KEY (Id_Voyage )
+        PRIMARY KEY (Id_Type_Voyage )
 )ENGINE=InnoDB;
 
 
@@ -331,9 +331,9 @@ CREATE TABLE Participe_Voyage(
         Autoriser             Bool ,
         Id_Voyage             INT NOT NULL ,
         Id_Competiteur        INT NOT NULL ,
-        Id_Voyage_Type_Voyage INT NOT NULL ,
+        Id_Type_Voyage        INT NOT NULL ,
         Id_Utilisateur        INT ,
-        PRIMARY KEY (Id_Voyage ,Id_Competiteur ,Id_Voyage_Type_Voyage)
+        PRIMARY KEY (Id_Voyage ,Id_Competiteur ,Id_Type_Voyage)
 )ENGINE=InnoDB;
 
 
@@ -465,8 +465,8 @@ FOREIGN KEY (Id_Voyage) REFERENCES Voyage(Id_Voyage);
 ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 
-ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Voyage_Type_Voyage
-FOREIGN KEY (Id_Voyage_Type_Voyage) REFERENCES Type_Voyage(Id_Voyage);
+ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Type_Voyage
+FOREIGN KEY (Id_Type_Voyage) REFERENCES Type_Voyage(Id_Type_Voyage);
 
 ALTER TABLE Participe_Voyage ADD CONSTRAINT FK_Participe_Voyage_Id_Utilisateur
 FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
