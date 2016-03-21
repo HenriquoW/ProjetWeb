@@ -28,7 +28,7 @@ CREATE TABLE Utilisateur(
 
 CREATE TABLE Adherent(
         Id_Adherent     INT NOT NULL AUTO_INCREMENT,
-        NumeroLicence   INT NOT NULL,
+        NumeroLicence   VARCHAR (25) NOT NULL,
         DateInscription Date NOT NULL,
         Id_Utilisateur  INT NOT NULL ,
         PRIMARY KEY (Id_Adherent ) ,
@@ -151,7 +151,9 @@ CREATE TABLE Categorie(
 
 CREATE TABLE Equipe(
         Id_Equipe INT NOT NULL AUTO_INCREMENT,
-        PRIMARY KEY (Id_Equipe )
+        Nom       Varchar (25) ,
+        PRIMARY KEY (Id_Equipe ),
+        UNIQUE (Nom )
 )ENGINE=InnoDB;
 
 
@@ -199,7 +201,7 @@ CREATE TABLE Type_Competition(
 CREATE TABLE Palmares(
         Id_Palmares    INT NOT NULL AUTO_INCREMENT,
         Classement     INT ,
-        Id_Competition INT ,
+        Id_Course INT ,
         PRIMARY KEY (Id_Palmares )
 )ENGINE=InnoDB;
 
@@ -343,8 +345,9 @@ CREATE TABLE Participe_Voyage(
 
 CREATE TABLE Palmares_Equipe(
         Id_Equipe   INT NOT NULL ,
-        Id_Palmares INT NOT NULL ,
-        PRIMARY KEY (Id_Equipe ,Id_Palmares )
+        Classement     INT ,
+        Id_Course INT NOT NULL ,
+        PRIMARY KEY (Id_Equipe ,Id_Course )
 )ENGINE=InnoDB;
 
 
@@ -354,8 +357,9 @@ CREATE TABLE Palmares_Equipe(
 
 CREATE TABLE Palmares_Competiteur(
         Id_Competiteur INT NOT NULL ,
-        Id_Palmares    INT NOT NULL ,
-        PRIMARY KEY (Id_Competiteur ,Id_Palmares )
+        Classement     INT ,
+        Id_Course INT NOT NULL,
+        PRIMARY KEY (Id_Competiteur ,Id_Course )
 )ENGINE=InnoDB;
 
 
@@ -413,9 +417,6 @@ FOREIGN KEY (Id_Type_Competition) REFERENCES Type_Competition(Id_Type_Competitio
 
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Club_Organisateur
 FOREIGN KEY (Id_Club_Organisateur) REFERENCES Club_Organisateur(Id_Club_Organisateur);
-
-ALTER TABLE Palmares ADD CONSTRAINT FK_Palmares_Id_Competition
-FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
 
 ALTER TABLE Voyage ADD CONSTRAINT FK_Voyage_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
@@ -480,14 +481,14 @@ FOREIGN KEY (Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur);
 ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_Equipe
 FOREIGN KEY (Id_Equipe) REFERENCES Equipe(Id_Equipe);
 
-ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_Palmares
-FOREIGN KEY (Id_Palmares) REFERENCES Palmares(Id_Palmares);
+ALTER TABLE Palmares_Equipe ADD CONSTRAINT FK_Palmares_Equipe_Id_Course
+FOREIGN KEY (Id_Course) REFERENCES Course(Id_Course);
 
 ALTER TABLE Palmares_Competiteur ADD CONSTRAINT FK_Palmares_Competiteur_Id_Competiteur
 FOREIGN KEY (Id_Competiteur) REFERENCES Competiteur(Id_Competiteur);
 
-ALTER TABLE Palmares_Competiteur ADD CONSTRAINT FK_Palmares_Competiteur_Id_Palmares
-FOREIGN KEY (Id_Palmares) REFERENCES Palmares(Id_Palmares);
+ALTER TABLE Palmares_Competiteur ADD CONSTRAINT FK_Palmares_Competiteur_Id_Course
+FOREIGN KEY (Id_Course) REFERENCES Course(Id_Course);
 
 ALTER TABLE Participe_Competition_Solo ADD CONSTRAINT FK_Participe_Competition_Solo_Id_Course
 FOREIGN KEY (Id_Course) REFERENCES Course(Id_Course);
