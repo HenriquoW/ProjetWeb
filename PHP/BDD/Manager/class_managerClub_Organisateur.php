@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Club_Organisateur.php";
+require_once "../class_club_Organisateur.php";
 
 class ManagerClub_Organisateur extends Manager{
 
@@ -36,6 +36,13 @@ class ManagerClub_Organisateur extends Manager{
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         return new Club_Organisateur($donnees);
+    }
+
+    public function getNom($nom){
+        $requete = $this->getDb()->query('SELECT Id_Club_Organisateur WHERE Nom = '.$nom);
+        $donne = $requete->fetch(PDO::FETCH_ASSOC);
+
+        return $this->getId($donne['Id_Club_Organisateur']);
     }
 
     //Fonction qui retourne la liste de tous les club_organisateur présents dans la BDD

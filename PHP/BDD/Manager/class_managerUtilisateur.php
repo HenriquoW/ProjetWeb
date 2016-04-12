@@ -44,7 +44,7 @@ class ManagerUtilisateur extends Manager{
     public function addParente($objet){
 
         $requeteEnfant = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$objet->getId_Utilisateur());
-        $donneEnfant = $requeteEnfant->fetch(PDO::FETCH_ASSOC);
+        $donneEnfant = $requeteEnfant->fetchAll(PDO::FETCH_ASSOC);
 
         foreach($objet->getParente() as $enfant){
 
@@ -116,6 +116,7 @@ class ManagerUtilisateur extends Manager{
         $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
         $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
 
+        $donnees['DateNaissance'] = new datetime($donnees['DateNaissance']);
         $donnees['Sexe'] = $donneType_Sexe['Type'];
         $donnees['Droit'] = $this->getDroit($id);
         $donnees['Parente'] = $this->getParente($id);

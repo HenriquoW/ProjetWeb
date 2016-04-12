@@ -35,6 +35,10 @@ class ManagerCompetiteur extends ManagerAdherent{
 
         addObjectif($objet);
 
+        addCourseParticipe($objet);
+
+        addEquipeParticipe($objet);
+
         //Recupere l'id du competiteur genere par la base
         $requeteId_Competiteur = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Adherent = '.$objet->getId_Adherent());
         $donneId_Competiteur = $requeteId_Competiteur->fetch(PDO::FETCH_ASSOC);
@@ -57,28 +61,143 @@ class ManagerCompetiteur extends ManagerAdherent{
 
         foreach($objet->getObjectif() as $objectif){
 
-            if(!in_array($donneComp['Id_Competition'],$objectif['Id_Competition'])){
+            if(!in_array($donneComp['Id_Competition'],$objectif)){
                 $requete = $this->getDb()->prepare('INSERT INTO Objectif (Id_Competiteur,Id_Competition) VALUES(:id_Competiteur,:id_Competition)');
 
                 $requete->execute(array('id_Competiteur' => $objet->getId_Competiteur(),
-                                        'id_Competition' => $objectif['Id_Competition'],
-                                        ));
+                                        'id_Competition' => $objectif,
+                                       ));
             }
 
         }
     }
 
+    // Ajoute un objectif au competiteur
+    public function addObjectif($IdCompetiteur,$IdCompetition){
+        $requete = $this->getDb()->prepare('INSERT INTO Objectif (Id_Competiteur,Id_Competition) VALUES(:id_Competiteur,:id_Competition)');
+
+        $requete->execute(array('id_Competiteur' => $IdCompetiteur,
+                                'id_Competition' => $IdCompetition,
+                                ));
+    }
+
+    //Ajoute les courses du Competiteur
+    public function addCompetiteurCourse($objet){
+
+        $requeteId_Cour = $this->getDb()->query('SELECT Id_Course FROM Participant_Competition_Solo WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+
+        $donneCour = array();
+        while ($donne = $requeteId_Cour->fetch(PDO::FETCH_ASSOC))
+        {
+            $donneCour[] = $donne;
+        }
+
+
+        foreach($objet->getCourseParticipe() as $course){
+            if(!in_array($donneCour['Id_Course'],$course['Id_Course'])){
+
+                $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Solo (Id_Competiteur,Id_Course,Validation) VALUES(:id_Competiteur,:id_Course,:validation)');
+
+                $requete->execute(array('id_Competiteur' => $objet->getId_Competiteur(),
+                                        'id_Course' => $course['Id_Course'],
+                                        'validation' => $course['Validation'],
+                                       ));
+            }
+        }
+
+    }
+
+    //Ajoute une course au competiteur
+    public function addCompetiteurCourse($IdCompetiteur,$IdCourse){
+
+        $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Solo (Id_Competiteur,Id_Course,Validation) VALUES(:id_Competiteur,:id_Course,:validation)');
+
+        $requete->execute(array('id_Competiteur' => $IdCompetiteur,
+                                'id_Course' => $IdCourse,
+                                'validation' => false,
+                                ));
+    }
+
+    //Ajoute les equipes du Competiteur
+    public function addCompetiteurEquipe($objet){
+
+        $requeteId_Equipe = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+
+        $donneEquipe = array();
+        while ($donne = $requeteId_Equipe->fetch(PDO::FETCH_ASSOC))
+        {
+            $donneEquipe[] = $donne;
+        }
+
+
+        foreach($objet->getEquipeParticipe() as $equipe){
+            if(!in_array($donneEquipe['Id_Equipe'],$equipe)){
+
+                $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Competiteur,:id_Course)');
+
+                $requete->execute(array('id_Competiteur' => $objet->getId_Competiteur(),
+                                        'id_Equipe' => $equipe,
+                                       ));
+            }
+        }
+
+    }
+
+    //Ajoute une equipe au competiteur
+    public function addCompetiteurEquipe($IdCompetiteur,$IdEquipe){
+        $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Competiteur,:id_Course)');
+
+        $requete->execute(array('id_Competiteur' => $IdCompetiteur,
+                                'id_Equipe' => $IdEquipe,
+                                ));
+    }
+
     //Suppression d'un Competiteur dans la BDD
     public function remove($objet)
     {
-        $this->removeObjectif($objet);
+        $this->removeObjectifs($objet);
+        $this->removeCompetiteurCourses($objet);
+        $this->removeCompetiteurEquipe($objet);
 
         $this->getDb()->exec('DELETE FROM Competiteur WHERE Id_Competiteur = '.$objet->getId_Competiteur());
     }
 
+    //Suppression d'un objectif du Competiteur
+    public function removeObjectif($objet,$IdCompetition){
+        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competition = '.$IdCompetition.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+    }
+
     //Suppression de tous les objectif du Competiteur
-    public function removeObjectif($objet){
+    public function removeObjectifs($objet){
         $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+    }
+
+    // Function qui enleve le competiteur d'une course
+    public function removeCompetiteurCourse($objet,$IdCourse)
+    {
+        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+
+    }
+
+    // Function qui enleve le competiteur de toutes les courses
+    public function removeCompetiteurCourses($objet)
+    {
+        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Competiteur ='.$objet->getId_Competiteur());
+
+    }
+
+    // Function qui enleve le competiteur d'une equipe
+    public function removeCompetiteurEquipe($objet,$IdEquipe)
+    {
+        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Equipe = '.$IdEquipe.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+
+    }
+
+    // Function qui enleve le competiteur de toutes les equipe
+    public function removeCompetiteurEquipes($objet)
+    {
+        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Competiteur ='.$objet->getId_Competiteur());
+
     }
 
     //Fonction qui retourne un Competiteur à partir de son id
@@ -101,6 +220,8 @@ class ManagerCompetiteur extends ManagerAdherent{
         $donnees['Specialite'] = $donneNom_Spe['Nom'];
         $donnees['Categorie'] = $donneNom_Cat['Nom'];
         $donnees['Objectif'] = $this->getObjectif($id);
+        $donnees['CourseParticipe'] = $this->getCompetiteurCourse($id);
+        $donnees['EquipeParticipe'] = $this->getCompetiteurEquipe($id);
 
         unset($donnees['Id_Specialite']);
         unset($donnees['Id_Categorie']);
@@ -109,16 +230,42 @@ class ManagerCompetiteur extends ManagerAdherent{
     }
 
     public function getObjectif($id){
-        $objectifs
+        $objectifs;
 
         $requeteObjectif = $this->getDb()->query('SELECT Id_Competition FROM Objectif WHERE Id_Competiteur = '.$id);
 
         while ($donne = $requeteObjectif->fetch(PDO::FETCH_ASSOC))
         {
-            $objectifs[] = $donne;
+            $objectifs[] = $donne['Id_Competition'];
         }
 
         return $objectifs;
+    }
+
+    public function getCompetiteurCourse($id){
+        $courses;
+
+        $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participant_Competition_Solo WHERE Id_Competiteur = '.$id);
+
+        while ($donne = $requeteCourse->fetch(PDO::FETCH_ASSOC))
+        {
+            $courses[] = $donne;
+        }
+
+        return $courses;
+    }
+
+    public function getCompetiteurEquipe($id){
+        $equipes;
+
+        $requeteEquipe = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe WHERE Id_Competiteur = '.$id);
+
+        while ($donne = $requeteEquipe->fetch(PDO::FETCH_ASSOC))
+        {
+            $equipes[] = $donne['Id_Equipe'];
+        }
+
+        return $equipes;
     }
 
     public function getMail($mail){
@@ -168,9 +315,29 @@ class ManagerCompetiteur extends ManagerAdherent{
                                ));
     }
 
+    // met a jour tous les objectif du competiteur
     public function updateObjectif($objet){
+
         this->removeObjectif($objet);
         this->addObjectif($objet);
+    }
+
+    // met a jour toutes les courses du competiteur
+    public function updateCompetiteurCourse($objet){
+
+        this->removeCompetiteurCourses($objet);
+        this->addCompetiteurCourse($objet);
+    }
+
+    // valide ou invalide la participation du competiteur a une course
+    public function ValideCourse($IdCourse,$IdCompetiteur,$Validation){
+
+        $requete = $this->getDb()->prepare('UPDATE Participant_Competition_Solo SET Validation =:validation WHERE Id_Competiteur = :id_Competiteur AND Id_Course = :id_Course');
+
+        $requete->execute(array('validation' => $Validation,
+                                'id_Competiteur' => $IdCompetiteur,
+                                'id_Course' => $IdCourse,
+                               ));
     }
 
 }

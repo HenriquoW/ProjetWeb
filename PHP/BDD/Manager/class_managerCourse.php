@@ -29,8 +29,6 @@ class ManagerCourse extends Manager{
                                 'id_Type_Specialite' => $donneId_Type_Spe['Id_Type_Specialite'],
                                ));
 
-        $this->addParticipant($objet);
-
         //Recupere l'id de la course genere par la base
         $requeteId_Course = $this->getDb()->prepare('SELECT Id_Course FROM Course WHERE Distance = :distance AND Equipe = :equipe AND Id_Categorie = :id_Categorie AND Id_Competition = :id_Competition AND Id_Type_Specialite = :id_Type_Specialite');
 
@@ -47,49 +45,12 @@ class ManagerCourse extends Manager{
 
     }
 
-    public function addParticipant($objet){
-        if($objet->getIsEquipe()){
-
-            $requeteEquipe = $this->getDb()->query('SELECT Id_Equipe FROM Participe_Competition_Equipe WHERE Id_Course = '.$objet->getId_Course());
-
-            $donneEquipe = $requeteEquipe->fetch(PDO::FETCH_ASSOC);
-
-            foreach($objet->getParticipant() as $participant){
-
-                if(!in_array($donneEquipe['Id_Equipe'],$participant['Id'])){
-
-                    $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Equipe (Id_Equipe,Id_Course,Validation) VALUES(:id_Equipe,:id_Course,:validation)');
-
-                    $requete->execute(array('id_Equipe' => $participant['Id'],
-                                            'id_Course' => $objet->getId_Course(),
-                                            'validation' => $participant['Validation'],
-                                            ));
-                }
-            }
-        }else{
-            $requeteCompetiteur = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Competition_Solo WHERE Id_Course = '.$objet->getId_Course());
-
-            $donneCompetiteur = $requeteCompetiteur->fetch(PDO::FETCH_ASSOC);
-
-            foreach($objet->getParticipant() as $participant){
-
-                if(!in_array($donneCompetiteur['Id_Competiteur'],$participant['Id'])){
-
-                    $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Solo (Id_Competiteur,Id_Course,Validation) VALUES(:id_Competiteur,:id_Course,:validation)');
-
-                    $requete->execute(array('id_Competiteur' => $participant['Id'],
-                                            'id_Course' => $objet->getId_Course(),
-                                            'validation' => $participant['Validation'],
-                                            ));
-                }
-            }
-        }
-    }
-
     //Suppression d'une Course dans la BDD
     public function remove($objet)
     {
         $this->removeParticipant($objet);
+
+        $this->removePalmares($objet);
 
         $this->getDb()->exec('DELETE FROM Course WHERE Id_Course = '.$objet->getId_Course());
 
@@ -103,6 +64,14 @@ class ManagerCourse extends Manager{
             $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$objet->getId_Course());
         }
 
+    }
+
+    public function removePalmares($objet){
+        if($objet->getIsEquipe()){
+            $this->getDb()->exec('DELETE FROM Palmares_Equipe WHERE Id_Course = '.$objet->getId_Course());
+        }else{
+            $this->getDb()->exec('DELETE FROM Palmares_Competiteur WHERE Id_Course = '.$objet->getId_Course());
+        }
     }
 
     //Fonction qui retourne une course à partir de son id
@@ -193,8 +162,6 @@ class ManagerCourse extends Manager{
     public function update($objet)
     {
 
-        $this->updateParticipant($objet);
-
         $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getType_Specialite());
         $donneId_Type_Spe = $requeteId_Type_Spe->fetch(PDO::FETCH_ASSOC);
 
@@ -210,12 +177,6 @@ class ManagerCourse extends Manager{
                                 'id_Type_Specialite' => $donneId_Type_Spe['Id_Type_Specialite'],
                                ));
     }
-
-    public function updateParticipant($objet){
-        $this->removeParticipant($objet);
-        $this->addParticipant($objet);
-    }
-
 
 
 }

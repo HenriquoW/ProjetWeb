@@ -1,4 +1,5 @@
 <?php
+require_once "BDD/class_bdd.php";
 
 class Utilisateur{
 
@@ -13,6 +14,13 @@ class Utilisateur{
     private $_Prenom;
     private $_Mail;
     private $_Password;
+    private $_DateNaissance;
+    private $_Adresse;
+    private $_Telephone;
+    private $_Sexe;
+    private $_Droit; // tableau de nom des droits
+    private $_Parente; // tableau d'id enfant
+    private $_Message; // tableau de message
 
     /*
     *----------------------------------------------------------------
@@ -20,7 +28,7 @@ class Utilisateur{
     *----------------------------------------------------------------
     */
 
-    //Constructeur qui initialisera le personnage avec la fonction hydrate
+    //Constructeur qui initialisera l'utilisateur avec la fonction hydrate
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);
@@ -29,6 +37,18 @@ class Utilisateur{
     public function __construct(Utilisateur $user)
     {
         //Copie les valeurs
+        $this->setId_Utilisateur($user->getId_Utilisateur());
+        $this->setNom($user->getNom());
+        $this->setPrenom($user->getPrenom());
+        $this->setMail($user->getMail());
+        $this->setPassword($user->getPassword());
+        $this->setDateNaissance($user->getDateNaissance());
+        $this->setAdresse($user->getAdresse());
+        $this->setTelephone($user->getTelephone());
+        $this->setSexe($user->getSexe());
+        $this->setDroit($user->getDroit());
+        $this->setParente($user->getParente());
+
 
         //Detruit ancienne utilisateur
         unset($user);
@@ -41,7 +61,7 @@ class Utilisateur{
     */
 
     //Fonction qui renvoie l'id de l'utilisateur (en integer)
-    public function getIdUtilisateur()
+    public function getId_Utilisateur()
     {
         return $this->_IdUtilisateur;
     }
@@ -70,6 +90,35 @@ class Utilisateur{
         return $this->_Password;
     }
 
+    public function getDateNaissance(){
+        return $this->_Sexe;
+    }
+
+    public function getAdresse(){
+        return $this->_Sexe;
+    }
+
+    public function getTelephone(){
+        return $this->_Sexe;
+    }
+
+    public function getSexe(){
+        return $this->_Sexe;
+    }
+
+    public function getDroit(){
+        return $this->_Sexe;
+    }
+
+    public function getParente(){
+        return $this->_Sexe;
+    }
+
+    public function getMessage(){
+        return $this->_Message;
+    }
+
+
     /*
     *----------------------------------------------------------------
     *SETTER
@@ -77,13 +126,13 @@ class Utilisateur{
     */
 
     //Fonction qui fixe l'id de l'utilisateur
-    public function setIdUtilisateur($IdUtilisateur)
+    public function setId_Utilisateur($IdUtilisateur)
     {
         if(!is_int($IdUtilisateur))
         {
             trigger_error("L'id doit être un entier",E_USER_WARNING);
         }else{
-            $this->_IdUtilisateur = $IdUtilisateur;  
+            $this->_Id_Utilisateur = $IdUtilisateur;
         }
     }
 
@@ -132,13 +181,53 @@ class Utilisateur{
         }
     }
 
+    public function setDateNaissance($Date){
+        $this->_DateNaissance = $Date;
+    }
+
+    public function setAdresse($Adresse){
+        $this->_Adresse = htmlspecialchars($Adresse);
+    }
+
+    public function setTelephone($Telephone){
+        $this->_Telephone = htmlspecialchars($Telephone);
+    }
+
+    public function setSexe($Sexe){
+        $this->_Sexe = $Sexe;
+    }
+
+    public function setDroit($Droit){
+        $newDroit;
+
+        foreach($Droit as $d){
+           $newDroit = htmlspecialchars($d);
+        }
+
+        $this->_Droit = $newDroit;
+    }
+
+    public function setParente($Parente){
+        $newParente;
+
+        foreach($Parente as $p){
+            if(is_int($p)){
+                $newParente = $p;
+            }
+        $this->_Parente = $newParente;
+    }
+
+    public function setMessage($Message){
+        $this->_Message = $Message;
+    }
+
     /*
     *----------------------------------------------------------------
     *BODY
     *----------------------------------------------------------------
     */
 
-    /**
+    /*
     * Fonction qui initialise tous les attributs à partir de variables données en paramètres sous la forme d'un tableau
     */
     public function hydrate(array $donnees)
@@ -154,6 +243,40 @@ class Utilisateur{
         }
     }
 
+    public function save($bupdate){
+        if($bupdate){
+            BDD::getInstance()->getManager("Utilisateur")->update($this);
+
+            //update message
+            foreach($this->_Message['Envoyer'] as $message){
+                BDD::getInstance()->getManager("Message")->update($message);
+            }
+        }else{
+            BDD::getInstance()->getManager("Utilisateur")->add($this);
+
+            //ajoute message
+            foreach($this->_Message['Envoyer'] as $message){
+                BDD::getInstance()->getManager("Message")->add($message);
+            }
+        }
+    }
+
+}
+
+function loadUtilisateur($info){
+    $utilisateur;
+
+    if(isset($info['Id'])){
+        $utilisateur = BDD::getInstance()->getManager("Utilisateur")->getId($info['Id']);
+    }else{
+        $utilisateur = BDD::getInstance()->getManager("Utilisateur")->getMail($info['Mail']);
+    }
+
+    //recupere message
+    $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
+
+
+    return $utilisateur;
 }
 
 ?>

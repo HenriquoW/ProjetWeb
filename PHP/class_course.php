@@ -1,26 +1,23 @@
 <?php
 
-require_once "class_competiteur.php";
+require_once "BDD/class_bdd.php";
 
-class Equipe{
-
+class Course{
     /*
     *----------------------------------------------------------------
     *ATTRIBUT
     *----------------------------------------------------------------
     */
-    private $_Id_Equipe;
-    private $_Nom;
-    private $_Membre; // tableau avec les id des competiteurs
-    private $_CourseParticipe;
+
+    private $_Id_Course;
 
     /*
     *----------------------------------------------------------------
     *CONSTRUCTEUR
     *----------------------------------------------------------------
     */
-    
-    //Constructeur qui initialisera l'equipe avec la fonction hydrate
+
+    //Constructeur qui initialisera l'utilisateur avec la fonction hydrate
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);
@@ -31,43 +28,20 @@ class Equipe{
     *GETTER
     *----------------------------------------------------------------
     */
-    
-    public function getId_Equipe(){
-        return $this->_Id_Equipe;
+
+    public function getId_Course(){
+        return $this->_Id_Course;
     }
 
-    public function getNom(){
-        return $this->_Nom;
-    }
-
-    public function getMembre(){
-        return $this->_Membre;
-    }
-
-    public function getCourseParticipe(){
-        return $this->_CourseParticipe;
-    }
 
     /*
     *----------------------------------------------------------------
     *SETTER
     *----------------------------------------------------------------
     */
-    
-    public function setId_Equipe($IdEquipe){
-        $this->_Id_Equipe = $IdEquipe;
-    }
 
-    public function setNom($Nom){
-        $this->_Nom = htmlspecialchars($Nom);
-    }
-
-    public function setMembre($Membre){
-        $this->_Membre = $Membre;
-    }
-
-    public function setCourseParticipe($Course){
-        $this->_CourseParticipe = $Course;
+    public function setId_Course($IdCourse){
+        $this->_Id_Course = $IdCourse;
     }
 
     /*
@@ -94,21 +68,22 @@ class Equipe{
 
     public function save($bupdate){
         if($bupdate){
-            BDD::getInstance()->getManager("Equipe")->update($this);
+            BDD::getInstance()->getManager("Course")->update($this);
+
         }else{
-            BDD::getInstance()->getManager("Equipe")->add($this);
+            BDD::getInstance()->getManager("Course")->add($this);
         }
     }
 }
 
-function loadEquipe($info){
-    $equipe;
+function loadMessage($info){
+    $course;
 
     if(isset($info['Id'])){
-        $equipe = BDD::getInstance()->getManager("Equipe")->getId($info['Id']);
+        $course = BDD::getInstance()->getManager("Course")->getId($info['Id']);
     }
 
-    return $equipe;
+    return $course;
 }
 
 ?>

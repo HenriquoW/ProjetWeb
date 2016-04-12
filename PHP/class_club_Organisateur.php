@@ -1,26 +1,25 @@
 <?php
 
-require_once "class_competiteur.php";
+require_once "BDD/class_bdd.php";
 
-class Equipe{
-
+class Club_Organisateur{
     /*
     *----------------------------------------------------------------
     *ATTRIBUT
     *----------------------------------------------------------------
     */
-    private $_Id_Equipe;
+
+    private $_Id_Club_Organisateur;
     private $_Nom;
-    private $_Membre; // tableau avec les id des competiteurs
-    private $_CourseParticipe;
+    private $_President;
 
     /*
     *----------------------------------------------------------------
     *CONSTRUCTEUR
     *----------------------------------------------------------------
     */
-    
-    //Constructeur qui initialisera l'equipe avec la fonction hydrate
+
+    //Constructeur qui initialisera l'utilisateur avec la fonction hydrate
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);
@@ -31,21 +30,17 @@ class Equipe{
     *GETTER
     *----------------------------------------------------------------
     */
-    
-    public function getId_Equipe(){
-        return $this->_Id_Equipe;
+
+    public function getId_Club_Organisateur(){
+        return $this->_Id_Club_Organisateur;
     }
 
     public function getNom(){
         return $this->_Nom;
     }
 
-    public function getMembre(){
-        return $this->_Membre;
-    }
-
-    public function getCourseParticipe(){
-        return $this->_CourseParticipe;
+    public function getPresident(){
+        return $this->_President;
     }
 
     /*
@@ -53,21 +48,17 @@ class Equipe{
     *SETTER
     *----------------------------------------------------------------
     */
-    
-    public function setId_Equipe($IdEquipe){
-        $this->_Id_Equipe = $IdEquipe;
+
+    public function setId_Club_Organisateur($IdClub){
+        $this->_Id_Club_Organisateur = $IdClub;
     }
 
     public function setNom($Nom){
         $this->_Nom = htmlspecialchars($Nom);
     }
 
-    public function setMembre($Membre){
-        $this->_Membre = $Membre;
-    }
-
-    public function setCourseParticipe($Course){
-        $this->_CourseParticipe = $Course;
+    public function setPresident($President){
+        $this->_President = htmlspecialchars($President);
     }
 
     /*
@@ -94,21 +85,24 @@ class Equipe{
 
     public function save($bupdate){
         if($bupdate){
-            BDD::getInstance()->getManager("Equipe")->update($this);
+            BDD::getInstance()->getManager("Club_Organisateur")->update($this);
+
         }else{
-            BDD::getInstance()->getManager("Equipe")->add($this);
+            BDD::getInstance()->getManager("Club_Organisateur")->add($this);
         }
     }
 }
 
-function loadEquipe($info){
-    $equipe;
+function loadClub($info){
+    $club;
 
     if(isset($info['Id'])){
-        $equipe = BDD::getInstance()->getManager("Equipe")->getId($info['Id']);
+        $club = BDD::getInstance()->getManager("Club_Organisateur")->getId($info['Id']);
+    }else{
+        $club = BDD::getInstance()->getManager("Club_Organisateur")->getNom($info['Nom']);
     }
 
-    return $equipe;
+    return $club;
 }
 
 ?>
