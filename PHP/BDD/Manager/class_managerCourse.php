@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_course.php";
 
-class ManagerCourse extends Manager{
+class ManagerCourse extends Manager{ // -- a modifier --
 
     //Constructeur
     public function __construct($Db)
@@ -13,7 +13,7 @@ class ManagerCourse extends Manager{
     //Procédure qui ajoute une course dans la BDD
     public function add($objet)
     {
-        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getType_Specialite());
+        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getTypeSpecialite());
         $donneId_Type_Spe = $requeteId_Type_Spe->fetch(PDO::FETCH_ASSOC);
 
         $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
@@ -89,7 +89,7 @@ class ManagerCourse extends Manager{
         $donneType_Spe = $requeteType_Spe->fetch(PDO::FETCH_ASSOC);
 
         $donnees['Categorie'] = $donneCat['Nom'];
-        $donnees['Type_Specialite'] = $donneType_Spe['Nom'];
+        $donnees['TypeSpecialite'] = $donneType_Spe['Nom'];
         $donnees['IsEquipe'] = $donnees['Equipe'];
         $donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe'])
 
@@ -103,7 +103,7 @@ class ManagerCourse extends Manager{
     public function getParticipant($id,$isEquipe){
         $participants;
 
-        if($$isEquipe){
+        if($isEquipe){
             $requete = $this->getDb()->query('SELECT Id_Equipe,Validation FROM Participant_Competition_Equipe WHERE Id_Course = '.$id);
             $donne = $requete->fetch(PDO::FETCH_ASSOC);
 
@@ -162,7 +162,7 @@ class ManagerCourse extends Manager{
     public function update($objet)
     {
 
-        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getType_Specialite());
+        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getTypeSpecialite());
         $donneId_Type_Spe = $requeteId_Type_Spe->fetch(PDO::FETCH_ASSOC);
 
         $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());

@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_competition.php";
 
-class ManagerCompetition extends Manager{
+class ManagerCompetition extends Manager{ // -- a modifier --
 
     //Constructeur
     public function __construct($Db)

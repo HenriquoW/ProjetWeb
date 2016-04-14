@@ -10,6 +10,10 @@ class Message{
     */
 
     private $_Id_Message;
+    private $_Sujet;
+    private $_Corps;
+    private $_Envoyeur; //id utilisateur qui envoie
+    private $_Destinataire; //id utilisateur qui recois
 
     /*
     *----------------------------------------------------------------
@@ -33,6 +37,22 @@ class Message{
         return $this->_Id_Message;
     }
 
+    public function getSujet(){
+        return $this->_Sujet;
+    }
+
+    public function getCorps(){
+        return $this->_Corps;
+    }
+
+    public function getEnvoyeur(){
+        return $this->_Envoyeur;
+    }
+
+    public function getDestinataire(){
+        return $this->_Destinataire;
+    }
+
 
     /*
     *----------------------------------------------------------------
@@ -42,6 +62,22 @@ class Message{
 
     public function setId_Message($IdMessage){
         $this->_Id_Message = $IdMessage;
+    }
+
+    public function setSujet($Sujet){
+        $this->_Sujet = htmlspecialchars($Sujet);
+    }
+
+    public function setCorps($Corps){
+        $this->_Corps = htmlspecialchars($Corps);
+    }
+
+    public function setEnvoyeur($Envoyeur){
+        $this->_Envoyeur = $Envoyeur;
+    }
+
+    public function setDestinataire($Destinataire){
+        $this->_Destinataire = $Destinataire;
     }
 
     /*

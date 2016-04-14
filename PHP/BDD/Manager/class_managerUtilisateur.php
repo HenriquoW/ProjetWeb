@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_Utilisateur.php";
 
-class ManagerUtilisateur extends Manager{
+class ManagerUtilisateur extends Manager{ // -- a modifier --
 
     //Constructeur
     public function __construct($Db)

@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_Voyage.php";
 
-class ManagerVoyage extends Manager{
+class ManagerVoyage extends Manager{// -- a modifier --
 
     //Constructeur
     public function __construct($Db)
@@ -26,29 +26,31 @@ class ManagerVoyage extends Manager{
 
         $objet->setId_Voyage($donneId_Voyage['Id_Voyage']);
 
-
         $this->addCharge($objet);
         $this->addParticipe($objet);
     }
 
-    //-----A FAIRE ------
+    //ajoute toute les charges pour un voyage
     public function addCharge($objet){
-        foreach($objet->getMembre() as $membre){
-            $requeteMembre = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
-            $donneMembre = $requeteMembre->fetch(PDO::FETCH_ASSOC);
+        $requeteCharge = $this->getDb()->query('SELECT Id_Utilisateur,Id_Tache,Id_Role,Id_Voyage FROM Charger WHERE Id_Voyage = '.$objet->getId_Voyage());
+        $donneCharge = $requeteCharge->fetchAll(PDO::FETCH_ASSOC);
 
-            if(!in_array($donneMembre['Id_Competiteur'],$membre)){
-                $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Equipe,:id_Competiteur)');
+        foreach($objet->getCharge() as $charge){
+            if(!in_array($donneCharge['Id_Utilisateur'],$charge['Id_Utilisateur']) && !in_array($donneCharge['Id_Role'],$charge['Id_Role']) && !in_array($donneCharge['Id_Tache'],$charge['Id_Tache'])){
 
-                $requete->execute(array('id_Equipe' => $objet->getId_Equipe(),
-                                        'id_Competiteur' => $membre,
+                $requete = $this->getDb()->prepare('INSERT INTO Charger (Id_Voyage,Id_Utilisateur,Id_Role,Id_Tache) VALUES(:id_Voyage,:id_Utilisateur,:id_Role,:id_Tache)');
+
+                $requete->execute(array('id_Voyage' => $objet->getId_Voyage(),
+                                        'id_Utilisateur' => $charge['Id_Utilisateur'],
+                                        'id_Role' => $charge['Id_Role'],
+                                        'id_Tache' => $charge['Id_Tache'],
                                         ));
             }
 
         }
     }
 
-    //-----A FAIRE ------
+    //ajoute tous les participants
     public function addParticipe($objet){
         foreach($objet->getMembre() as $membre){
             $requeteMembre = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
@@ -75,14 +77,14 @@ class ManagerVoyage extends Manager{
         $this->getDb()->exec('DELETE FROM Voyage WHERE Id_Voyage = '.$objet->getId_Voyage());
     }
 
-    //-----A FAIRE ------
+    //enleve toutes les charges d'un voyage
     public function removeCharge($objet){
-        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
+        $this->getDb()->exec('DELETE FROM Charge WHERE Id_Voyage = '.$objet->getId_Voyage());
     }
 
-    //-----A FAIRE ------
+    //enleve tous les participants d'un voyage
     public function removeParticipe($objet){
-        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
+        $this->getDb()->exec('DELETE FROM Participe_Voyage WHERE Id_Voyage = '.$objet->getId_Voyage());
     }
 
     //Fonction qui retourne un voyage à partir de son id
@@ -97,32 +99,32 @@ class ManagerVoyage extends Manager{
         return new Equipe($donnees);
     }
 
-    //-----A FAIRE ------
+    //recupere les charge pour un voyage
     public function getCharge($id){
-        $membre
+        $charge;
 
-        $requeteMembre = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Equipe WHERE Id_Equipe = '.$id);
+        $requeteCharge = $this->getDb()->query('SELECT Id_Utilisateur,Id_Role,Id_Tache FROM Charge WHERE Id_Voyage = '.$id);
 
-        while ($donne = $requeteMembre->fetch(PDO::FETCH_ASSOC))
+        while ($donne = $requeteCharge->fetch(PDO::FETCH_ASSOC))
         {
-            $membre[] = $donne;
+            $charge[] = $donne;
         }
 
-        return $membre;
+        return $charges;
     }
 
-    //-----A FAIRE ------
+    //recupere les competiteur qui participe au voyage pour un voyage
     public function getParticipe($id){
-        $membre
+        $participants;
 
-        $requeteMembre = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Equipe WHERE Id_Equipe = '.$id);
+        $requeteParticipe = $this->getDb()->query('SELECT Id_Competiteur,Autorise,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Voyage = '.$id);
 
-        while ($donne = $requeteMembre->fetch(PDO::FETCH_ASSOC))
+        while ($donne = $requeteParticipe->fetch(PDO::FETCH_ASSOC))
         {
-            $membre[] = $donne;
+            $participants[] = $donne;
         }
 
-        return $membre;
+        return $participants;
     }
 
     //Fonction qui retourne la liste de tous les voyages présents dans la BDD
@@ -140,34 +142,30 @@ class ManagerVoyage extends Manager{
         return $voyage;
     }
 
-    //-----A FAIRE ------
+    //recupere les voyage d'un competiteur
     public function getListCompetiteur($id)
     {
-        $equipe = array();
+        $voyage = array();
 
-        $requete = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe Where Id_Competiteur='.$id);
+        $requete = $this->getDb()->query('SELECT Id_Voyage FROM Participe_Voyage Where Id_Competiteur='.$id);
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $equipe[] = $this->getId($donneId['Id_Equipe']);
+            $voyage[] = $this->getId($donneId['Id_Voyage']);
         }
 
-        return $equipe;
+        return $voyage;
     }
 
-    //-----A FAIRE ------
-    public function getListCompetition($id)
+    //recupere le voyage associer a une competition
+    public function getVoyageCompetition($id)
     {
-        $equipe = array();
+        $voyage;
 
-        $requete = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe Where Id_Competiteur='.$id);
+        $requete = $this->getDb()->query('SELECT Id_Voyage FROM Voyage Where Id_Competition='.$id);
+        $donneId = $requete->fetch(PDO::FETCH_ASSOC))
 
-        while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
-        {
-            $equipe[] = $this->getId($donneId['Id_Equipe']);
-        }
-
-        return $equipe;
+        return $this->getID($donneId['id_Voyage']);
     }
 
     //Procédure qui met à jour un voyage donné en paramètre dans la BDD
@@ -182,17 +180,11 @@ class ManagerVoyage extends Manager{
                                ));
 
         $this->updateCharge($objet);
-        $this->updateParticipe($objet);
     }
 
     public function updateCharge($objet){
         this->removeCharge($objet);
         this->addCharge($objet);
-    }
-
-    public function updateParticipe($objet){
-        this->removeParticipe($objet);
-        this->addParticipe($objet);
     }
 
 }

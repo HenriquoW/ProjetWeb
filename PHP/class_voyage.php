@@ -10,6 +10,11 @@ class Voyage{
     */
 
     private $_Id_Voyage;
+    private $_Id_Competition;
+    private $_Transport;
+    private $_Hebergement;
+    private $_Charge; // tableau avec id utilisateur, role , tache
+    private $_Participe; // tableau avec id competiteur, autoriser, type voyage, id utilisateur(si besoin)
 
     /*
     *----------------------------------------------------------------
@@ -33,6 +38,26 @@ class Voyage{
         return $this->_Id_Voyage;
     }
 
+    public function getId_Competition(){
+        return $this->_Id_Competition;
+    }
+
+    public function getTransport(){
+        return $this->_Transport;
+    }
+
+    public function getHebergement(){
+        return $this->_Hebergement;
+    }
+
+    public function getCharge(){
+        return $this->_Charge;
+    }
+
+    public function getParticipe(){
+        return $this->_Participe;
+    }
+
 
     /*
     *----------------------------------------------------------------
@@ -42,6 +67,26 @@ class Voyage{
 
     public function setId_Voyage($IdVoyage){
         $this->_Id_Voyage = $IdVoyage;
+    }
+
+    public function setId_Competition($IdCompetition){
+        $this->_Id_Competition = $IdCompetition;
+    }
+
+    public function setTransport($Transport){
+        $this->_Transport= htmlspecialchars($Transport);
+    }
+
+    public function setHebergement($Hebergment){
+        $this->_Hebergment = htmlspecialchars($Hebergment);
+    }
+
+    public function setCharge($Charge){
+        $this->_Charge = $Charge;
+    }
+
+    public function setParticipe($Participe){
+        $this->_Participe = $Participe;
     }
 
 
