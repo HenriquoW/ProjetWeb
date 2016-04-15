@@ -129,6 +129,26 @@ function loadVoyage($info){
         $voyage = BDD::getInstance()->getManager("Voyage")->getId($info['Id']);
     }
 
+    //recupere tache (id,nom) et role (id,titre)
+    $charges;
+    foreach($competiteur->getCharge() as $charge){
+        $charge['Role'] = BDD::getInstance()->getManager("Role")->getId($charge['Role']);
+
+        $charge['Tache'] = BDD::getInstance()->getManager("Tache")->getId($charge['Tache']);
+
+        $charges[] = $charge;
+    }
+    $voyage->setCharge($charges);
+
+    //recupere type de voyage (id,nom)
+    $participes;
+    foreach($competiteur->getParticipe() as $participe){
+        $participe['Type_Voyage'] = BDD::getInstance()->getManager("Type_Voyage")->getId($participe['Type_Voyage']);
+
+        $participes[] = $participe;
+    }
+    $voyage->setParticipe($participes);
+
     return $voyage;
 }
 

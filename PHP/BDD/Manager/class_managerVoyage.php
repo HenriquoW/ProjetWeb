@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_Voyage.php";
 
-class ManagerVoyage extends Manager{// -- a modifier --
+class ManagerVoyage extends Manager{
 
     //Constructeur
     public function __construct($Db)
@@ -27,7 +27,6 @@ class ManagerVoyage extends Manager{// -- a modifier --
         $objet->setId_Voyage($donneId_Voyage['Id_Voyage']);
 
         $this->addCharge($objet);
-        $this->addParticipe($objet);
     }
 
     //ajoute toute les charges pour un voyage
@@ -42,25 +41,8 @@ class ManagerVoyage extends Manager{// -- a modifier --
 
                 $requete->execute(array('id_Voyage' => $objet->getId_Voyage(),
                                         'id_Utilisateur' => $charge['Id_Utilisateur'],
-                                        'id_Role' => $charge['Id_Role'],
-                                        'id_Tache' => $charge['Id_Tache'],
-                                        ));
-            }
-
-        }
-    }
-
-    //ajoute tous les participants
-    public function addParticipe($objet){
-        foreach($objet->getMembre() as $membre){
-            $requeteMembre = $this->getDb()->query('SELECT Id_Competiteur FROM Participant_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
-            $donneMembre = $requeteMembre->fetch(PDO::FETCH_ASSOC);
-
-            if(!in_array($donneMembre['Id_Competiteur'],$membre)){
-                $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Equipe,:id_Competiteur)');
-
-                $requete->execute(array('id_Equipe' => $objet->getId_Equipe(),
-                                        'id_Competiteur' => $membre,
+                                        'id_Role' => $charge['Role']['Id'],
+                                        'id_Tache' => $charge['Tache']['Id'],
                                         ));
             }
 
@@ -70,21 +52,21 @@ class ManagerVoyage extends Manager{// -- a modifier --
     //Suppression d'un voyage dans la BDD
     public function remove($objet)
     {
-        $this->removeCharge($objet);
+        $this->removeCharge($objet->getId_Voyage());
 
-        $this->removeParticipe($objet);
+        $this->removeParticipe($objet->getId_Voyage());
 
         $this->getDb()->exec('DELETE FROM Voyage WHERE Id_Voyage = '.$objet->getId_Voyage());
     }
 
     //enleve toutes les charges d'un voyage
-    public function removeCharge($objet){
-        $this->getDb()->exec('DELETE FROM Charge WHERE Id_Voyage = '.$objet->getId_Voyage());
+    public function removeCharge($IdVoyage){
+        $this->getDb()->exec('DELETE FROM Charge WHERE Id_Voyage = '.$IdVoyage);
     }
 
     //enleve tous les participants d'un voyage
-    public function removeParticipe($objet){
-        $this->getDb()->exec('DELETE FROM Participe_Voyage WHERE Id_Voyage = '.$objet->getId_Voyage());
+    public function removeParticipe($IdVoyage){
+        $this->getDb()->exec('DELETE FROM Participe_Voyage WHERE Id_Voyage = '.$IdVoyage);
     }
 
     //Fonction qui retourne un voyage à partir de son id
@@ -107,6 +89,12 @@ class ManagerVoyage extends Manager{// -- a modifier --
 
         while ($donne = $requeteCharge->fetch(PDO::FETCH_ASSOC))
         {
+            $donne['Role'] = $donne['Id_Role'];
+            $donne['Tache'] = $donne['Id_Tache'];
+
+            unset($donne['Id_Role']);
+            unset($donne['Id_Tache']);
+
             $charge[] = $donne;
         }
 
@@ -121,6 +109,10 @@ class ManagerVoyage extends Manager{// -- a modifier --
 
         while ($donne = $requeteParticipe->fetch(PDO::FETCH_ASSOC))
         {
+
+            $donne['Type_Voyage'] = $donne['Id_Type_Voyage'];
+            unset($donne['Id_Type_Voyage']);
+
             $participants[] = $donne;
         }
 

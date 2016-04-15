@@ -16,6 +16,7 @@ class Competiteur extends Adherent{
     private $_CourseParticipe; //tableau avec id course et statut validation dont il participe
     private $_EquipeParticipe; //tableau avec id equipe dont il fait partit
     private $_Palmares;
+    private $_VoyageParticipe;
     
     /*
     *----------------------------------------------------------------
@@ -27,17 +28,6 @@ class Competiteur extends Adherent{
         parent::__construct($user);
         $this->hydrate($donnees);
     }
-    
-    public function __construct(Competiteur $user)
-    {
-        parent::__construct($user->getParent());
-
-        $this->setAdherent($user->getAdherent());
-        $this->setPhoto($user->getPhoto());
-
-        unset($user);
-    }
-
 
     /*
     *----------------------------------------------------------------
@@ -75,6 +65,10 @@ class Competiteur extends Adherent{
 
     public function getPalmares(){
         return $this->_Palmares;
+    }
+
+    public function getVoyagePArticipe(){
+        return $this->_VoyageParticipe;
     }
 
     /*
@@ -115,6 +109,10 @@ class Competiteur extends Adherent{
         $this->_Palmares = $Palmares;
     }
     
+    public function setVoyageParticipe($Voyage){
+        $this->_VoyageParticipe = $Voyage;
+    }
+
     /*
     *----------------------------------------------------------------
     *BODY
@@ -161,6 +159,21 @@ function loadCompetiteur($info){
     }else{
         $competiteur = BDD::getInstance()->getManager("Competiteur")->getMail($info['Mail']);
     }
+
+    //recupere specialite (id,nom)
+    $competiteur->setSpecialite(BDD::getInstance()->getManager("Specialite")->getId($competiteur->getSpecialite()));
+
+    //recupere categorie (id,nom)
+    $competiteur->setCategorie(BDD::getInstance()->getManager("Categorie")->getId($competiteur->getCategorie()));
+
+    //recupere types de voyages (id,nom)
+    $voyages;
+    foreach($competiteur->getVoyageParticipe() as $voyage){
+        $voyage['Type_Voyage'] = BDD::getInstance()->getManager("Type_Voyage")->getId($voyage['Type_Voyage']);
+
+        $voyages[] = $voyage;
+    }
+    $competiteur->setVoyageParticipe($voyages);
 
     //recupere palmares
     $competiteur->setPalmares(BDD::getInstance()->getManager("Palmares")->getListCompetiteur($competiteur->getId_Competiteur()));

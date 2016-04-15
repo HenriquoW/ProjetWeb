@@ -2,7 +2,7 @@
 require_once "class_managerAdherent.php";
 require_once "../class_Competiteur.php";
 
-class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
+class ManagerCompetiteur extends ManagerAdherent{
 
     //Constructeur
     public function __construct($Db)
@@ -19,25 +19,21 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
             parent::update($objet);
         }
 
-        $requeteId_Specialite = $this->getDb()->query('SELECT Id_Specialite FROM Specialite WHERE Nom = '.$objet->getSpecialite());
-        $donneId_Specialite = $requeteId_Specialite->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
-        $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
-
         $requete = $this->getDb()->prepare('INSERT INTO Competiteur (Photo,Id_Adherent,Id_Specialite,Id_Categorie) VALUES(:photo,:id_Adherent,:id_Specialite,:id_Categorie)');
 
         $requete->execute(array('photo' => $objet->getPhoto(),
                                 'id_Adherent' => $objet->getId_Adherent(),
-                                'id_Specialite' => $donneId_Specialite['Id_Specialite'],
-                                'id_Categorie' => $donneId_Categorie['Id_Categorie'],
+                                'id_Specialite' => $objet->getSpecialite()['Id'],
+                                'id_Categorie' => $objet->getCategorie()['Id'],
                                ));
 
-        addObjectif($objet);
+        $this->addObjectifs($objet);
 
-        addCourseParticipe($objet);
+        $this->addCompetiteurCourses($objet);
 
-        addEquipeParticipe($objet);
+        $this->addCompetiteurEquipes($objet);
+
+        $this->addCompetiteurVoyages($objet);
 
         //Recupere l'id du competiteur genere par la base
         $requeteId_Competiteur = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Adherent = '.$objet->getId_Adherent());
@@ -48,7 +44,7 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
     }
 
     //Ajoute les objectifs du Competiteur
-    public function addObjectif($objet){
+    public function addObjectifs($objet){
 
         //on recupere les id des competition du Competiteur deja dans la base
         $requeteId_Comp = $this->getDb()->query('SELECT Id_Competition FROM Objectif WHERE Id_Competiteur = '.$objet->getId_Competiteur());
@@ -78,11 +74,11 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
 
         $requete->execute(array('id_Competiteur' => $IdCompetiteur,
                                 'id_Competition' => $IdCompetition,
-                                ));
+                               ));
     }
 
     //Ajoute les courses du Competiteur
-    public function addCompetiteurCourse($objet){
+    public function addCompetiteurCourses($objet){
 
         $requeteId_Cour = $this->getDb()->query('SELECT Id_Course FROM Participant_Competition_Solo WHERE Id_Competiteur = '.$objet->getId_Competiteur());
 
@@ -115,11 +111,11 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
         $requete->execute(array('id_Competiteur' => $IdCompetiteur,
                                 'id_Course' => $IdCourse,
                                 'validation' => false,
-                                ));
+                               ));
     }
 
     //Ajoute les equipes du Competiteur
-    public function addCompetiteurEquipe($objet){
+    public function addCompetiteurEquipes($objet){
 
         $requeteId_Equipe = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe WHERE Id_Competiteur = '.$objet->getId_Competiteur());
 
@@ -133,7 +129,7 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
         foreach($objet->getEquipeParticipe() as $equipe){
             if(!in_array($donneEquipe['Id_Equipe'],$equipe)){
 
-                $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Competiteur,:id_Course)');
+                $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Equipe,:id_Competiteur)');
 
                 $requete->execute(array('id_Competiteur' => $objet->getId_Competiteur(),
                                         'id_Equipe' => $equipe,
@@ -145,59 +141,103 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
 
     //Ajoute une equipe au competiteur
     public function addCompetiteurEquipe($IdCompetiteur,$IdEquipe){
-        $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Competiteur,:id_Course)');
+        $requete = $this->getDb()->prepare('INSERT INTO Participant_Equipe (Id_Equipe,Id_Competiteur) VALUES(:id_Equipe,:id_Competiteur)');
 
         $requete->execute(array('id_Competiteur' => $IdCompetiteur,
                                 'id_Equipe' => $IdEquipe,
-                                ));
+                               ));
+    }
+
+    //ajoute tous les voyages du competiteur
+    public function addCompetiteurVoyages($objet){
+        $requeteVoyage = $this->getDb()->query('SELECT Id_Voyage FROM Participe_Voyage WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+
+        $donneVoyage = $requeteVoyage->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($objet->getVoyageParticipe() as $voyage){
+            if(!in_array($donneVoyage['Id_Voyage'],$voyage['Id_Voyage'])){
+
+                $requete = $this->getDb()->prepare('INSERT INTO Participe_Voyage (Id_Voyage,Id_Competiteur,Autoriser,Id_Type_Voyage,Id_Utilisateur) VALUES(:id_Voyage,:id_Competiteur,:autoriser,:id_Type_Voyage,:id_Utilisateur)');
+
+                $requete->execute(array('id_Voyage' => $voyage['Id_Voyage'],
+                                        'id_Competiteur' => $objet->getId_Competiteur(),
+                                        'autoriser' => $voyage['Autoriser'],
+                                        'id_Type_Voyage' => $voyage['Type_Voyage']['Id'],
+                                        'id_Utilisateur' => $voyage['Id_Utilisateur'],
+                                       ));
+            }
+        }
+    }
+
+    //ajoute un voyage a un competiteur
+    public function addCompetiteurVoyage($IdVoyage,$IdCompetiteur,$Validation,$Type,$IdUtilisateur){
+        $requete = $this->getDb()->prepare('INSERT INTO Participe_Voyage (Id_Voyage,Id_Competiteur,Autoriser,Id_Type_Voyage,Id_Utilisateur) VALUES(:id_Voyage,:id_Competiteur,:autoriser,:id_Type_Voyage,:id_Utilisateur)');
+
+        $requete->execute(array('id_Voyage' => $IdVoyage,
+                                'id_Competiteur' => $IdCompetiteur,
+                                'autoriser' => $Validation,
+                                'id_Type_Voyage' => $Type['Id'],
+                                'id_Utilisateur' => $IdUtilisateur,
+                               ));
     }
 
     //Suppression d'un Competiteur dans la BDD
     public function remove($objet)
     {
-        $this->removeObjectifs($objet);
-        $this->removeCompetiteurCourses($objet);
-        $this->removeCompetiteurEquipe($objet);
+        $this->removeObjectifs($objet->getId_Competiteur());
+        $this->removeCompetiteurCourses($objet->getId_Competiteur());
+        $this->removeCompetiteurEquipe($objet->getId_Competiteur());
+        $this->removeCompetiteurVoyages($objet->getId_Competiteur());
 
         $this->getDb()->exec('DELETE FROM Competiteur WHERE Id_Competiteur = '.$objet->getId_Competiteur());
     }
 
     //Suppression d'un objectif du Competiteur
-    public function removeObjectif($objet,$IdCompetition){
-        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competition = '.$IdCompetition.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+    public function removeObjectif($IdCompetiteur,$IdCompetition){
+        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competition = '.$IdCompetition.' AND Id_Competiteur ='.$IdCompetiteur);
     }
 
     //Suppression de tous les objectif du Competiteur
-    public function removeObjectifs($objet){
-        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competiteur = '.$objet->getId_Competiteur());
+    public function removeObjectifs($IdCompetiteur){
+        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competiteur = '.$IdCompetiteur);
     }
 
     // Function qui enleve le competiteur d'une course
-    public function removeCompetiteurCourse($objet,$IdCourse)
+    public function removeCompetiteurCourse($IdCompetiteur,$IdCourse)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse.' AND Id_Competiteur ='.$IdCompetiteur);
 
     }
 
     // Function qui enleve le competiteur de toutes les courses
-    public function removeCompetiteurCourses($objet)
+    public function removeCompetiteurCourses($IdCompetiteur)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Competiteur ='.$objet->getId_Competiteur());
+        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Competiteur ='.$IdCompetiteur);
 
     }
 
     // Function qui enleve le competiteur d'une equipe
-    public function removeCompetiteurEquipe($objet,$IdEquipe)
+    public function removeCompetiteurEquipe($IdCompetiteur,$IdEquipe)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Equipe = '.$IdEquipe.' AND Id_Competiteur ='.$objet->getId_Competiteur());
+        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Equipe = '.$IdEquipe.' AND Id_Competiteur ='.$IdCompetiteur);
 
     }
 
     // Function qui enleve le competiteur de toutes les equipe
-    public function removeCompetiteurEquipes($objet)
+    public function removeCompetiteurEquipes($IdCompetiteur)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Competiteur ='.$objet->getId_Competiteur());
+        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Competiteur ='.$IdCompetiteur);
 
+    }
+
+    // Function qui enleve le competiteur d'un voyage
+    public function removeCompetiteurVoyage($IdCompetiteur,$IdVoyage){
+        $this->getDb()->exec('DELETE FROM Participe_Voyage WHERE Id_Voyage = '.$IdVoyage.' AND Id_Competiteur ='.$IdCompetiteur);
+    }
+
+    // Function qui enleve le competiteur de toutes les voyages
+    public function removeCompetiteurVoyages($IdCompetiteur){
+        $this->getDb()->exec('DELETE FROM Participant_Equipe WHERE Id_Competiteur ='.$IdCompetiteur);
     }
 
     //Fonction qui retourne un Competiteur à partir de son id
@@ -210,18 +250,12 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
 
         unset($donnees['Id_Adherent']);
 
-        //Recupere le nom de la specialite du competiteur
-        $requeteNom_Spe = $this->getDb()->query('SELECT Nom FROM Specialite WHERE Id_Specialite = '.$donnees['Id_Specialite']);
-        $donneNom_Spe = $requeteNom_Spe->fetch(PDO::FETCH_ASSOC);
-
-        $requeteNom_Cat = $this->getDb()->query('SELECT Nom FROM Categorie WHERE Id_Categorie = '.$donnees['Id_Categorie']);
-        $donneNom_Cat = $requeteNom_Cat->fetch(PDO::FETCH_ASSOC);
-
-        $donnees['Specialite'] = $donneNom_Spe['Nom'];
-        $donnees['Categorie'] = $donneNom_Cat['Nom'];
+        $donnees['Specialite'] = $donnees['Id_Specialite'];
+        $donnees['Categorie'] = $donnees['Id_Categorie'];
         $donnees['Objectif'] = $this->getObjectif($id);
         $donnees['CourseParticipe'] = $this->getCompetiteurCourse($id);
         $donnees['EquipeParticipe'] = $this->getCompetiteurEquipe($id);
+        $donnees['VoyageParticipe'] = $this->getCompetiteurVoyage($id);
 
         unset($donnees['Id_Specialite']);
         unset($donnees['Id_Categorie']);
@@ -253,6 +287,22 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
         }
 
         return $courses;
+    }
+
+    public function getCompetiteurVoyage($id){
+        $voyages;
+
+        $requeteVoyage= $this->getDb()->query('SELECT Id_Voyage,Id_Competiteur,Autoriser,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Competiteur = '.$id);
+
+        while ($donne = $requeteVoyage->fetch(PDO::FETCH_ASSOC))
+        {
+            $donne['Type_Voyage'] = $donne['Id_Type_Voyage'];
+            unset($donne['Id_Type_Voyage']);
+
+            $voyages[] = $donne;
+        }
+
+        return $voyages;
     }
 
     public function getCompetiteurEquipe($id){
@@ -299,18 +349,12 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
             parent::update($objet);
         }
 
-        $requeteId_Specialite = $this->getDb()->query('SELECT Id_Specialite FROM Specialite WHERE Nom = '.$objet->getSpecialite());
-        $donneId_Specialite = $requeteId_Specialite->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
-        $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
-
         $requete = $this->getDb()->prepare('UPDATE Competiteur SET Photo =:photo, Id_Adherent = :id_Adherent, Id_Specialite = :id_Specialite, Id_Categorie = :id_Categorie WHERE Id_Competiteur = :id_Competiteur');
 
         $requete->execute(array('photo' => $objet->getPhoto(),
                                 'id_Adherent' => $objet->getId_Adherent(),
-                                'id_Specialite' => $donneId_Specialite['Id_Specialite'],
-                                'id_Categorie' => $donneId_Categorie['Id_Categorie'],
+                                'id_Specialite' => $objet->getSpecialite()['Id'],
+                                'id_Categorie' => $objet->getCategorie()['Id'],
                                 'id_Competiteur' => $objet->getId_Competiteur(),
                                ));
     }
@@ -318,14 +362,14 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
     // met a jour tous les objectif du competiteur
     public function updateObjectif($objet){
 
-        this->removeObjectif($objet);
+        this->removeObjectif($objet->getId_Competiteur());
         this->addObjectif($objet);
     }
 
     // met a jour toutes les courses du competiteur
     public function updateCompetiteurCourse($objet){
 
-        this->removeCompetiteurCourses($objet);
+        this->removeCompetiteurCourses($objet->getId_Competiteur());
         this->addCompetiteurCourse($objet);
     }
 
@@ -337,6 +381,16 @@ class ManagerCompetiteur extends ManagerAdherent{ // -- a modifier --
         $requete->execute(array('validation' => $Validation,
                                 'id_Competiteur' => $IdCompetiteur,
                                 'id_Course' => $IdCourse,
+                               ));
+    }
+
+    // valide ou invalide la participation du competiteur a un voyage
+    public function ValideVoyage($IdVoyage,$IdCompetiteur,$Validation){
+        $requete = $this->getDb()->prepare('UPDATE Participe_Voyage SET Autoriser =:autoriser WHERE Id_Competiteur = :id_Competiteur AND Id_Voyage = :id_Voyage');
+
+        $requete->execute(array('autoriser' => $Validation,
+                                'id_Competiteur' => $IdCompetiteur,
+                                'id_Voyage' => $IdVoyage,
                                ));
     }
 

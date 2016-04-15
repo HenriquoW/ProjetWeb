@@ -2,7 +2,7 @@
 require_once "class_manager.php";
 require_once "../class_competition.php";
 
-class ManagerCompetition extends Manager{ // -- a modifier --
+class ManagerCompetition extends Manager{
 
     //Constructeur
     public function __construct($Db)
@@ -13,23 +13,14 @@ class ManagerCompetition extends Manager{ // -- a modifier --
     //Procédure qui ajoute une competition dans la BDD
     public function add($objet)
     {
-        $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
-        $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Type_Comp = $this->getDb()->query('SELECT Id_Type_Competition FROM Objectif WHERE Nom = '.$objet->getTypeCompetition());
-        $donneId_Type_Comp = $requeteId_Type_Comp->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Club = $this->getDb()->query('SELECT Id_Club_Organisateur FROM Club_Organisateur WHERE Nom = '.$objet->getClub());
-        $donneId_Club = $requeteId_Club->fetch(PDO::FETCH_ASSOC);
-
         $requete = $this->getDb()->prepare('INSERT INTO Competition
         (Adresse,DateCompetition,Id_Sexe,Id_Type_Competition,Id_Club_Organisateur) VALUES(:adresse,:dateCompetition,:id_Sexe,:id_Type_Competition,id_Club_Organisateur)');
 
         $requete->execute(array('adresse' => $objet->getAdresse(),
                                 'dateCompetition' => $objet->getDateCompetition(),
-                                'id_Sexe' => $donneId_Sexe['Id_Sexe'],
-                                'id_Type_Competition' => $donneId_Type_Comp['Id_Type_Competition'],
-                                'id_Club_Organisateur' => $donneId_Club['Id_Club_Organisateur'],
+                                'id_Sexe' => $objet->getSexe()['Id'],
+                                'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
+                                'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),
                                ));
 
         //Recupere l'id de la competition genere par la base
@@ -37,9 +28,9 @@ class ManagerCompetition extends Manager{ // -- a modifier --
 
         $requeteId_Competition->execute(array('adresse' => $objet->getAdresse(),
                                               'dateCompetition' => $objet->getDateCompetition(),
-                                              'id_Sexe' => $donneId_Sexe['Id_Sexe'],
-                                              'id_Type_Competition' => $donneId_Type_Comp['Id_Type_Competition'],
-                                              'id_Club_Organisateur' => $donneId_Club['Id_Club_Organisateur'],
+                                              'id_Sexe' => $objet->getSexe()['Id'],
+                                              'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
+                                              'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),
                                              ));
 
         $donneId_Competition = $requeteId_Competition->fetch(PDO::FETCH_ASSOC);
@@ -51,20 +42,22 @@ class ManagerCompetition extends Manager{ // -- a modifier --
     //Suppression d'une Competition dans la BDD
     public function remove($objet)
     {
-        $this->removeObjectif($objet);
+        $this->removeObjectif($objet->getId_Competition());
 
-        $this->removeCourse($objet);
+        $this->removeCourse($objet->getId_Competition());
+
+        $this->removeVoyage($objet->getId_Competition());
 
         $this->getDb()->exec('DELETE FROM Competition WHERE Id_Competition = '.$objet->getId_Competition());
     }
 
 
-    public function removeObjectif($objet){
-        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competition = '.$objet->getId_Competition());
+    public function removeObjectif($IdCompetition){
+        $this->getDb()->exec('DELETE FROM Objectif WHERE Id_Competition = '.$IdCompetition);
     }
 
-    public function removeCourse($objet){
-        $requeteCour = $this->getDb()->query('SELECT Id_Course FROM Course WHERE Id_Competition = '.$objet->getId_Competition());
+    public function removeCourse($IdCompetition){
+        $requeteCour = $this->getDb()->query('SELECT Id_Course FROM Course WHERE Id_Competition = '.$IdCompetition);
 
         while($donne = $requeteCour->fetch(PDO::FETCH_ASSOC)){
             $this->getDb()->exec('DELETE FROM Participe_Competition_Solo WHERE Id_Course = '.$donne['Id_Course']);
@@ -80,27 +73,27 @@ class ManagerCompetition extends Manager{ // -- a modifier --
 
     }
 
+    public function removeVoyage($IdCompetition){
+        $requeteVoyage = $this->getDb()->query('SELECT Id_Voyage FROM Voyage WHERE Id_Competition = '.$IdCompetition);
+
+        while($donne = $requeteCour->fetch(PDO::FETCH_ASSOC)){
+            $this->getDb()->exec('DELETE FROM Participe_Voyage WHERE Id_Voyage = '.$donne['Id_Voyage']);
+
+            $this->getDb()->exec('DELETE FROM Charger WHERE Id_Voyage = '.$donne['Id_Voyage']);
+
+            $this->getDb()->exec('DELETE FROM Voyage WHERE Id_Course = '.$donne['Id_Voyage']);
+        }
+    }
+
     //Fonction qui retourne une Competition à partir de son id
     public function getId($id)
     {
         $requete = $this->getDb()->query('SELECT Id_Competition, Adresse, DateCompetition, Id_Sexe, Id_Type_Competition, Id_Club_Organisateur FROM Competition WHERE Id_Competition = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        //Recupere le type du sexe
-        $requeteType_Sexe = $this->getDb()->query('SELECT Type FROM Sexe WHERE Id_Sexe = '.$donnees['Id_Sexe']);
-        $donneType_Sexe = $requeteType_Sexe->fetch(PDO::FETCH_ASSOC);
-
-        //Recupere le type de la competition
-        $requeteType_Comp = $this->getDb()->query('SELECT Nom FROM Type_Competition WHERE Id_Type_Competition = '.$donnees['Id_Type_Competition']);
-        $donneType_Comp = $requeteType_Comp->fetch(PDO::FETCH_ASSOC);
-
-        //recupere le club organisateur
-        $requete_Club = $this->getDb()->query('SELECT Nom FROM Club_Organisateur WHERE Id_Club_Organisateur = '.$donnees['Id_Club_Organisateur']);
-        $donne_Club = $requete_Club->fetch(PDO::FETCH_ASSOC);
-
-        $donnees['Sexe'] = $donneType_Sexe['Type'];
-        $donnees['TypeCompetition'] = $donneType_Comp['Nom'];
-        $donnees['Club'] = $donne_Club['Nom'];
+        $donnees['Sexe'] = $donnees['Id_Sexe'];
+        $donnees['TypeCompetition'] = $donnees['Id_Type_Competition'];
+        $donnees['Club'] = $donnees['Id_Club_Organisateur'];
         $donnees['Courses'] = $this->getCourses($id);
 
         unset($donnees['Id_Sexe']);
@@ -142,22 +135,13 @@ class ManagerCompetition extends Manager{ // -- a modifier --
     public function update($objet)
     {
 
-        $requeteId_Sexe = $this->getDb()->query('SELECT Id_Sexe FROM Sexe WHERE Type = '.$objet->getSexe());
-        $donneId_Sexe = $requeteId_Sexe->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Type_Comp = $this->getDb()->query('SELECT Id_Type_Competition FROM Objectif WHERE Nom = '.$objet->getTypeCompetition());
-        $donneId_Type_Comp = $requeteId_Type_Comp->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Club = $this->getDb()->query('SELECT Id_Club_Organisateur FROM Club_Organisateur WHERE Nom = '.$objet->getClub());
-        $donneId_Club = $requeteId_Club->fetch(PDO::FETCH_ASSOC);
-
         $requete = $this->getDb()->prepare('UPDATE Competition SET Adresse = :adresse, DateCompetition = :dateCompetition, Id_Sexe = :id_Sexe, Id_Type_Competition = :id_Type_Competition, Id_Club_Organisateur = :id_Club_Organisateur WHERE Id_Competition = :id_Competition');
 
         $requete->execute(array('adresse' => $objet->getAdresse(),
                                 'dateCompetition' => $objet->getDateCompetition(),
-                                'id_Sexe' => $donneId_Sexe['Id_Sexe'],
-                                'id_Type_Competition' => $donneId_Type_Comp['Id_Type_Competition'],
-                                'id_Club_Organisateur' => $donneId_Club['Id_Club_Organisateur'],
+                                'id_Sexe' => $objet->getSexe()['Id'],
+                                'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
+                                'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),
                                 'id_Competition' => $objet->getId_Competition(),
                                ));
     }

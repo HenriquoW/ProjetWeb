@@ -1,6 +1,7 @@
 <?php
 
-require_once "class_epreuve.php";
+require_once "class_club_Organisateur.php";
+require_once "class_course.php";
 
 class Competition{
 
@@ -12,9 +13,9 @@ class Competition{
 	private $_Id_Competition;
 	private $_Adresse;
     private $_DateCompetition;
-	private $_TypeCompetition; //nom du type
-	private $_Sexe; //chaine definisant le sexe
-    private $_Club; //nom du club organisateur
+	private $_TypeCompetition;
+	private $_Sexe;
+    private $_Club;
 	private $_Courses; //tableau avec id des courses
 	
 	/*
@@ -135,6 +136,16 @@ function loadCompetition($info){
     if(isset($info['Id'])){
         $competition = BDD::getInstance()->getManager("Competition")->getId($info['Id']);
     }
+
+    //recupere sexe (id,type)
+    $competition->setSexe(BDD::getInstance()->getManager("Sexe")->getId($competition->getSexe()));
+
+    //recupere type de competition (id,nom,selectif)
+    $competition->setTypeCompetition(BDD::getInstance()->getManager("Type_Competition")->getId($competition->getTypeCompetition()));
+
+    //recupre club organisateur
+    $info['Id'] = $competition->getClub();
+    $competition->setClub(loadClub($info));
 
     return $competition;
 }
