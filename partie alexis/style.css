@@ -11,6 +11,7 @@ h2
 	font-size:22px;
 	padding-bottom:10px;
 	border-bottom: 1px dashed #3E3E3E;
+	margin-top:0;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
@@ -375,4 +376,19 @@ form input[type="submit"]:disabled:hover
 {
 	font-size:10px;
 	margin-top: 4px;
+}
+
+/****************************************/
+/*                INSCRIPTION
+/****************************************/
+.div_connexion_inscription_global
+{
+	margin:auto;
+	text-align: center;
+	padding-top:80px;
+}
+
+.div_connexion_inscription_global h2
+{
+	margin-top:20px;
 }

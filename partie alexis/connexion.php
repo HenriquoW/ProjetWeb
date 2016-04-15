@@ -46,12 +46,12 @@
 
                         <br/>
 
-                        <label for="pass">Mot de passe:</label>
+                        <label for="pass1">Mot de passe:</label>
                         <input type="password" placeholder="entrez le mot de passe." name="pass1" id="pass1" required/>
 
                         </br>
 
-                        <label for="pass">Mot de passe:</label>
+                        <label for="pass2">Mot de passe:</label>
                         <input type="password" placeholder="entrez le même mot de passe." name="pass2" id="pass2" required/>
 
                         </br></br>
