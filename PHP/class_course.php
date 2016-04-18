@@ -137,6 +137,12 @@ function loadMessage($info){
         $course = BDD::getInstance()->getManager("Course")->getId($info['Id']);
     }
 
+    //recupere categorie (id,nom)
+    $course->setCategorie(BDD::getInstance()->getManager("Categorie")->getId($course->getCategorie()));
+
+    //recupere type specialite (id,nom)
+    $course->setTypeSpecialite(BDD::getInstance()->getManager("Type_Specialite")->getId($course->getTypeSpecialite()));
+
     return $course;
 }
 

@@ -13,20 +13,15 @@ class ManagerCourse extends Manager{ // -- a modifier --
     //Procédure qui ajoute une course dans la BDD
     public function add($objet)
     {
-        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getTypeSpecialite());
-        $donneId_Type_Spe = $requeteId_Type_Spe->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
-        $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
 
         $requete = $this->getDb()->prepare('INSERT INTO Course
         (Distance,Equipe,Id_Categorie,Id_Competition,Id_Type_Specialite) VALUES(:distance,:equipe,:id_Categorie,:id_Competition,:id_Type_Specialite)');
 
         $requete->execute(array('distance' => $objet->getDistance(),
                                 'equipe' => $objet->getIsEquipe(),
-                                'id_Categorie' => $donneId_Categorie['Id_Categorie'],
+                                'id_Categorie' => $objet->getCategorie()['Id'],
                                 'id_Competition' => $objet->getId_Competition(),
-                                'id_Type_Specialite' => $donneId_Type_Spe['Id_Type_Specialite'],
+                                'id_Type_Specialite' => $objet->getTypeSpecialite()['Id'],
                                ));
 
         //Recupere l'id de la course genere par la base
@@ -34,9 +29,9 @@ class ManagerCourse extends Manager{ // -- a modifier --
 
         $requeteId_Course->execute(array('distance' => $objet->getDistance(),
                                          'equipe' => $objet->getIsEquipe(),
-                                         'id_Categorie' => $donneId_Categorie['Id_Categorie'],
+                                         'id_Categorie' => $objet->getCategorie()['Id'],
                                          'id_Competition' => $objet->getId_Competition(),
-                                         'id_Type_Specialite' => $donneId_Type_Spe['Id_Type_Specialite'],
+                                         'id_Type_Specialite' => $objet->getTypeSpecialite()['Id'],
                                         ));
 
         $donneId_Course = $requeteId_Course->fetch(PDO::FETCH_ASSOC);
@@ -48,29 +43,29 @@ class ManagerCourse extends Manager{ // -- a modifier --
     //Suppression d'une Course dans la BDD
     public function remove($objet)
     {
-        $this->removeParticipant($objet);
+        $this->removeParticipant($objet->getId_Course(),$objet->getIsEquipe());
 
-        $this->removePalmares($objet);
+        $this->removePalmares($objet->getId_Course(),$objet->getIsEquipe());
 
         $this->getDb()->exec('DELETE FROM Course WHERE Id_Course = '.$objet->getId_Course());
 
     }
 
-    public function removeParticipant($objet)
+    public function removeParticipant($IdCourse,$IsEquipe)
     {
-        if($objet->getIsEquipe()){
-            $this->getDb()->exec('DELETE FROM Participant_Competition_Equipe WHERE Id_Course = '.$objet->getId_Course());
+        if($IsEquipe){
+            $this->getDb()->exec('DELETE FROM Participant_Competition_Equipe WHERE Id_Course = '.$IdCourse);
         }else{
-            $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$objet->getId_Course());
+            $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse);
         }
 
     }
 
-    public function removePalmares($objet){
-        if($objet->getIsEquipe()){
-            $this->getDb()->exec('DELETE FROM Palmares_Equipe WHERE Id_Course = '.$objet->getId_Course());
+    public function removePalmares($IdCourse,$IsEquipe){
+        if($IsEquipe){
+            $this->getDb()->exec('DELETE FROM Palmares_Equipe WHERE Id_Course = '.$IdCourse);
         }else{
-            $this->getDb()->exec('DELETE FROM Palmares_Competiteur WHERE Id_Course = '.$objet->getId_Course());
+            $this->getDb()->exec('DELETE FROM Palmares_Competiteur WHERE Id_Course = '.$IdCourse);
         }
     }
 
@@ -80,20 +75,11 @@ class ManagerCourse extends Manager{ // -- a modifier --
         $requete = $this->getDb()->query('SELECT Id_Course, Distance, Equipe, Id_Categorie, Id_Competition, Id_Type_Specialite, FROM Course WHERE Id_Course = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        //Recupere le nom de la categorie
-        $requeteCat = $this->getDb()->query('SELECT Nom FROM Categorie WHERE Id_Categorie = '.$donnees['Id_Categorie']);
-        $donneCat = $requeteCat->fetch(PDO::FETCH_ASSOC);
-
-        #Recupere le type de la specialite
-        $requeteType_Spe = $this->getDb()->query('SELECT Nom FROM Type_Specialite WHERE Id_Type_Specialite = '.$donnees['Id_Type_Specialite']);
-        $donneType_Spe = $requeteType_Spe->fetch(PDO::FETCH_ASSOC);
-
         $donnees['Categorie'] = $donneCat['Nom'];
-        $donnees['TypeSpecialite'] = $donneType_Spe['Nom'];
+        $donnees['TypeSpecialite'] = $donnees['Id_Type_Specialite'];
         $donnees['IsEquipe'] = $donnees['Equipe'];
         $donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe'])
 
-        unset($donnees['Id_Sexe']);
         unset($donnees['Id_Type_Specialite']);
         unset($donnees['Equipe']);
 
@@ -161,20 +147,13 @@ class ManagerCourse extends Manager{ // -- a modifier --
     //Procédure qui met à jour une course donné en paramètre dans la BDD
     public function update($objet)
     {
-
-        $requeteId_Type_Spe = $this->getDb()->query('SELECT Id_Type_Specialite FROM Type_Specialite WHERE Nom = '.$objet->getTypeSpecialite());
-        $donneId_Type_Spe = $requeteId_Type_Spe->fetch(PDO::FETCH_ASSOC);
-
-        $requeteId_Categorie = $this->getDb()->query('SELECT Id_Categorie FROM Categorie WHERE Nom = '.$objet->getCategorie());
-        $donneId_Categorie = $requeteId_Categorie->fetch(PDO::FETCH_ASSOC);
-
         $requete = $this->getDb()->prepare('UPDATE Course SET Distance = :distance, Equipe = :equipe, Id_Categorie = :id_Categorie, Id_Competition = :id_Competition, Id_Type_Specialite = :id_Type_Specialite WHERE Id_Course = :id_Course');
 
         $requete->execute(array('distance' => $objet->getDistance(),
                                 'equipe' => $objet->getIsEquipe(),
-                                'id_Categorie' => $donneId_Categorie['Id_Categorie'],
+                                'id_Categorie' => $objet->getCategorie()['Id'],
                                 'id_Competition' => $objet->getId_Competition(),
-                                'id_Type_Specialite' => $donneId_Type_Spe['Id_Type_Specialite'],
+                                'id_Type_Specialite' => $objet->getTypeSpecialite()['Id'],
                                ));
     }
 

@@ -275,6 +275,17 @@ function loadUtilisateur($info){
     //recupere message
     $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
 
+    //recupere le sexe (id,type)
+    $utilisateur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($utilisateur->getSexe())
+
+    //recupere les droit (id,nom)
+    $droits;
+    foreach($utilisateur->getDroit() as $droit){
+        $droit = BDD::getInstance()->getManager("Droit")->getId($droit);
+
+        $droits[] = $droit;
+    }
+    $utilisateur->setDroit($droits);
 
     return $utilisateur;
 }
