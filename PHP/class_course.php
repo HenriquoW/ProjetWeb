@@ -130,7 +130,7 @@ class Course{
     }
 }
 
-function loadMessage($info){
+function loadCourse($info){
     $course;
 
     if(isset($info['Id'])){
