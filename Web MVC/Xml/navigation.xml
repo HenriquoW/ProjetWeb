@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<navigation>
+  <module droit="Visiteur">
+    <nom>connexion</nom>
+    <action>../Vue/vue_connexion.php</action>
+  </module>
+  <module droit="Entraineur">
+    <nom>listecompetiteurs</nom>
+    <action>modele/listecompetiteurs.php</action>
+    <action>vue/vlistecompetiteurs.php</action>
+  </module>
+</navigation>
