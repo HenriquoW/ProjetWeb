@@ -91,15 +91,15 @@ class Utilisateur{
     }
 
     public function getDateNaissance(){
-        return $this->_Sexe;
+        return $this->_DateNaissance;
     }
 
     public function getAdresse(){
-        return $this->_Sexe;
+        return $this->_Adresse;
     }
 
     public function getTelephone(){
-        return $this->_Sexe;
+        return $this->_Telephone;
     }
 
     public function getSexe(){
@@ -107,11 +107,11 @@ class Utilisateur{
     }
 
     public function getDroit(){
-        return $this->_Sexe;
+        return $this->_Droit;
     }
 
     public function getParente(){
-        return $this->_Sexe;
+        return $this->_Parente;
     }
 
     public function getMessage(){
