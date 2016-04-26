@@ -11,7 +11,7 @@ CREATE TABLE Utilisateur(
         Id_Utilisateur INT NOT NULL AUTO_INCREMENT,
         Nom            Varchar (25) ,
         Prenom         Varchar (25) ,
-        Password       Varchar (100),
+        Password       Varchar (100)NOT NULL,
         DateNaissance  Date ,
         Adresse        Varchar (25) ,
         Mail           Varchar (25) NOT NULL,
@@ -45,7 +45,6 @@ CREATE TABLE Competiteur(
         Photo          Varchar (25) NOT NULL,
         Id_Adherent    INT NOT NULL ,
         Id_Specialite  INT ,
-        Id_Objectif    INT ,
         Id_Categorie   INT ,
         PRIMARY KEY (Id_Competiteur ) ,
         UNIQUE (Photo )
@@ -396,9 +395,6 @@ FOREIGN KEY (Id_Adherent) REFERENCES Adherent(Id_Adherent);
 
 ALTER TABLE Competiteur ADD CONSTRAINT FK_Competiteur_Id_Specialite
 FOREIGN KEY (Id_Specialite) REFERENCES Specialite(Id_Specialite);
-
-ALTER TABLE Competiteur ADD CONSTRAINT FK_Competiteur_Id_Objectif
-FOREIGN KEY (Id_Objectif) REFERENCES Objectif(Id_Objectif);
 
 ALTER TABLE Competiteur ADD CONSTRAINT FK_Competiteur_Id_Categorie
 FOREIGN KEY (Id_Categorie) REFERENCES Categorie(Id_Categorie);
