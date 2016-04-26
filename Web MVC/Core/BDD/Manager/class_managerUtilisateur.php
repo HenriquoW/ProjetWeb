@@ -44,11 +44,11 @@ class ManagerUtilisateur extends Manager{
 
         foreach($objet->getParente() as $enfant){
 
-            if(!in_array($donneEnfant['Id_Enfant'],$enfant)){
+            if(!in_array($donneEnfant['Id_Enfant'],$enfant["Enfant"])){
                 $requete = $this->getDb()->prepare('INSERT INTO Parente (Id_Parent,Id_Enfant) VALUES(:id_Parent,:id_Enfant)');
 
                 $requete->execute(array('id_Parent' => $objet->getId_Utilisateur(),
-                                        'id_Enfant' => $enfant,
+                                        'id_Enfant' => $enfant["Enfant"],
                                         ));
             }
         }
@@ -136,7 +136,12 @@ class ManagerUtilisateur extends Manager{
 
         while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
         {
-            $enfants[] = $donne['Id_Enfant'];
+            $enfant["Enfant"] = $donne['Id_Enfant'];
+
+            $requeteParent = $this->getDb()->query('SELECT Id_Parent FROM Parente WHERE Id_Enfant = '.$donne['Id_Enfant']);
+            $enfant["Parent"] = $requeteEnfants->fetchAll(PDO::FETCH_ASSOC);
+
+            $enfants[] = $enfant;
         }
 
         return $enfants;

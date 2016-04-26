@@ -340,6 +340,19 @@ class ManagerCompetiteur extends ManagerAdherent{
         return $competiteurs;
     }
 
+    public function getListMineur(){
+      $competiteurs = array();
+
+      $requete = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur WHERE DATEDIFF(Utilisateur.DateNaissance,CURRENT_DATE)<18*365');
+
+      while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
+      {
+          $competiteurs[] = $this->getId($donneId['Id_Competiteur']);
+      }
+
+      return $competiteurs;
+    }
+
     //Procédure qui met à jour un Competiteur donné en paramètre dans la BDD
     public function update($objet)
     {
