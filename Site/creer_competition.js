@@ -22,4 +22,23 @@ $(document).ready(function() {
 		president = $("input[name='president']").val();
 		console.log(nom+" "+president);
 	});
+	
+	$.ajax({
+		type: 'GET',
+		url: 'liste_club.php',
+		timeout: 3000,
+		success: function(data) {
+			for(i=0; i < data.length; i++) {
+				club = data[i];
+				$('#club').append($('<option>', {
+					value: club['id'],
+					text: data['nom']
+				}));
+			}
+		}
+    });   
 });
+
+function getClub() {
+	 
+}
