@@ -17,7 +17,7 @@ class Competiteur extends Adherent{
     private $_EquipeParticipe; //tableau avec id equipe dont il fait partit
     private $_Palmares;
     private $_VoyageParticipe;
-    
+
     /*
     *----------------------------------------------------------------
     *CONSTRUCTEUR
@@ -34,7 +34,7 @@ class Competiteur extends Adherent{
     *GETTER
     *----------------------------------------------------------------
     */
-    
+
     public function getAdherent(){
         return $this->_Adherent;
     }
@@ -101,14 +101,14 @@ class Competiteur extends Adherent{
         $this->_CourseParticipe = $CourseParticipe;
     }
 
-    public function setCourseParticipe($Equipe){
+    public function setEquipeParticipe($Equipe){
         $this->_EquipeParticipe = $EquipeParticipe;
     }
 
     public function setPalmares($Palmares){
         $this->_Palmares = $Palmares;
     }
-    
+
     public function setVoyageParticipe($Voyage){
         $this->_VoyageParticipe = $Voyage;
     }
@@ -118,7 +118,7 @@ class Competiteur extends Adherent{
     *BODY
     *----------------------------------------------------------------
     */
-    
+
     public function save($bupdate){
             if($bupdate){
                 BDD::getInstance()->getManager("Competiteur")->update($this);

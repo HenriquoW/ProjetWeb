@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Equipe.php";
+require_once $_SERVER["RACINE"]."/Core/class_Equipe.php";
 
 class ManagerEquipe extends Manager{
 
@@ -148,8 +148,8 @@ class ManagerEquipe extends Manager{
     // met a jour toutes les courses de l'equipe
     public function updateEquipeCourse($objet){
 
-        this->removeEquipeCourses($objet);
-        this->addEquipeCourses($objet);
+        $this->removeEquipeCourses($objet);
+        $this->addEquipeCourses($objet);
     }
 
     // valide ou invalide la participation de l'equipe a une course

@@ -1,7 +1,7 @@
 <?php
 
 require_once "class_constructeurManager.php";
-require_once "../Manager/class_managerCategorie.php";
+require_once $_SERVER["RACINE"]."/Core/BDD/Manager/class_managerCategorie.php";
 
 class ConstructeurManagerCategorie extends ConstructeurManager{
 

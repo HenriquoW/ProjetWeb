@@ -29,29 +29,29 @@ class Utilisateur{
     */
 
     //Constructeur qui initialisera l'utilisateur avec la fonction hydrate
-    public function __construct(array $donnees)
+    public function __construct(array $donnees,Utilisateur $user = null)
     {
-        $this->hydrate($donnees);
-    }
-
-    public function __construct(Utilisateur $user)
-    {
-        //Copie les valeurs
-        $this->setId_Utilisateur($user->getId_Utilisateur());
-        $this->setNom($user->getNom());
-        $this->setPrenom($user->getPrenom());
-        $this->setMail($user->getMail());
-        $this->setPassword($user->getPassword());
-        $this->setDateNaissance($user->getDateNaissance());
-        $this->setAdresse($user->getAdresse());
-        $this->setTelephone($user->getTelephone());
-        $this->setSexe($user->getSexe());
-        $this->setDroit($user->getDroit());
-        $this->setParente($user->getParente());
+        if(isset($user)){
+          //Copie les valeurs
+          $this->setId_Utilisateur($user->getId_Utilisateur());
+          $this->setNom($user->getNom());
+          $this->setPrenom($user->getPrenom());
+          $this->setMail($user->getMail());
+          $this->setPassword($user->getPassword());
+          $this->setDateNaissance($user->getDateNaissance());
+          $this->setAdresse($user->getAdresse());
+          $this->setTelephone($user->getTelephone());
+          $this->setSexe($user->getSexe());
+          $this->setDroit($user->getDroit());
+          $this->setParente($user->getParente());
 
 
-        //Detruit ancienne utilisateur
-        unset($user);
+          //Detruit ancienne utilisateur
+          unset($user);
+        }else{
+          $this->hydrate($donnees);
+        }
+
     }
 
     /*
@@ -63,7 +63,7 @@ class Utilisateur{
     //Fonction qui renvoie l'id de l'utilisateur (en integer)
     public function getId_Utilisateur()
     {
-        return $this->_IdUtilisateur;
+        return $this->_Id_Utilisateur;
     }
 
     //Fonction qui renvoie le nom de l'utilisateur (en string)
@@ -130,7 +130,7 @@ class Utilisateur{
     {
         if(!is_int($IdUtilisateur))
         {
-            trigger_error("L'id doit être un entier",E_USER_WARNING);
+            $this->_Id_Utilisateur = intval($IdUtilisateur);
         }else{
             $this->_Id_Utilisateur = $IdUtilisateur;
         }
@@ -139,23 +139,23 @@ class Utilisateur{
     //Fonction qui fixe le nom de l'utilisateur
     public function setNom($Nom)
     {
-        if(!is_string($Nom))
+        /*if(!is_string($Nom))
         {
             trigger_error('Le nom doit être une chaine de caractères',E_USER_WARNING);
-        }else{
-            $this->_Nom = htmlspecialchars($Nom);  
-        }
+        }else{*/
+            $this->_Nom = htmlspecialchars($Nom);
+        //}
     }
 
     //Fonction qui fixe le prenom de l'utilisateur
     public function setPrenom($Prenom)
     {
-        if(!is_string($Prenom))
+        /*if(!is_string($Prenom))
         {
             trigger_error('Le prenom doit être une chaine de caractères',E_USER_WARNING);
-        }else{
-            $this->_Prenom = htmlspecialchars($Prenom);  
-        }
+        }else{*/
+            $this->_Prenom = htmlspecialchars($Prenom);
+        //}
     }
 
     //Fonction qui fixe le mail de l'utilisateur
@@ -165,7 +165,7 @@ class Utilisateur{
         {
             trigger_error('Le mail doit être une chaine de caractères',E_USER_WARNING);
         }else{
-            $this->_Mail = htmlspecialchars($Mail);  
+            $this->_Mail = htmlspecialchars($Mail);
         }
     }
 
@@ -176,8 +176,7 @@ class Utilisateur{
         {
             trigger_error('Le mot de passe doit être une chaine de caractères',E_USER_WARNING);
         }else{
-            $Password = sha1(htmlspecialchars($Password));
-            $this->_Password = $Password;  
+            $this->_Password = $Password;
         }
     }
 
@@ -198,23 +197,11 @@ class Utilisateur{
     }
 
     public function setDroit($Droit){
-        $newDroit;
-
-        foreach($Droit as $d){
-           $newDroit = htmlspecialchars($d);
-        }
-
-        $this->_Droit = $newDroit;
+        $this->_Droit = $Droit;
     }
 
     public function setParente($Parente){
-        $newParente;
-
-        foreach($Parente as $p){
-            if(is_int($p)){
-                $newParente = $p;
-            }
-        $this->_Parente = $newParente;
+        $this->_Parente = $Parente;
     }
 
     public function setMessage($Message){
@@ -273,15 +260,15 @@ function loadUtilisateur($info){
     }
 
     //recupere message
-    $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
+    $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($utilisateur->getId_Utilisateur()));
 
     //recupere le sexe (id,type)
-    $utilisateur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($utilisateur->getSexe())
+    $utilisateur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($utilisateur->getSexe()));
 
     //recupere les droit (id,nom)
-    $droits;
+    $droits = array();
     foreach($utilisateur->getDroit() as $droit){
-        $droit = BDD::getInstance()->getManager("Droit")->getId($droit);
+        $droit = BDD::getInstance()->getManager("Droit_Acces")->getId($droit);
 
         $droits[] = $droit;
     }

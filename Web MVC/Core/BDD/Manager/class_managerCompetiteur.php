@@ -1,6 +1,6 @@
 <?php
 require_once "class_managerAdherent.php";
-require_once "../class_Competiteur.php";
+require_once $_SERVER["RACINE"]."/Core/class_Competiteur.php";
 
 class ManagerCompetiteur extends ManagerAdherent{
 
@@ -375,15 +375,15 @@ class ManagerCompetiteur extends ManagerAdherent{
     // met a jour tous les objectif du competiteur
     public function updateObjectif($objet){
 
-        this->removeObjectif($objet->getId_Competiteur());
-        this->addObjectif($objet);
+        $this->removeObjectif($objet->getId_Competiteur());
+        $this->addObjectif($objet);
     }
 
     // met a jour toutes les courses du competiteur
     public function updateCompetiteurCourse($objet){
 
-        this->removeCompetiteurCourses($objet->getId_Competiteur());
-        this->addCompetiteurCourse($objet);
+        $this->removeCompetiteurCourses($objet->getId_Competiteur());
+        $this->addCompetiteurCourse($objet);
     }
 
     // valide ou invalide la participation du competiteur a une course

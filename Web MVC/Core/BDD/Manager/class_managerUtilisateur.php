@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Utilisateur.php";
+require_once $_SERVER["RACINE"]."/Core/class_Utilisateur.php";
 
 class ManagerUtilisateur extends Manager{
 
@@ -117,7 +117,7 @@ class ManagerUtilisateur extends Manager{
     }
 
     public function getDroit($id){
-        $droits;
+        $droits = array();
 
         $requeteDroits = $this->getDb()->query('SELECT Id_Droit_Acces FROM Droits WHERE Id_Utilisateur = '.$id);
 
@@ -125,12 +125,11 @@ class ManagerUtilisateur extends Manager{
         {
             $droits[] = $donne['Id_Droit_Acces'];
         }
-
         return $droits;
     }
 
     public function getParente($id){
-        $enfants;
+        $enfants = array();
 
         $requeteEnfants = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$id);
 
@@ -148,7 +147,7 @@ class ManagerUtilisateur extends Manager{
     }
 
     public function getMail($mail){
-        $requete = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = '.$mail);
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = "'.$mail.'"');
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         return $this->getId($donnees['Id_Utilisateur']);
@@ -173,9 +172,9 @@ class ManagerUtilisateur extends Manager{
     public function update($objet)
     {
 
-        this->updateDroits($objet);
+        $this->updateDroits($objet);
 
-        this->updateParente($objet);
+        $this->updateParente($objet);
 
         $requete = $this->getDb()->prepare('UPDATE Utilisateur SET Nom = :nom, Prenom = :prenom, Password = :password, DateNaissance = :dateNaissance, Adresse = :adresse, Mail = :mail, Telephone = :telephone, Id_Sexe = :id_sexe WHERE Id_Utilisateur = :id_Utilisateur');
 
@@ -192,13 +191,13 @@ class ManagerUtilisateur extends Manager{
     }
 
     public function updateDroit($objet){
-        this->removeDroits($objet);
-        this->addDroits($objet);
+        $this->removeDroits($objet);
+        $this->addDroits($objet);
     }
 
     public function updateParente($objet){
-        this->removeParente($objet);
-        this->addParente($objet);
+        $this->removeParente($objet);
+        $this->addParente($objet);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 require_once "class_managerUtilisateur.php";
-require_once "../class_Adherent.php";
+require_once $_SERVER["RACINE"]."/Core/class_Adherent.php";
 
 class ManagerAdherent extends ManagerUtilisateur{
 
@@ -51,7 +51,7 @@ class ManagerAdherent extends ManagerUtilisateur{
 
         unset($donnees['Id_Utilisateur']);
 
-        return new Adherent($user,$donnees);
+        return new Adherent(null,$user,$donnees);
     }
 
     public function getMail($mail){

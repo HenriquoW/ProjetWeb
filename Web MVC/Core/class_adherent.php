@@ -17,23 +17,22 @@ class Adherent extends Utilisateur{
     *----------------------------------------------------------------
     */
 
-    public function __construct(Utilisateur $user,array $donnees)
+    public function __construct(Adherent $user,Utilisateur $utili,array $donnees)
     {
-        parent::__construct($user);
-        $this->hydrate($donnees);
+        if(isset($user)){
+          parent::__construct($user->getUtilisateur());
+
+          $this->setUtilisateur($user->getUtilisateur());
+          $this->setNumeroLicence($user->getNumeroLicence());
+          $this->setDateInscription($user->getDateInscription());
+
+          unset($user);
+        }else{
+          parent::__construct($user);
+          $this->hydrate($donnees);
+        }
+
     }
-
-    public function __construct(Adherent $user)
-    {
-        parent::__construct($user->getUtilisateur());
-
-        $this->setUtilisateur($user->getUtilisateur());
-        $this->setNumeroLicence($user->getNumeroLicence());
-        $this->setDateInscription($user->getDateInscription());
-
-        unset($user);
-    }
-
 
     /*
     *----------------------------------------------------------------

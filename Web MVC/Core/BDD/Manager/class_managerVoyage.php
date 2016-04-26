@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Voyage.php";
+require_once $_SERVER["RACINE"]."/Core/class_Voyage.php";
 
 class ManagerVoyage extends Manager{
 
@@ -155,7 +155,7 @@ class ManagerVoyage extends Manager{
         $voyage;
 
         $requete = $this->getDb()->query('SELECT Id_Voyage FROM Voyage Where Id_Competition='.$id);
-        $donneId = $requete->fetch(PDO::FETCH_ASSOC))
+        $donneId = $requete->fetch(PDO::FETCH_ASSOC);
 
         return $this->getID($donneId['id_Voyage']);
     }
@@ -175,8 +175,8 @@ class ManagerVoyage extends Manager{
     }
 
     public function updateCharge($objet){
-        this->removeCharge($objet);
-        this->addCharge($objet);
+        $this->removeCharge($objet);
+        $this->addCharge($objet);
     }
 
 }

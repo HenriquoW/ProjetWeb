@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Palmares.php";
+require_once $_SERVER["RACINE"]."/Core/class_palmares.php";
 
 class ManagerPalmares extends Manager{
 
@@ -62,9 +62,15 @@ class ManagerPalmares extends Manager{
         if($donneIsEquipe['Equipe']){
             $requete = $this->getDb()->query('SELECT Id_Equipe, Classement, Id_Course  FROM Palamares_Equipe WHERE Id_Equipe = '.$id['Id_Equipe'].'AND Id_Course ='.$id['Id_Course']);
             $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+            $donnees['Id_Participant'] = $donnees['Id_Equipe'];
+            unset($donnees['Id_Equipe']);
         }else{
             $requete = $this->getDb()->query('SELECT Id_Competiteur, Classement, Id_Course FROM Palamares_Competiteur WHERE Id_Competiteur = '.$id['Id_Competiteur'].'AND Id_Course ='.$id['Id_Course']);
             $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+            $donnees['Id_Participant'] = $donnees['Id_Competiteur'];
+            unset($donnees['Id_Competiteur']);
         }
 
         $donnees['IsEquipe'] = $donneIsEquipe['Equipe'];

@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_Message.php";
+require_once $_SERVER["RACINE"]."/Core/class_Message.php";
 
 class ManagerMessage extends Manager{
 
@@ -114,14 +114,16 @@ class ManagerMessage extends Manager{
         $messages = array();
 
         $requeteEnvoie = $this->getDb()->query('SELECT Id_Message FROM Envoie WHERE Id_Utilisateur = '.$id);
-        $messagesEnvoi;
+        $messagesEnvoi = array();
+
         while ($donneId = $requeteEnvoie->fetch(PDO::FETCH_ASSOC))
         {
             $messagesEnvoi[] = $this->getId($donneId['Id_Message']);
         }
 
         $requeteRecois = $this->getDb()->query('SELECT Id_Message FROM Recois WHERE Id_Utilisateur = '.$id);
-        $messagesRecois;
+        $messagesRecois = array();
+        
         while ($donneId = $requeteRecois->fetch(PDO::FETCH_ASSOC))
         {
             $messagesRecois[] = $this->getId($donneId['Id_Message']);

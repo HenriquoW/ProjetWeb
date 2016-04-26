@@ -1,8 +1,8 @@
 <?php
 require_once "class_manager.php";
-require_once "../class_course.php";
+require_once $_SERVER["RACINE"]."/Core/class_course.php";
 
-class ManagerCourse extends Manager{ // -- a modifier --
+class ManagerCourse extends Manager{
 
     //Constructeur
     public function __construct($Db)
@@ -75,13 +75,14 @@ class ManagerCourse extends Manager{ // -- a modifier --
         $requete = $this->getDb()->query('SELECT Id_Course, Distance, Equipe, Id_Categorie, Id_Competition, Id_Type_Specialite, FROM Course WHERE Id_Course = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        $donnees['Categorie'] = $donneCat['Nom'];
+        $donnees['Categorie'] = $donnees['Id_Categorie'];
         $donnees['TypeSpecialite'] = $donnees['Id_Type_Specialite'];
         $donnees['IsEquipe'] = $donnees['Equipe'];
-        $donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe'])
+        $donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe']);
 
         unset($donnees['Id_Type_Specialite']);
         unset($donnees['Equipe']);
+        unset($donnees['Id_Categorie']);
 
         return new Course($donnees);
     }

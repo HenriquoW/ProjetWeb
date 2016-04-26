@@ -7,7 +7,8 @@ function initialiser()
 {
 	//Création d'un tableau associant l'id d'un élément et la fonction à appeler en cas de clic sur cet élement
 	window.evenementsClic = {
-		'btnConnexion' : connexion
+		'btnPageConnexion' : PageConnexion,
+		'btnConnexion' : Connexion
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page

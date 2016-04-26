@@ -1,9 +1,25 @@
 <?php
 
-foreach (glob("ConstructeurManager/*.php") as $filename)
-{
-    require_once $filename;
-}
+// ca veut pas autrement donc c'est comme ca
+require_once "ConstructeurManager/class_constructeurManagerAdherent.php";
+require_once "ConstructeurManager/class_constructeurManagerCategorie.php";
+require_once "ConstructeurManager/class_constructeurManagerClub_Organisateur.php";
+require_once "ConstructeurManager/class_constructeurManagerCompetiteur.php";
+require_once "ConstructeurManager/class_constructeurManagerCompetition.php";
+require_once "ConstructeurManager/class_constructeurManagerCourse.php";
+require_once "ConstructeurManager/class_constructeurManagerDroit_Acces.php";
+require_once "ConstructeurManager/class_constructeurManagerEquipe.php";
+require_once "ConstructeurManager/class_constructeurManagerMessage.php";
+require_once "ConstructeurManager/class_constructeurManagerPalmares.php";
+require_once "ConstructeurManager/class_constructeurManagerRole.php";
+require_once "ConstructeurManager/class_constructeurManagerSexe.php";
+require_once "ConstructeurManager/class_constructeurManagerSpecialite.php";
+require_once "ConstructeurManager/class_constructeurManagerTache.php";
+require_once "ConstructeurManager/class_constructeurManagerType_Competition.php";
+require_once "ConstructeurManager/class_constructeurManagerType_Specialite.php";
+require_once "ConstructeurManager/class_constructeurManagerType_Voyage.php";
+require_once "ConstructeurManager/class_constructeurManagerUtilisateur.php";
+require_once "ConstructeurManager/class_constructeurManagerVoyage.php";
 
 class FabriqueManager{
 
@@ -23,47 +39,51 @@ class FabriqueManager{
     //Constructeur qui initialise la liste de constructeur
     public function __construct()
     {
-        $this->_Constructeurs["Adherent"] = new ConstructeurManagerAdherent();
+        $tab = array();
+        $tab["Adherent"] = new ConstructeurManagerAdherent();
 
-        $this->_Constructeurs["Categorie"] = new ConstructeurManagerCategorie();
-        $this->_Constructeurs["Club_Organisateur"] = new ConstructeurManagerClub_Organisateur();
-        $this->_Constructeurs["Competiteur"] = new ConstructeurManagerCompetiteur();
-        $this->_Constructeurs["Competition"] = new ConstructeurManagerCompetition();
-        $this->_Constructeurs["Course"] = new ConstructeurManagerCourse();
+        $tab["Categorie"] = new ConstructeurManagerCategorie();
+        $tab["Club_Organisateur"] = new ConstructeurManagerClub_Organisateur();
+        $tabs["Competiteur"] = new ConstructeurManagerCompetiteur();
+        $tab["Competition"] = new ConstructeurManagerCompetition();
+        $tab["Course"] = new ConstructeurManagerCourse();
 
-        $this->_Constructeurs["Droit_Acces"] = new ConstructeurManagerDroit_Acces();
+        $tab["Droit_Acces"] = new ConstructeurManagerDroit_Acces();
 
-        $this->_Constructeurs["Equipe"] = new ConstructeurManagerEquipe();
+        $tab["Equipe"] = new ConstructeurManagerEquipe();
 
-        $this->_Constructeurs["Message"] = new ConstructeurManagerMessage();
+        $tab["Message"] = new ConstructeurManagerMessage();
 
-        $this->_Constructeurs["Palmares"] = new ConstructeurManagerPalmares();
+        $tab["Palmares"] = new ConstructeurManagerPalmares();
 
-        $this->_Constructeurs["Role"] = new ConstructeurManagerRole();
+        $tab["Role"] = new ConstructeurManagerRole();
 
-        $this->_Constructeurs["Sexe"] = new ConstructeurManagerSexe();
-        $this->_Constructeurs["Specialite"] = new ConstructeurManagerSpecialite();
+        $tab["Sexe"] = new ConstructeurManagerSexe();
+        $tab["Specialite"] = new ConstructeurManagerSpecialite();
 
-        $this->_Constructeurs["Tache"] = new ConstructeurManagerTache();
-        $this->_Constructeurs["Type_Competition"] = new ConstructeurManagerType_Competition();
-        $this->_Constructeurs["Type_Specialite"] = new ConstructeurManagerType_Specialite();
-        $this->_Constructeurs["Type_Voyage"] = new ConstructeurManagerType_Voyage();
+        $tab["Tache"] = new ConstructeurManagerTache();
+        $tab["Type_Competition"] = new ConstructeurManagerType_Competition();
+        $tab["Type_Specialite"] = new ConstructeurManagerType_Specialite();
+        $tab["Type_Voyage"] = new ConstructeurManagerType_Voyage();
 
-        $this->_Constructeurs["Utilisateur"] = new ConstructeurManagerUtilisateur();
+        $tab["Utilisateur"] = new ConstructeurManagerUtilisateur();
 
-        $this->_Constructeurs["Voyage"] = new ConstructeurManagerVoyage();
+        $tab["Voyage"] = new ConstructeurManagerVoyage();
+
+        $this->_Constructeurs = $tab;
 	}
 
     public function Types(){
-        $liste[]= array();
-        foreach($this->_Constructeurs as $nom){
-            $liste[] = $nom;
+        $liste;
+
+        foreach ($this->_Constructeurs as $key => $value) {
+          $liste[] = $key;
         }
+
         return $liste;
     }
 
     public function Construit($Type,$Bd){
-
         if(!is_string($Type))
         {
             trigger_error('Le type doit être une chaine de caractères',E_USER_WARNING);

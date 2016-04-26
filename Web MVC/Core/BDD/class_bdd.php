@@ -11,19 +11,19 @@ class BDD{
 
     private $_Bdd;
     private $_Fabrique;
-    private $_Manager;
+    private $_Manager = array();
 
-    private HOST = "localhost";
-    private LOGIN = "Fieldrain";
-    private PASSWD = "maxou21@";
-    private DBASENAME = "asptt_dijon";
+    private static $_HOST = "localhost";
+    private static $_LOGIN = "Fieldrain";
+    private static $_PASSWD = "maxou21@";
+    private static $_DBASENAME = "asptt_dijon";
 
     /**
 	 *  Constructeur privé qui initialise les attributs
 	 */
     private function __construct(){
         try {
-            $this->_Bdd = new PDO("mysql:host=".HOST.";dbname=".DBASENAME, LOGIN,PASSWD);
+            $this->_Bdd = new PDO("mysql:host=".self::$_HOST.";dbname=".self::$_DBASENAME, self::$_LOGIN,self::$_PASSWD);
             $this->_Fabrique = new FabriqueManager();
 
         }
@@ -62,11 +62,14 @@ class BDD{
 	 *  Fonction qui retourne le manager en fonction du type passer en parametre
 	 */
     public function getManager($Type){
-        $manager = $this->_Manager[$Type];
+        $manager;
 
-        if(is_null($manager)){
-            $manager = $this->_Fabrique->Construit($Type,$this->_Bdd);
-            $this->_Manager[$Type] = $manager;
+        if(array_key_exists($Type,$this->_Manager)){
+          $manager = $this->_Manager[$Type];
+          
+        }else{
+          $manager = $this->_Fabrique->Construit($Type,$this->_Bdd);
+          $this->_Manager[$Type] = $manager;
         }
 
         return $manager;

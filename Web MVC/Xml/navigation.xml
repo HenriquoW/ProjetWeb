@@ -1,9 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <navigation>
+  
   <module droit="Visiteur">
-    <nom>connexion</nom>
-    <action>../Vue/vue_connexion.php</action>
+    <nom>PageConnexion</nom>
+    <action>../Vue/vue_PageConnexion.php</action>
   </module>
+
+  <module droit="Visiteur">
+    <nom>Connexion</nom>
+    <action>../Modele/connexion.php</action>
+    <action>../Vue/vue_Connexion.php</action>
+  </module>
+
+  <module droit="Inscrit">
+    <nom>Profil</nom>
+    <action>../Vue/vue_Profil.php</action>
+  </module>
+
   <module droit="Entraineur">
     <nom>listecompetiteurs</nom>
     <action>modele/listecompetiteurs.php</action>
