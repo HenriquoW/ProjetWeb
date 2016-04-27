@@ -151,6 +151,7 @@ CREATE TABLE Categorie(
 CREATE TABLE Equipe(
         Id_Equipe INT NOT NULL AUTO_INCREMENT,
         Nom       Varchar (25) ,
+		Id_Type_Specialite Int NOT NULL,
         PRIMARY KEY (Id_Equipe ),
         UNIQUE (Nom )
 )ENGINE=InnoDB;
@@ -413,6 +414,9 @@ FOREIGN KEY (Id_Type_Competition) REFERENCES Type_Competition(Id_Type_Competitio
 
 ALTER TABLE Competition ADD CONSTRAINT FK_Competition_Id_Club_Organisateur
 FOREIGN KEY (Id_Club_Organisateur) REFERENCES Club_Organisateur(Id_Club_Organisateur);
+
+ALTER TABLE Equipe ADD CONSTRAINT FK_Equipe_Id_Type_Specialite 
+FOREIGN KEY (Id_Type_Specialite) REFERENCES Type_Specialite(Id_Type_Specialite);
 
 ALTER TABLE Voyage ADD CONSTRAINT FK_Voyage_Id_Competition
 FOREIGN KEY (Id_Competition) REFERENCES Competition(Id_Competition);
