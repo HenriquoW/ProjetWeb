@@ -10,20 +10,20 @@ class Competition{
     *ATTRIBUT
     *----------------------------------------------------------------
     */
-	private $_Id_Competition;
-	private $_Adresse;
+    private $_Id_Competition;
+    private $_Adresse;
     private $_DateCompetition;
-	private $_TypeCompetition;
-	private $_Sexe;
+    private $_TypeCompetition;
+    private $_Sexe;
     private $_Club;
-	private $_Courses; //tableau avec id des courses
-	
+    private $_Courses; //tableau avec id des courses
+
 	/*
     *----------------------------------------------------------------
     *CONSTRUCTEUR
     *----------------------------------------------------------------
     */
-    
+
     public function __construct(array $donnees)
     {
         $this->hydrate($donnees);
@@ -34,7 +34,7 @@ class Competition{
     *GETTER
     *----------------------------------------------------------------
     */
-    
+
     public function getId_Competition(){
         return $this->_Id_Competition;
     }
@@ -68,7 +68,7 @@ class Competition{
     *SETTER
     *----------------------------------------------------------------
     */
-    
+
     public function setId_Competition($IdCompetition){
         $this->_Id_Competition = $IdCompetition;
     }
@@ -102,7 +102,7 @@ class Competition{
     *BODY
     *----------------------------------------------------------------
     */
-	
+
     /*
     * Fonction qui initialise tous les attributs à partir de variables données en paramètres sous la forme d'un tableau
     */

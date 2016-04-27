@@ -107,7 +107,19 @@ function loadAdherent($info){
     }
 
     //recupere message
-    $adherent->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
+    $adherent->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($adherent->getId_Utilisateur()));
+
+    //recupere le sexe (id,type)
+    $adherent->setSexe(BDD::getInstance()->getManager("Sexe")->getId($adherent->getSexe()));
+
+    //recupere les droit (id,nom)
+    $droits = array();
+    foreach($adherent->getDroit() as $droit){
+        $droit = BDD::getInstance()->getManager("Droit_Acces")->getId($droit);
+
+        $droits[] = $droit;
+    }
+    $adherent->setDroit($droits);
 
 
     return $adherent;

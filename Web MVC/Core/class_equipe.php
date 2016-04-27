@@ -12,14 +12,15 @@ class Equipe{
     private $_Id_Equipe;
     private $_Nom;
     private $_Membre; // tableau avec les id des competiteurs
-    private $_CourseParticipe;
+    private $_CourseParticipe; //tableau avec les id des courses
+    private $_TypeSpecialite;
 
     /*
     *----------------------------------------------------------------
     *CONSTRUCTEUR
     *----------------------------------------------------------------
     */
-    
+
     //Constructeur qui initialisera l'equipe avec la fonction hydrate
     public function __construct(array $donnees)
     {
@@ -31,7 +32,7 @@ class Equipe{
     *GETTER
     *----------------------------------------------------------------
     */
-    
+
     public function getId_Equipe(){
         return $this->_Id_Equipe;
     }
@@ -48,12 +49,16 @@ class Equipe{
         return $this->_CourseParticipe;
     }
 
+    public function getTypeSpecialite(){
+        return $this->_TypeSpecialite;
+    }
+
     /*
     *----------------------------------------------------------------
     *SETTER
     *----------------------------------------------------------------
     */
-    
+
     public function setId_Equipe($IdEquipe){
         $this->_Id_Equipe = $IdEquipe;
     }
@@ -68,6 +73,10 @@ class Equipe{
 
     public function setCourseParticipe($Course){
         $this->_CourseParticipe = $Course;
+    }
+
+    public function setTypeSpecialite($Type){
+        $this->_TypeSpecialite = $Type;
     }
 
     /*
@@ -107,6 +116,9 @@ function loadEquipe($info){
     if(isset($info['Id'])){
         $equipe = BDD::getInstance()->getManager("Equipe")->getId($info['Id']);
     }
+
+    //recupere le type le TypeSpecialite
+    $equipe->setTypeSpecialite(BDD::getInstance()->getManager("Type_Specialite")->getId($equipe->getTypeSpecialite()));
 
     return $equipe;
 }

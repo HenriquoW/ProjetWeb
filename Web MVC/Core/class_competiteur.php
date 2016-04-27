@@ -181,6 +181,17 @@ function loadCompetiteur($info){
     //recupere message
     $competiteur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
 
+    //recupere le sexe (id,type)
+    $competiteur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($competiteur->getSexe()));
+
+    //recupere les droit (id,nom)
+    $droits = array();
+    foreach($competiteur->getDroit() as $droit){
+        $droit = BDD::getInstance()->getManager("Droit_Acces")->getId($droit);
+
+        $droits[] = $droit;
+    }
+    $competiteur->setDroit($droits);
 
     return $competiteur;
 }

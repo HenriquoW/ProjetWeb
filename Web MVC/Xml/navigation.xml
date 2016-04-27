@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <navigation>
-  
+
   <module droit="Visiteur">
     <nom>PageConnexion</nom>
     <action>../Vue/vue_PageConnexion.php</action>
@@ -10,6 +10,12 @@
     <nom>Connexion</nom>
     <action>../Modele/connexion.php</action>
     <action>../Vue/vue_Connexion.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>Inscription</nom>
+    <action>../Modele/inscription.php</action>
+    <action>../Vue/vue_Inscription.php</action>
   </module>
 
   <module droit="Inscrit">

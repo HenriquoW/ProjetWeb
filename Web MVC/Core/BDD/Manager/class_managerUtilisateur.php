@@ -30,7 +30,7 @@ class ManagerUtilisateur extends Manager{
         $this->addDroits($objet);
 
         //Recupere l'id de l'utilisateur genere par la base
-        $requeteId_Utilisateur = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = '.$objet->getMail());
+        $requeteId_Utilisateur = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = "'.$objet->getMail().'"');
         $donneId_Utilisateur = $requeteId_Utilisateur->fetch(PDO::FETCH_ASSOC);
 
         $objet->setId_Utilisateur($donneId_Utilisateur['Id_Utilisateur']);
@@ -39,45 +39,51 @@ class ManagerUtilisateur extends Manager{
 
     public function addParente($objet){
 
+        $donneEnfant = array();
         $requeteEnfant = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$objet->getId_Utilisateur());
-        $donneEnfant = $requeteEnfant->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach($objet->getParente() as $enfant){
+        if($requeteEnfant){
+          $donneEnfant = $requeteEnfant->fetchAll(PDO::FETCH_ASSOC);
+        }
 
-            if(!in_array($donneEnfant['Id_Enfant'],$enfant["Enfant"])){
-                $requete = $this->getDb()->prepare('INSERT INTO Parente (Id_Parent,Id_Enfant) VALUES(:id_Parent,:id_Enfant)');
+        if($objet->getParente()!=null){
+          foreach($objet->getParente() as $enfant){
 
-                $requete->execute(array('id_Parent' => $objet->getId_Utilisateur(),
-                                        'id_Enfant' => $enfant["Enfant"],
-                                        ));
-            }
+              if(!in_array($donneEnfant['Id_Enfant'],$enfant["Enfant"])){
+                  $requete = $this->getDb()->prepare('INSERT INTO Parente (Id_Parent,Id_Enfant) VALUES(:id_Parent,:id_Enfant)');
+
+                  $requete->execute(array('id_Parent' => $objet->getId_Utilisateur(),
+                                          'id_Enfant' => $enfant["Enfant"],
+                                          ));
+              }
+          }
         }
     }
 
     //Ajoute les droits de l'adherent
     public function addDroits($objet){
 
+        $donneDroits = array();
         //on recupere les droits de l'adherent deja dans la base
         $requeteDroits = $this->getDb()->query('SELECT Id_Droit_Access FROM Droits WHERE Id_Utilisateur = '.$objet->getId_Utilisateur());
 
-        $donneDroits = array();
-        while ($donne = $requeteDroits->fetch(PDO::FETCH_ASSOC))
-        {
-            $donneDroits[] = $donne;
+        if($requeteDroits){
+          $donneDroits = $requeteDroits->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        foreach($objet->getDroit() as $droit){
+        if($objet->getDroit()!=null){
+          foreach($objet->getDroit() as $droit){
 
-            if(!in_array($droit['Id'],$donneDroits)){
-                $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Utilisateur) VALUES(:id_Droit_Acces,:id_Utilisateur)');
+              if(!in_array($droit['Id'],$donneDroits)){
+                  $requete = $this->getDb()->prepare('INSERT INTO Droits (Id_Droit_Acces,Id_Utilisateur) VALUES(:id_Droit_Acces,:id_Utilisateur)');
 
-                $requete->execute(array('id_Droit_Acces' => $droit['Id'],
-                                        'id_Utilisateur' => $objet->getId_Utilisateur(),
-                                        ));
-            }
+                  $requete->execute(array('id_Droit_Acces' => $droit['Id'],
+                                          'id_Utilisateur' => $objet->getId_Utilisateur(),
+                                          ));
+              }
 
+          }
         }
-
     }
 
     //Suppression d'un utilisateur dans la BDD
@@ -104,16 +110,20 @@ class ManagerUtilisateur extends Manager{
     public function getId($id)
     {
         $requete = $this->getDb()->query('SELECT Id_Utilisateur, Nom, Prenom, Password, DateNaissance, Adresse, Mail, Telephone, Id_Sexe FROM Utilisateur WHERE Id_Utilisateur = '.$id);
-        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        $donnees['DateNaissance'] = new datetime($donnees['DateNaissance']);
-        $donnees['Sexe'] = $donnees['Id_Sexe'];
-        $donnees['Droit'] = $this->getDroit($id);
-        $donnees['Parente'] = $this->getParente($id);
+        if($requete){
+          $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+          $donnees['DateNaissance'] = new datetime($donnees['DateNaissance']);
+          $donnees['Sexe'] = $donnees['Id_Sexe'];
+          $donnees['Droit'] = $this->getDroit($id);
+          $donnees['Parente'] = $this->getParente($id);
 
-        unset($donnees['Id_Sexe']);
+          unset($donnees['Id_Sexe']);
 
-        return new Utilisateur($donnees);
+          return new Utilisateur($donnees);
+        }
+
+        return null;
     }
 
     public function getDroit($id){

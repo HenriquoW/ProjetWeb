@@ -20,7 +20,6 @@ class ManagerDroit_Acces extends Manager{
 
     }
 
-
     //Suppression d'un droit_acces dans la BDD
     public function remove($objet)
     {
@@ -31,6 +30,17 @@ class ManagerDroit_Acces extends Manager{
     public function getId($id)
     {
         $requete = $this->getDb()->query('SELECT Id_Droit_Acces, Nom FROM Droit_Acces WHERE Id_Droit_Acces = '.$id);
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        $droit_acces['Id'] = $donnees['Id_Droit_Acces'];
+        $droit_acces['Nom'] = $donnees['Nom'];
+
+        return $droit_acces;
+    }
+
+    public function getNom($nom)
+    {
+        $requete = $this->getDb()->query('SELECT Id_Droit_Acces, Nom FROM Droit_Acces WHERE Nom = "'.$nom.'"');
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         $droit_acces['Id'] = $donnees['Id_Droit_Acces'];

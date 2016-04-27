@@ -139,45 +139,25 @@ class Utilisateur{
     //Fonction qui fixe le nom de l'utilisateur
     public function setNom($Nom)
     {
-        /*if(!is_string($Nom))
-        {
-            trigger_error('Le nom doit être une chaine de caractères',E_USER_WARNING);
-        }else{*/
-            $this->_Nom = htmlspecialchars($Nom);
-        //}
+        $this->_Nom = htmlspecialchars($Nom);
     }
 
     //Fonction qui fixe le prenom de l'utilisateur
     public function setPrenom($Prenom)
     {
-        /*if(!is_string($Prenom))
-        {
-            trigger_error('Le prenom doit être une chaine de caractères',E_USER_WARNING);
-        }else{*/
-            $this->_Prenom = htmlspecialchars($Prenom);
-        //}
+        $this->_Prenom = htmlspecialchars($Prenom);
     }
 
     //Fonction qui fixe le mail de l'utilisateur
     public function setMail($Mail)
     {
-        if(!is_string($Mail))
-        {
-            trigger_error('Le mail doit être une chaine de caractères',E_USER_WARNING);
-        }else{
-            $this->_Mail = htmlspecialchars($Mail);
-        }
+        $this->_Mail = htmlspecialchars($Mail);
     }
 
     //Fonction qui fixe le mot de passe de l'utilisateur
     public function setPassword($Password)
     {
-        if(!is_string($Password))
-        {
-            trigger_error('Le mot de passe doit être une chaine de caractères',E_USER_WARNING);
-        }else{
-            $this->_Password = $Password;
-        }
+        $this->_Password = $Password;
     }
 
     public function setDateNaissance($Date){
@@ -235,15 +215,19 @@ class Utilisateur{
             BDD::getInstance()->getManager("Utilisateur")->update($this);
 
             //update message
-            foreach($this->_Message['Envoyer'] as $message){
-                BDD::getInstance()->getManager("Message")->update($message);
+            if($this->_Message['Envoyer']!=null){
+              foreach($this->_Message['Envoyer'] as $message){
+                  BDD::getInstance()->getManager("Message")->update($message);
+              }
             }
         }else{
             BDD::getInstance()->getManager("Utilisateur")->add($this);
 
             //ajoute message
-            foreach($this->_Message['Envoyer'] as $message){
-                BDD::getInstance()->getManager("Message")->add($message);
+            if($this->_Message['Envoyer']!=null){
+              foreach($this->_Message['Envoyer'] as $message){
+                  BDD::getInstance()->getManager("Message")->add($message);
+              }
             }
         }
     }
@@ -251,7 +235,7 @@ class Utilisateur{
 }
 
 function loadUtilisateur($info){
-    $utilisateur;
+    $utilisateur = null;
 
     if(isset($info['Id'])){
         $utilisateur = BDD::getInstance()->getManager("Utilisateur")->getId($info['Id']);
@@ -259,20 +243,23 @@ function loadUtilisateur($info){
         $utilisateur = BDD::getInstance()->getManager("Utilisateur")->getMail($info['Mail']);
     }
 
-    //recupere message
-    $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($utilisateur->getId_Utilisateur()));
+    if(isset($utilisateur)){
+      //recupere message
+      $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($utilisateur->getId_Utilisateur()));
 
-    //recupere le sexe (id,type)
-    $utilisateur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($utilisateur->getSexe()));
+      //recupere le sexe (id,type)
+      $utilisateur->setSexe(BDD::getInstance()->getManager("Sexe")->getId($utilisateur->getSexe()));
 
-    //recupere les droit (id,nom)
-    $droits = array();
-    foreach($utilisateur->getDroit() as $droit){
-        $droit = BDD::getInstance()->getManager("Droit_Acces")->getId($droit);
+      //recupere les droit (id,nom)
+      $droits = array();
+      foreach($utilisateur->getDroit() as $droit){
+          $droit = BDD::getInstance()->getManager("Droit_Acces")->getId($droit);
 
-        $droits[] = $droit;
+          $droits[] = $droit;
+      }
+      $utilisateur->setDroit($droits);
     }
-    $utilisateur->setDroit($droits);
+
 
     return $utilisateur;
 }

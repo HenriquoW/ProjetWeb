@@ -33,7 +33,7 @@ echo '<div class="div_connexion_global">
 
             <!--<form>-->
                 <label for="mail">Adresse mail:</label>
-                <input type="email" placeholder="adresse mail." name="mail" id="mail" required/>
+                <input type="email" placeholder="adresse mail." name="mail" id="mailIns" required/>
 
                 <br/>
 
@@ -47,7 +47,7 @@ echo '<div class="div_connexion_global">
 
                 </br></br>
 
-                <input type="checkbox" name="termes" id="checkbox" OnClick="checkboxValidator(&quot;checkbox&quot;,&quot;submit&quot;);" required/> <label for="termes">J	&apos;accepte les <a href="termes.php">termes d	&apos;utilisations</a> de l	&apos;&copy;ASPTT.</label><br />
+                <input type="checkbox" name="termes" id="checkboxTerme" required/> <label for="termes">J	&apos;accepte les <a href="termes.php">termes d	&apos;utilisations</a> de l	&apos;&copy;ASPTT.</label><br />
 
                 </br>
 
@@ -55,7 +55,7 @@ echo '<div class="div_connexion_global">
 
                 </br>
 
-                <input type="submit" id="btnInscription" module="Inscription" value="Créer compte" disabled="disabled"/>
+                <input type="submit" id="btnInscription" module="Inscription" value="Créer compte" />
                 <p class="p_petit_texte">acceptez les termes pour créer le compte</p>
             <!--</form>-->
 

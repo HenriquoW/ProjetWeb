@@ -39,6 +39,17 @@ class ManagerSexe extends Manager{
         return $sexe;
     }
 
+    public function getType($type)
+    {
+        $requete = $this->getDb()->query('SELECT Id_Sexe, Type FROM Sexe WHERE Type = "'.$type.'"');
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        $sexe['Id'] = $donnees['Id_Sexe'];
+        $sexe['Type'] = $donnees['Type'];
+
+        return $sexe;
+    }
+
     //Fonction qui retourne la liste de tous les sexe présents dans la BDD
     public function getList()
     {

@@ -13,9 +13,10 @@ class ManagerEquipe extends Manager{
     //Procédure qui ajoute une equipe dans la BDD
     public function add($objet)
     {
-        $requete = $this->getDb()->prepare('INSERT INTO Equipe(Nom) VALUES (:nom)');
+        $requete = $this->getDb()->prepare('INSERT INTO Equipe(Nom,Id_Type_Specialite) VALUES (:nom,:id_Type_Specialite)');
 
         $requete->execute(array('nom' => $objet->getNom(),
+                                'id_Type_Specialite' => $objet->getTypeSpecialite()['Id'],
                                ));
 
         //Recupere l'id de l'equipe genere par la base
@@ -85,11 +86,14 @@ class ManagerEquipe extends Manager{
     //Fonction qui retourne une equipe à partir de son id
     public function getId($id)
     {
-        $requete = $this->getDb()->query('SELECT Id_Equipe, Nom FROM Equipe WHERE Id_Equipe = '.$id);
+        $requete = $this->getDb()->query('SELECT Id_Equipe, Nom, Id_Type_Specialite FROM Equipe WHERE Id_Equipe = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         $donnees['Membre'] = $this->getMembre($id);
+        $donnees['TypeSpecialite'] = $donnees['Id_Type_Specialite'];
         $donnees['CourseParticipe'] = $this->getEquipeCourse($id);
+
+        unset($donnees['Id_Type_Specialite']);
 
         return new Equipe($donnees);
     }
@@ -138,9 +142,10 @@ class ManagerEquipe extends Manager{
     //Procédure qui met à jour une equipe donné en paramètre dans la BDD
     public function update($objet){
 
-        $requete = $this->getDb()->prepare('UPDATE Equipe SET Nom = :nom WHERE Id_Equipe = :id_Equipe');
+        $requete = $this->getDb()->prepare('UPDATE Equipe SET Nom = :nom, Id_Type_Specialite = :id_Type_Specialite WHERE Id_Equipe = :id_Equipe');
 
         $requete->execute(array('nom' => $objet->getNom(),
+                                'id_Type_Specialite' => $objet->getTypeSpecialite()['Id'],
                                 'id_Equipe' => $objet->getId_Equipe(),
                                ));
     }
