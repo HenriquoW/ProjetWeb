@@ -9,6 +9,7 @@
 		} 
 		$UtilisateurEnCours = new Competiteur(); 
 		$UtilisateurEnCours->set_DDN('12/04/2005');
+		//$UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
 		#uniquement pour tester avant la mise en commun
 
 		$ClasseUtilisateur = get_class($UtilisateurEnCours);
