@@ -1,10 +1,9 @@
-	<p> <!-- Paragraphe contenant l'intégralité du formulaire -->
+﻿	<p> <!-- Paragraphe contenant l'intégralité du formulaire -->
 		<?php 
     $UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
 		$ClasseUtilisateur = get_class($UtilisateurEnCours);
 		?>
-		<!-- Sur la gauche de l'écran sous l image actuelle du  profil -->
-		<!-- /!\ Vérification si compétiteur -->
+		<!-- CSS Sur la gauche de l'écran sous l image actuelle du  profil -->
 		<p> 
 			<?php
 				if ($ClasseUtilisateur == 'Competiteur')
@@ -18,10 +17,8 @@
         }
 			?>
 		</p>
-		<!-- /!\ -->
 
-		<!-- Sur la gauche de l ecran sous la partie photo-->
-		<!-- /!\ Vérification si mineur -->
+		<!-- CSS Sur la gauche de l ecran sous la partie photo-->
 		<p>
 		    <?php
           $DDNUser = date_parse($UtilisateurEnCours->getDateNaissance());
@@ -44,13 +41,12 @@
               }
 		    ?>
 		</p>
-		<!-- /!\-->
 
-		<p> <!-- Centré avec les valeurs actuelles des champs pré-rempli (utiliser value="")-->
+		<p> <!-- CSS Centré avec les valeurs actuelles des champs pré-rempli (utiliser value="")-->
 			<label> Nom :</label>
-      <input name="$UtilisateurEnCours->getNom()" type="text" /> <br/>
+      <input name="nom" value="$UtilisateurEnCours->getNom()" type="text" /> <br/>
 			<label> Prenom :</label>
-      <input name="$UtilisateurEnCours->getPrenom()" type="text" /> <br/>  
+      <input name="prenom" value="$UtilisateurEnCours->getPrenom()" type="text" /> <br/>  
       
       <?php
         $Sexe=$UtilisateurEnCours->getSexe()[type];
@@ -91,7 +87,6 @@
         ';
       ?>
       
-			<!-- /!\ Vérification si compétiteur -->
 			<?php
 				if ($ClasseUtilisateur == 'Competiteur')
         {
@@ -101,7 +96,6 @@
 				  ';
         }
 		  ?>
-			<!-- /!\ -->
       
 			<br/>
 			<label> Mot de passe</label>
@@ -117,7 +111,6 @@
 			<label> N° Licence </label>
       <input name="num_licence" type="number" disabled="disabled" value="$UtilisateurEnCours->getNumeroLicence()"/> <br/>
       
-			<!--/!\ Vérification si compétiteur -->
 			<?php
 				if ($ClasseUtilisateur == 'Competiteur')
         {
@@ -139,7 +132,7 @@
               echo '
 				        <input name="specialite" type="radio" value="Kayak"/>
 				        <label> Canoe </label>
-				        <input name="specialite" type="radio" value="Canoe checked="checked""/> </br>		
+				        <input name="specialite" type="radio" value="Canoe" checked="checked""/> </br>		
                 ';
             }
             echo '
@@ -148,11 +141,10 @@
 				    ';
         }
 		    ?>
-			<!--/!\ -->
 		</p>
+    
 		<!--CSS En haut à gauche de la page, dans un cadre -->
 		<p>
-			<!--/!\ Vérification si compétiteur -->
 			<?php
 				if ($ClasseUtilisateur == 'Competiteur')
         {
@@ -187,9 +179,12 @@
 				      <input name="avant_avant_dernier_resultat" input="text" value="$AvantAvantDernierPalmares->getClassement()" disabled/> </br>
 				    ';
           }
+		      echo '
+                <input type="submit" class="button" id="Bouton_Afficher_Palmares" value="Afficher le palmarès complet"/>
+          ';
+          // Appeler la page palmares (T² vont la faire)
         }
-		    	?>
-			<!--/!\ -->		
+		    	?>	
 		</p>
 		<!-- CSS Centré en bas de la page après tous les champs-->
 		<input type="submit" id="Bouton_Sauvegarder" value="Sauvegarder les modifications"/>
