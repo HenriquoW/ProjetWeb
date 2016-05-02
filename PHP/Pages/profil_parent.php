@@ -1,6 +1,6 @@
-<p> <!-- Paragraphe contenant l'intégralité du formulaire -->
+<p> <!-- Paragraphe contenant l'intÃ©gralitÃ© du formulaire -->
 	<p> <!-- Paragraphe contenant les informations du parent -->
-		<!-- CSS à gauche de l'écran -->
+		<!-- CSS Ã  gauche de l'Ã©cran -->
 		<?php
 			$UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
 			$TableauResultat=$UtilisateurEnCours->getParente();
@@ -8,22 +8,22 @@
 		?>
 
 		<label> Nom :</label>
-		<input name="nom" value="$UtilisateurEnCours->getNom()" type="text" /> <br/>
+		<input id="nom_parent" name="nom" value="$UtilisateurEnCours->getNom()" type="text" /> <br/>
 		<label> Prenom :</label>
-		<input name="prenom" value="$UtilisateurEnCours->getPrenom()" type="text" /> <br/>
+		<input id="prenom_parent" name="prenom" value="$UtilisateurEnCours->getPrenom()" type="text" /> <br/>
 		<br/>
 		<label> Telephone </label>
-		<input name="telephone" type="tel" pattern="[0-9]{10}" value="$UtilisateurEnCours->getTelephone()"/> <br/>
+		<input id="telephone" name="telephone" type="tel" pattern="[0-9]{10}" value="$UtilisateurEnCours->getTelephone()"/> <br/>
 		<label> Email </label> 
-		<input name="email" type="email" value="$UtilisateurEnCours->getMail()"/> <br/>
+		<input id="email" name="email" type="email" value="$UtilisateurEnCours->getMail()"/> <br/>
 		<label>Adresse complete :</label> <br/>
-		<textarea name="adresse" rows="7" cols="50" value="$UtilisateurEnCours->getAdresse()"></textarea> <br/>
+		<textarea id="adresse" name="adresse" rows="7" cols="50" value="$UtilisateurEnCours->getAdresse()"></textarea> <br/>
 		<input type="submit" id="Bouton_Sauvegarder" value="Sauvegarder les modifications"/>
 		<!--Appeler script_modifier_profil.php-->
 	</p>
 
 	<p> <!-- Paragraphe contenant les informations des enfants
-		<!--CSS à droite de l'écran -->
+		<!--CSS Ã  droite de l'Ã©cran -->
 		<?php
 			$NbEnfant=0;
 			foreach($TableauIDEnfant as $IDEnfant)
@@ -32,11 +32,11 @@
 				$Enfant=loadUtilisateur($IDEnfant);
 				echo '
 					<label> Enfant $NbEnfant </label> <br/>
-					<input name="nom_prenom_enfant" value="$Enfant->getPrenom() $Enfant->getNom()" type="text" disabled/>
+					<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="$Enfant->getPrenom() $Enfant->getNom()" type="text" disabled/>
 					<input type="submit" id="Bouton__Voir_Profil_Enfant" value="Voir le profil"/> <!--Appel modifier_profil.php-->
 					<br/> <br/>
-					<!-- SI le bouton est cliqué, dans la session, l'utilisateur courant passe à l'enfant (pour qu'on ai accès à ses valeurs dans le profil) -->
-					<!-- une fois le parent sorti du profil de son enfant, dans la session l'utilisateur courant repasse à l'adulte -->
+					<!-- SI le bouton est cliquÃ©, dans la session, l'utilisateur courant passe Ã  l'enfant (pour qu'on ai accÃ¨s Ã  ses valeurs dans le profil) -->
+					<!-- une fois le parent sorti du profil de son enfant, dans la session l'utilisateur courant repasse Ã  l'adulte -->
 				';
 			}
 		?>
