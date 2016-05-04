@@ -28,37 +28,40 @@
 
             <div class="div_header_onglets">
 
-                <div class="row">
+                <ul id="menu">
+
+                    <li>
+                            <a href="index.php">ACCUEIL</a>
+                    </li>
                     
-                    <a href="index.php">
-                        <div class="actif col-sm-2 col-xs-12">
-                            ACCUEIL
-                        </div>
-                    </a>
+                    <li>
+                            <a href="profil.php">PROFIL</a>
+                            <ul>
+                                    <li><a href="connexion.php">connexion</a></li>
+                                    <li><a href="connexion.php">inscription</a></li>
+                            </ul>
+                    </li>
+                    
+                    <li>
+                            <a href="secretariat.php">SECRÉTARIAT</a>
+                            <ul>
+                                    <li>                                        
+                                        <ul>
+                                            <li><a href="secretariat.php">voir</a></li>
+                                        </ul>
 
-                    <div class="col-sm-1"></div>
-
-                    <a href="club.php">
-                        <div class="col-sm-2 col-xs-12">
-                            LE CLUB
-                        </div>
-                    </a>
-
-                    <div class="col-sm-1"></div>
-
-                    <a href="competitions.php">
-                        <div class="col-sm-2 col-xs-12">
-                            COMPÉTITIONS
-                        </div> 
-                    </a>
-
-                    <div class="col-sm-1"></div>
-
-                    <a href="connexion.php">
-                        <div class="col-sm-2 col-xs-12">
-                            CONNEXION
-                        </div>
-                    </a>
+                                    </li>
+                            </ul>
+                    </li>
+                    
+                    <li>
+                            <a href="ADMINISTRATION.php">ADMINISTRATION</a>
+                            <ul>
+                                <li><a href="ADMINISTRATION.php">connexion</a></li>
+                            </ul>
+                    </li>
+                    
+                </ul>
 
                 </div>
 
