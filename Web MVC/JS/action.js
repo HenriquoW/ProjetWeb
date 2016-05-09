@@ -1,16 +1,73 @@
 /*
 * Function evenement clic
 */
-function PageConnexion(evenement){
 
-  $.post(
-        'Controleur/controleur.php',
-        {
-            "module": $('#'+evenement.target.id).attr('module')
-        },
-        PageConnexionUpdate,
-        'html'
-      );
+var CoupeChoix = false;
+
+function Action(evenement){
+  var modules = [];
+  var regionSucess = [];
+  var regionError = [];
+  var donneARecup = [];
+  var data = {};
+
+  if($('#'+evenement.target.id).attr('module')!=null)
+    modules = $('#'+evenement.target.id).attr('module').split(';');
+
+  if($('#'+evenement.target.id).attr('regionSucess')!=null)
+    regionSucess = $('#'+evenement.target.id).attr('regionSucess').split(';');
+
+  if($('#'+evenement.target.id).attr('regionError')!=null)
+    regionError = $('#'+evenement.target.id).attr('regionError').split(';');
+
+  if($('#'+evenement.target.id).attr('donne')!=null){
+    donneARecup = $('#'+evenement.target.id).attr('donne').split(';');
+
+    for(var i=0;i<donneARecup.length;i++){
+      data[donneARecup[i]] = $('#Id'+donneARecup[i]).val();
+    }
+  }
+
+  CoupeChoix = false;
+
+  for(var i=0;i<modules.length; i++){
+    (function(i){
+        setTimeout(function(){
+
+          if(!CoupeChoix){
+            $.post(
+                  'Controleur/controleur.php',
+                  {
+                      "module": modules[i],
+                      "regionSucess": regionSucess[i],
+                      "regionError": regionError[i],
+                      "donne": JSON.stringify(data)
+                  },
+                  Update,
+                  'json'
+                );
+
+          }
+        }, 100 * i);
+    }(i));
+  }
+}
+
+function Update(data){
+  console.log(data.Donne);
+  
+  if(data.Type == "Append")
+    $(data.Region).append(data.Donne);
+  else if(data.Type == "Replace"){
+    $(data.Region).html(data.Donne);
+  }
+
+  if(data.Stop == "true"){
+    CoupeChoix = true;
+  }else if(data.Stop == "false"){
+    CoupeChoix = false;
+  }
+
 }
 
 function Connexion(evenement){
@@ -21,16 +78,7 @@ function Connexion(evenement){
     removeCookie("Mail");
   }
 
-  $.post(
-        'Controleur/controleur.php',
-        {
-            "module": $('#'+evenement.target.id).attr('module'),
-            "Mail": $('#mail').val(),
-            "Password": $('#pass').val(),
-        },
-        ConnexionUpdate,
-        'json'
-      );
+  Action(evenement);
 
 }
 
@@ -44,24 +92,31 @@ function Inscription(evenement){
     $('#pass2').val("");
 
   }else{
-    $.post(
-          'Controleur/controleur.php',
-          {
-              "module": $('#'+evenement.target.id).attr('module'),
-              "Mail" : $('#mailIns').val(),
-              "Password" : $('#pass1').val()
-          },
-          InscriptionUpdate,
-          'json'
-        );
+    Action(evenement);
   }
 
 
 }
 
+
 /*
+function PageConnexion(evenement){
+
+  $.post(
+        'Controleur/controleur.php',
+        {
+            "module": $('#'+evenement.target.id).attr('module')
+        },
+        PageConnexionUpdate,
+        'html'
+      );
+}
+
+
+
+
 * Function update page
-*/
+
 function UpdateBody(donne){
   $('#body').html(donne);
 }
@@ -105,4 +160,4 @@ function InscriptionUpdate(donne){
     $('#DivInscription').append(donne.Donne);
   }
 
-}
+}*/

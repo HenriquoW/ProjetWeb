@@ -4,9 +4,17 @@ $_SERVER["RACINE"] = $_SERVER["DOCUMENT_ROOT"]."Web MVC";
 require_once "../Core/XML/class_xml.php";
 require_once "../Core/BDD/class_bdd.php";
 
-session_name('SessionVisiteur');
-session_start();
+if(isset($_COOKIE["Connect"])){
+  session_name('SessionUtilisateur');
+  session_start();
+  session_regenerate_id();
 
+}else{
+  session_name('SessionVisiteur');
+  session_start();
+}
+
+$data = json_decode($_POST['donne'],true);
 $nomModule = $_POST['module'];
 $xml = XML::getInstance();
 
@@ -18,12 +26,6 @@ if($droit=="Visiteur"){
     include_once $value;
   }
 }else{
-  session_write_close();
-
-  session_name('SessionUtilisateur');
-  session_start();
-  session_regenerate_id();
-
   $utilisateur = $_SESSION['UtilisateurCourant'];
 
   $i = 0;

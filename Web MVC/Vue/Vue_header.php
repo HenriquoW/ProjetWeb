@@ -1,73 +1,86 @@
-<!doctype html>
-<html>
+<?php
+$response_array = array();
 
-    <head>
-        <meta charset="utf-8">
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
-        <!--<link href="../style.css" rel="stylesheet" type="text/css" media="all" /><!-- à commenter si le travail ne porte pas sur l'header directement -->
-        <link href="./Css/style.css" rel="stylesheet" type="text/css" media="all" />      
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
-    </head>
+if(isset($_COOKIE['Connect'])){
+  $response_array['Status'] = "Success";
+  $response_array['Type'] = "Replace";
+  $response_array['Stop'] = "false";
+  $response_array['Donne'] = '
+  <ul id="menu">
+                    <li>
+                            <a>PROFIL</a>
+                            <ul>
+                                    <li><a>Modifier</a></li>
+                                    <li><a>Profil Enfant</a></li>
+                            </ul>
+                    </li>
 
-    <body>
+                    <li>
+                            <a>SECRÉTARIAT</a>
+                            <ul>
+                                    <li>
+                                        <ul>
+                                            <li><a>Voir</a></li>
+                                        </ul>
 
-        <div class="div_header_global">
-            <div class="div_header_logo">
-                <a href="index.php">
-                    <img src="images/logo.png" class="img_header_logo" alt="logo"/>
-                </a>
-            </div>
+                                    </li>
+                            </ul>
+                    </li>
 
-            <div class="div_header_club">
-                <a href="http://dijon.asptt.com/">
-                    <img src="images/logo_asptt_2.png" class="img_header_logo_asptt" alt="logo_asptt"/>
-                </a>
-            </div>
+                    <li>
+                            <a>ADMINISTRATION</a>
+                            <ul>
+                                <li><a>Contenu Base</a></li>
+                                <li><a>Droit Access</a></li>
+                            </ul>
+                    </li>
 
+                    <li>
+                            <a id="btnDeconnexion" module="Deconnexion;Accueil;Header" regionSucess="#body;#body;#header" regionError="#body;#body;#header">Deconnexion</a>
+                    </li>
 
-            <div class="div_header_onglets">
+                </ul>
 
-                <div class="row">
-                    
-                    <a href="index.php">
-                        <div class="actif col-sm-2 col-xs-12">
-                            ACCUEIL
-                        </div>
-                    </a>
+  ';
+  $response_array['Region'] = $_POST['regionSucess'];
+}else{
+  $response_array['Status'] = "Error";
+  $response_array['Type'] = "Replace";
+  $response_array['Stop'] = "false";
+  $response_array['Donne'] = '
+  <ul id="menu">
 
-                    <div class="col-sm-1"></div>
+                <li>
+                        <a id="btnAccueil" module="Accueil;Header" regionSucess="#body;#header" regionError="#body;#header">ACCUEIL</a>
+                </li>
 
-                    <a href="club.php">
-                        <div class="col-sm-2 col-xs-12">
-                            LE CLUB
-                        </div>
-                    </a>
+                <li>
+                        <a>PROFIL</a>
+                        <ul>
+                                <li><a id="btnPageConnexion" module="PageConnexion" regionSucess="#body">Connexion</a></li>
+                                <li><a id="btnPageInscription" module="PageConnexion" regionSucess="#body">Inscription</a></li>
+                        </ul>
+                </li>
 
-                    <div class="col-sm-1"></div>
+                <li>
+                        <a >LE CLUB</a>
+                        <ul>
+                            <li><a >Info</a></li>
+                        </ul>
+                </li>
 
-                    <a href="competitions.php">
-                        <div class="col-sm-2 col-xs-12">
-                            COMPÉTITIONS
-                        </div> 
-                    </a>
+                <li>
+                        <a>COMPÉTITIONS</a>
+                        <ul>
+                            <li><a>Competitions a venir</a></li>
+                        </ul>
+                </li>
 
-                    <div class="col-sm-1"></div>
+            </ul>
+  ';
+  $response_array['Region'] = $_POST['regionError'];
+}
 
-                    <a href="connexion.php">
-                        <div class="col-sm-2 col-xs-12">
-                            CONNEXION
-                        </div>
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div style="clear: both;"></div>
-        </div>
-
-    </body>
-
-</html>
+header('Content-type: application/json');
+echo json_encode($response_array);
+?>

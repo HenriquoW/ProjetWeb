@@ -5,7 +5,7 @@ $utilisateur = loadUtilisateur($info);
 
 //test si utilisateur existe
 if(isset($utilisateur)){
-  $_SESSION['Retour'] = "ErrorExist";
+  $_SESSION['Retour'] = "Error";
 }else{
 
   $tab = array();

@@ -7,8 +7,10 @@ function initialiser()
 {
 	//Création d'un tableau associant l'id d'un élément et la fonction à appeler en cas de clic sur cet élement
 	window.evenementsClic = {
-		'btnPageConnexion' : PageConnexion,
+		'btnAccueil' : Action,
+		'btnPageConnexion' : Action,
 		'btnConnexion' : Connexion,
+		'btnDeconnexion' : Action,
 		'btnInscription' : Inscription
 	};
 

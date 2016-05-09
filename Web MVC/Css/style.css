@@ -11,12 +11,13 @@ h2
 	font-size:22px;
 	padding-bottom:10px;
 	border-bottom: 1px dashed #3E3E3E;
+	margin-top:0;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
 {
 	-webkit-box-shadow: 0 0 0px 1000px rgb(155,157,158) inset;
-    -webkit-text-fill-color: #a9a9a9 !important;
+    -webkit-text-fill-color: #a9a9a9 !important;
 }
 
 /****************************************/
@@ -115,8 +116,6 @@ form input[type="submit"]:disabled:hover
 	-webkit-box-shadow: 0px 5px 10px 5px rgba(24,23,54,1);
 	-o-box-shadow: 0px 5px 10px 5px rgba(24,23,54,1);
 	box-shadow: 0px 5px 10px 5px rgba(24,23,54,1);
-
-	overflow: hidden;
 }
 
 /* logo 1 */
@@ -188,7 +187,7 @@ form input[type="submit"]:disabled:hover
 
 	margin-right:2%;
 }
-
+/*
 .div_header_onglets .row div
 {
 	-webkit-transition: all 0.4s ease-in-out;
@@ -197,69 +196,56 @@ form input[type="submit"]:disabled:hover
     -ms-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
 }
-
 .div_header_onglets .row div:hover
 {
 	cursor:pointer;
-
 	border-radius: 5px;
     border: 3px outset buttonface;
-
 	background: RGBA(74,63,154,1);
-    
+
     -moz-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	-webkit-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	-o-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-
 	-webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -ms-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
-
     text-shadow: 2px 1px 2px black;
 }
-
 .div_header_onglets .row div:active
 {
 	border: 3px inset buttonface;
-
 	-webkit-transition: all 0s ease-in-out;
     -moz-transition: all 0s ease-in-out;
     -o-transition: all 0s ease-in-out;
     -ms-transition: all 0s ease-in-out;
     transition: all 0s ease-in-out;
 }
-
 .div_header_onglets .row a
 {
 	color:white;
 }
-
 .div_header_onglets .row a:hover
 {
 	color:white;
 }
-
 .actif
 {
 	background: RGBA(74,63,154,1);
 	border: 3px outset buttonface;
-    border-radius: 5px;   
+    border-radius: 5px;
     text-shadow: 2px 1px 2px black;
 }
-
 .div_header_onglets .row .actif
 {
 	color:white;
-
 	-moz-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	-webkit-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	-o-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 	box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
 }
-
 .img_header_separator
 {
 	height:50px;
@@ -267,6 +253,125 @@ form input[type="submit"]:disabled:hover
 	display: inline-block;
 	vertical-align: top;
 	margin-top:15px;
+}
+*/
+
+/************** NEW ******************/
+
+#menu, #menu ul /* Liste */
+{
+        padding : 0; /* pas de marge intérieure */
+        margin : 0; /* ni extérieure */
+        list-style : none; /* on supprime le style par défaut de la liste */
+        line-height : 21px; /* on définit une hauteur pour chaque élément */
+        text-align : center; /* on centre le texte qui se trouve dans la liste */
+}
+
+#menu /* Ensemble du menu */
+{
+        font-weight : bold; /* on met le texte en gras */
+        font-family : Arial; /* on utilise Arial, c'est plus beau ^^ */
+        font-size : 12px; /* hauteur du texte : 12 pixels */
+}
+
+#menu a /* Contenu des listes */
+{
+        display : block; /* on change le type d'élément, les liens deviennent des balises de type block */
+        padding : 0; /* aucune marge intérieure */
+        background : #000; /* couleur de fond */
+        color : #fff; /* couleur du texte */
+        text-decoration : none; /* on supprime le style par défaut des liens (la plupart du temps = souligné) */
+        width : 160px; /* largeur */
+        margin-right: 15px;
+
+        font-family: 'Roboto', sans-serif;
+		font-weight:700;
+		font-size:18px;
+
+		text-align:center;
+
+		text-shadow: 3px 2px 3px #333333;
+
+	    color:white;
+
+		-moz-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
+		-webkit-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
+		-o-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
+		box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
+
+		background: RGBA(74,63,154,1);
+		border: 3px outset buttonface;
+	    border-radius: 5px;
+
+	    -webkit-transition: all 0.1s ease-in-out;
+	    -moz-transition: all 0.1s ease-in-out;
+	    -o-transition: all 0.1s ease-in-out;
+	    -ms-transition: all 0.1s ease-in-out;
+	    transition: all 0.1s ease-in-out;
+}
+
+#menu a:hover
+{
+	background: RGBA(74,103,154,1);
+	-webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+#menu li /* Elements des listes */
+{
+        float : left;
+        /* pour IE qui ne reconnaît pas "transparent" */
+        border-right : 1px solid #fff; /* on met une bordure blanche à droite de chaque élément */
+        -webkit-transition: all 0.3s ease-in-out;
+	    -moz-transition: all 0.3s ease-in-out;
+	    -o-transition: all 0.3s ease-in-out;
+	    -ms-transition: all 0.3s ease-in-out;
+	    transition: all 0.3s ease-in-out;
+}
+
+#menu li:hover, #menu ul:hover /* Elements des listes */
+{
+        -webkit-transition: all 0.3s ease-in-out;
+	    -moz-transition: all 0.3s ease-in-out;
+	    -o-transition: all 0.3s ease-in-out;
+	    -ms-transition: all 0.3s ease-in-out;
+	    transition: all 0.3s ease-in-out;
+}
+
+html>body #menu li
+{
+        border-right: 1px solid transparent ; /* on met une bordure transparente à droite de chaque élément */
+        -webkit-transition: all 0.3s ease-in-out;
+	    -moz-transition: all 0.3s ease-in-out;
+	    -o-transition: all 0.3s ease-in-out;
+	    -ms-transition: all 0.3s ease-in-out;
+	    transition: all 0.3s ease-in-out;
+}
+
+#menu li ul /* Sous-listes */
+{
+        position: absolute; /* Position absolue */
+        width: 144px; /* Largeur des sous-listes */
+        left: -999em; /* Hop, on envoie loin du champ de vision */
+}
+
+#menu li:hover ul ul, #menu li.sfhover ul ul /* Sous-sous-listes lorsque la souris passe sur un élément de liste */
+{
+        left: -999em; /* On expédie les sous-sous-listes hors du champ de vision */
+}
+
+#menu li:hover ul, #menu li li:hover ul, #menu li.sfhover ul, #menu li li.sfhover ul
+{
+    left: auto; /* Repositionnement normal */
+    min-height: 0; /* Corrige un bug sous IE */
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 
@@ -285,7 +390,7 @@ form input[type="submit"]:disabled:hover
 	overflow: hidden;
 }
 
-.carousel-inner > .item > img, .carousel-inner > .item > a > img 
+.carousel-inner > .item > img, .carousel-inner > .item > a > img
 {
 	margin: auto;
 	margin-top:auto;
@@ -302,7 +407,7 @@ form input[type="submit"]:disabled:hover
 }
 
 .div_index_map iframe
-{ 
+{
 	width:80%;
 }
 
@@ -375,4 +480,19 @@ form input[type="submit"]:disabled:hover
 {
 	font-size:10px;
 	margin-top: 4px;
+}
+
+/****************************************/
+/*                INSCRIPTION
+/****************************************/
+.div_connexion_inscription_global
+{
+	margin:auto;
+	text-align: center;
+	padding-top:80px;
+}
+
+.div_connexion_inscription_global h2
+{
+	margin-top:20px;
 }

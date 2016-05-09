@@ -1,6 +1,6 @@
 <?php
-  $mail = $_POST['Mail'];
-  $pass = sha1(htmlspecialchars($_POST['Password']));
+  $mail = $data['Mail'];
+  $pass = sha1(htmlspecialchars($data['Password']));
 
   $info["Mail"] = $mail;
   $utilisateur = loadUtilisateur($info);

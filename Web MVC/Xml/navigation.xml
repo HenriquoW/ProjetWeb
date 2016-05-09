@@ -2,8 +2,23 @@
 <navigation>
 
   <module droit="Visiteur">
+    <nom>Accueil</nom>
+    <action>../Vue/vue_Accueil.php</action>
+  </module>
+
+  <module droit="Visiteur">
     <nom>PageConnexion</nom>
     <action>../Vue/vue_PageConnexion.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>PageInscription</nom>
+    <action>../Vue/vue_PageInscription.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>Header</nom>
+    <action>../Vue/vue_Header.php</action>
   </module>
 
   <module droit="Visiteur">
@@ -19,8 +34,8 @@
   </module>
 
   <module droit="Inscrit">
-    <nom>Profil</nom>
-    <action>../Vue/vue_Profil.php</action>
+    <nom>Deconnexion</nom>
+    <action>../Vue/vue_Deconnexion.php</action>
   </module>
 
   <module droit="Entraineur">

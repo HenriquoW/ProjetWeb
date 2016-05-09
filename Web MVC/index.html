@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <div id="header" class="div_header_global">
+    <div class="div_header_global">
       <div class="div_header_logo">
-        <a href="index.html">
+        <a id="btnAccueil" module="Accueil;Header" regionSucess="#body;#header" regionError="#body;#header">
           <img src="images/logo.png" class="img_header_logo" alt="logo"/>
         </a>
       </div>
@@ -24,41 +24,37 @@
         </a>
       </div>
 
-      <div class="div_header_onglets">
+      <div id="header" class="div_header_onglets">
 
-        <div class="row">
+        <ul id="menu">
 
-          <a href="index.html">
-            <div class="actif col-sm-2 col-xs-12">
-              ACCUEIL
-            </div>
-          </a>
+                      <li>
+                              <a id="btnAccueil" module="Accueil;Header" regionSucess="#body;#header" regionError="#body;#header" >ACCUEIL</a>
+                      </li>
 
-          <div class="col-sm-1"></div>
+                      <li>
+                              <a>PROFIL</a>
+                              <ul>
+                                      <li><a id="btnPageConnexion" module="PageConnexion" regionSucess="#body">Connexion</a></li>
+                                      <li><a id="btnPageInscription" module="PageConnexion" regionSucess="#body">Inscription</a></li>
+                              </ul>
+                      </li>
 
-          <a>
-            <div id="btnClub" class="col-sm-2 col-xs-12">
-              LE CLUB
-            </div>
-          </a>
+                      <li>
+                              <a >LE CLUB</a>
+                              <ul>
+                                  <li><a >Info</a></li>
+                              </ul>
+                      </li>
 
-          <div class="col-sm-1"></div>
+                      <li>
+                              <a>COMPÉTITIONS</a>
+                              <ul>
+                                  <li><a>Competitions a venir</a></li>
+                              </ul>
+                      </li>
 
-          <a>
-            <div id="btnCompetition" class="col-sm-2 col-xs-12">
-              COMPÉTITIONS
-            </div>
-          </a>
-
-          <div class="col-sm-1"></div>
-
-          <a >
-            <div id="btnPageConnexion" class="col-sm-2 col-xs-12" module="PageConnexion">
-              CONNEXION
-            </div>
-          </a>
-
-        </div>
+                  </ul>
 
       </div>
 
