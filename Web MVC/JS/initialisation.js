@@ -9,9 +9,10 @@ function initialiser()
 	window.evenementsClic = {
 		'btnAccueil' : Action,
 		'btnPageConnexion' : Action,
-		'btnConnexion' : Connexion,
+		'btnPageInscription' : Action,
+		'btnConnexion' : Action,
 		'btnDeconnexion' : Action,
-		'btnInscription' : Inscription
+		'btnInscription' : Action
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page

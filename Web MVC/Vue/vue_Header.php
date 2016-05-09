@@ -58,7 +58,7 @@ if(isset($_COOKIE['Connect'])){
                         <a>PROFIL</a>
                         <ul>
                                 <li><a id="btnPageConnexion" module="PageConnexion" regionSucess="#body">Connexion</a></li>
-                                <li><a id="btnPageInscription" module="PageConnexion" regionSucess="#body">Inscription</a></li>
+                                <li><a id="btnPageInscription" module="PageInscription" regionSucess="#body">Inscription</a></li>
                         </ul>
                 </li>
 

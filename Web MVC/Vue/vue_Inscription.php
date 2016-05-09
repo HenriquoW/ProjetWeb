@@ -5,7 +5,27 @@
     $response_array['Status'] = "Error";
     $response_array['Type'] = "Append";
     $response_array['Stop'] = "true";
-    $response_array['Donne'] = "Utilisateur déjà inscrit";
+    $response_array['Donne'] = '
+        <h2>Echec.</h2>
+				<p>L&apos;adresse mail existe déjà. Veuillez recommencer avec une adresse mail valide.</p>';
+    $response_array['Region'] = $_POST['regionError'];
+
+  }else if($_SESSION['Retour'] == "ErrorPass"){
+    $response_array['Status'] = "Error";
+    $response_array['Type'] = "Replace";
+    $response_array['Donne'] = '
+      <h2>Echec.</h2>
+			<p>Les mots de passe ne sont pas identiques. Veuillez recommencer.</p>';
+    $response_array['Stop'] = "true";
+    $response_array['Region'] = $_POST['regionError'];
+
+  }else if($_SESSION['Retour'] == "ErrorTerme"){
+    $response_array['Status'] = "Error";
+    $response_array['Type'] = "Replace";
+    $response_array['Donne'] = '
+      <h2>Echec.</h2>
+			<p>Veuillez acceptez les termes.</p>';
+    $response_array['Stop'] = "true";
     $response_array['Region'] = $_POST['regionError'];
 
   }else if($_SESSION['Retour'] == "Ok"){

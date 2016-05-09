@@ -18,22 +18,22 @@ class ManagerUtilisateur extends Manager{
         $requete->execute(array('nom' => $objet->getNom(),
                                 'prenom' => $objet->getPrenom(),
                                 'password' => $objet->getPassword(),
-                                'dateNaissance' => $objet->getDateNaissance(),
+                                'dateNaissance' => $objet->getDateNaissance()->format('Y-m-d'),
                                 'adresse' => $objet->getAdresse(),
                                 'mail' => $objet->getMail(),
                                 'telephone' => $objet->getTelephone(),
                                 'id_Sexe' => $objet->getSexe()['Id'],
                                ));
 
-        $this->addParente($objet);
-
-        $this->addDroits($objet);
-
         //Recupere l'id de l'utilisateur genere par la base
         $requeteId_Utilisateur = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE Mail = "'.$objet->getMail().'"');
         $donneId_Utilisateur = $requeteId_Utilisateur->fetch(PDO::FETCH_ASSOC);
 
         $objet->setId_Utilisateur($donneId_Utilisateur['Id_Utilisateur']);
+
+        $this->addParente($objet);
+
+        $this->addDroits($objet);
 
     }
 
@@ -191,7 +191,7 @@ class ManagerUtilisateur extends Manager{
         $requete->execute(array('nom' => $objet->getNom(),
                                 'prenom' => $objet->getPrenom(),
                                 'password' => $objet->getPassword(),
-                                'dateNaissance' => $objet->getDateNaissance(),
+                                'dateNaissance' => $objet->getDateNaissance()->format('Y-m-d'),
                                 'adresse' => $objet->getAdresse(),
                                 'mail' => $objet->getMail(),
                                 'telephone' => $objet->getTelephone(),
