@@ -31,10 +31,9 @@ function Action(evenement){
   CoupeChoix = false;
 
   for(var i=0;i<modules.length; i++){
+   if(!CoupeChoix){
     (function(i){
         setTimeout(function(){
-
-          if(!CoupeChoix){
             $.post(
                   'Controleur/controleur.php',
                   {
@@ -46,15 +45,13 @@ function Action(evenement){
                   Update,
                   'json'
                 );
-
-          }
         }, 100 * i);
     }(i));
+   }
   }
 }
 
 function Update(data){
-  console.log(data.Donne);
   
   if(data.Type == "Append")
     $(data.Region).append(data.Donne);

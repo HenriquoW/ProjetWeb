@@ -23,7 +23,8 @@ $droit = $xml->getDroit($nomModule);
 
 if($droit=="Visiteur"){
   foreach ($actions as $value) {
-    include_once $value;
+    
+    include_once $_SERVER["RACINE"].$value;
   }
 }else{
   $utilisateur = $_SESSION['UtilisateurCourant'];
@@ -36,13 +37,14 @@ if($droit=="Visiteur"){
       $acces = true;
     $i++;
   }
-
+	
   if($acces){
     foreach ($actions as $value) {
+      
       include_once $_SERVER["RACINE"].$value;
     }
   }else{
-    echo "error";
+    error_log("Erreur Droit");
   }
 
 }
