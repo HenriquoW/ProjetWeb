@@ -14,7 +14,7 @@ class BDD{
     private $_Manager = array();
 
     private static $_HOST = "localhost";
-    private static $_LOGIN = "Fieldrain";
+    private static $_LOGIN = "web";
     private static $_PASSWD = "maxou21@";
     private static $_DBASENAME = "asptt_dijon";
 

@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once $_SERVER["RACINE"]."/Core/class_Voyage.php";
+require_once $_SERVER["RACINE"]."/Core/class_voyage.php";
 
 class ManagerVoyage extends Manager{
 

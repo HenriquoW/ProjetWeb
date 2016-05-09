@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once $_SERVER["RACINE"]."/Core/class_Message.php";
+require_once $_SERVER["RACINE"]."/Core/class_message.php";
 
 class ManagerMessage extends Manager{
 

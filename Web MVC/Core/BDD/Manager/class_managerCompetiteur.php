@@ -1,6 +1,6 @@
 <?php
 require_once "class_managerAdherent.php";
-require_once $_SERVER["RACINE"]."/Core/class_Competiteur.php";
+require_once $_SERVER["RACINE"]."/Core/class_competiteur.php";
 
 class ManagerCompetiteur extends ManagerAdherent{
 

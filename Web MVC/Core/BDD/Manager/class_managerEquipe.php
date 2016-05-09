@@ -1,6 +1,6 @@
 <?php
 require_once "class_manager.php";
-require_once $_SERVER["RACINE"]."/Core/class_Equipe.php";
+require_once $_SERVER["RACINE"]."/Core/class_equipe.php";
 
 class ManagerEquipe extends Manager{
 

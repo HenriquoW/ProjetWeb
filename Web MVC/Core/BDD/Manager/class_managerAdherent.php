@@ -1,6 +1,6 @@
 <?php
 require_once "class_managerUtilisateur.php";
-require_once $_SERVER["RACINE"]."/Core/class_Adherent.php";
+require_once $_SERVER["RACINE"]."/Core/class_adherent.php";
 
 class ManagerAdherent extends ManagerUtilisateur{
 
