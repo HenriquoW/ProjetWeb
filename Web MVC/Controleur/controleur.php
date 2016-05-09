@@ -39,7 +39,7 @@ if($droit=="Visiteur"){
 
   if($acces){
     foreach ($actions as $value) {
-      include_once $value;
+      include_once $_SERVER["RACINE"].$value;
     }
   }else{
     echo "error";

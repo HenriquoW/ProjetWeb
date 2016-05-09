@@ -3,39 +3,39 @@
 
   <module droit="Visiteur">
     <nom>Accueil</nom>
-    <action>../Vue/vue_Accueil.php</action>
+    <action>/Vue/vue_Accueil.php</action>
   </module>
 
   <module droit="Visiteur">
     <nom>PageConnexion</nom>
-    <action>../Vue/vue_PageConnexion.php</action>
+    <action>/Vue/vue_PageConnexion.php</action>
   </module>
 
   <module droit="Visiteur">
     <nom>PageInscription</nom>
-    <action>../Vue/vue_PageInscription.php</action>
+    <action>/Vue/vue_PageInscription.php</action>
   </module>
 
   <module droit="Visiteur">
     <nom>Header</nom>
-    <action>../Vue/vue_Header.php</action>
+    <action>/Vue/vue_Header.php</action>
   </module>
 
   <module droit="Visiteur">
     <nom>Connexion</nom>
-    <action>../Modele/connexion.php</action>
-    <action>../Vue/vue_Connexion.php</action>
+    <action>/Modele/connexion.php</action>
+    <action>/Vue/vue_Connexion.php</action>
   </module>
 
   <module droit="Visiteur">
     <nom>Inscription</nom>
-    <action>../Modele/inscription.php</action>
-    <action>../Vue/vue_Inscription.php</action>
+    <action>/Modele/inscription.php</action>
+    <action>/Vue/vue_Inscription.php</action>
   </module>
 
   <module droit="Inscrit">
     <nom>Deconnexion</nom>
-    <action>../Vue/vue_Deconnexion.php</action>
+    <action>/Vue/vue_Deconnexion.php</action>
   </module>
 
   <module droit="Entraineur">
