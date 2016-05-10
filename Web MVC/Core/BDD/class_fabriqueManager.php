@@ -44,7 +44,7 @@ class FabriqueManager{
 
         $tab["Categorie"] = new ConstructeurManagerCategorie();
         $tab["Club_Organisateur"] = new ConstructeurManagerClub_Organisateur();
-        $tabs["Competiteur"] = new ConstructeurManagerCompetiteur();
+        $tab["Competiteur"] = new ConstructeurManagerCompetiteur();
         $tab["Competition"] = new ConstructeurManagerCompetition();
         $tab["Course"] = new ConstructeurManagerCourse();
 

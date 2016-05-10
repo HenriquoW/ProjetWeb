@@ -21,20 +21,7 @@ if(isset($_COOKIE['Connect'])){
 
     <p>
     '.
-      ((getdate()['year'] - $UtilisateurEnCours->getDateNaissance()->format('Y') < '18') ? ($TableauResultat=$UtilisateurEnCours->getParente();
-                                                                              			        $TableauParents=$TableauResultat['Parent'];
-                                                                              			        $idParent=$TableauParents[0];
-                                                                              			        $Parent=loadUtilisateur($idParent);
-                                                                                            '
-                                                                                  					<label> Nom </label>
-                                                                                  			                <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
-                                                                                  					<label> Prenom </label>
-                                                                                  			                <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
-                                                                                  					<label> Coordonnees </label>
-                                                                                  			                <textarea id="coordonnees_responsable" name="coordonnees_responsable" value="'.$Parent->getTelephone().' '.$Parent->getAdresse().'" type="text" disabled> </textarea>
-                                                                                  				')
-                                                                                         : '')
-
+      infoParent($UtilisateurEnCours);
     .'
     </p>
 
@@ -254,6 +241,22 @@ function PalmaresComp($ut,$cl){
   }
 
   return text;
+}
+
+function infoParent($ut){
+  $text = '';
+  ((getdate()['year'] - $ut->getDateNaissance()->format('Y') < '18') ? ($TableauResultat=$ut->getParente();
+                                                                        $TableauParents=$TableauResultat['Parent'];
+                                                                        $idParent=$TableauParents[0];
+                                                                        $Parent=loadUtilisateur($idParent);
+                                                                        $text = $text . '<label> Nom </label>
+                                                                                          <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
+                                                                                        <label> Prenom </label>
+                                                                                                    <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
+                                                                                        <label> Coordonnees </label>
+                                                                                                    <textarea id="coordonnees_responsable" name="coordonnees_responsable" value="'.$Parent->getTelephone().' '.$Parent->getAdresse().'" type="text" disabled> </textarea>')
+                                                                     : '')
+  return $text;
 }
 
 
