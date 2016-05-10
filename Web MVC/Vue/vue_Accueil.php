@@ -21,7 +21,7 @@ if(isset($_COOKIE['Connect'])){
 
     <p>
     '.
-      infoParent($UtilisateurEnCours);
+      infoParent($UtilisateurEnCours)
     .'
     </p>
 
@@ -47,11 +47,11 @@ if(isset($_COOKIE['Connect'])){
       <label> Mois </label>
         <input id="IdMois" name="mois" type="number" min="1" max="12" value="'.$UtilisateurEnCours->getDateNaissance()->format('m').'"/>
       <label> Annee </label>
-        <input id="IdAnnee" name="annee" type="number" min="1920" max="2016" value="'$UtilisateurEnCours->getDateNaissance()->format('Y')'"/> <br/>
+        <input id="IdAnnee" name="annee" type="number" min="1920" max="2016" value="'.$UtilisateurEnCours->getDateNaissance()->format('Y').'"/> <br/>
 
     '.
     (($ClasseUtilisateur == 'Competiteur') ? ('<label> Categorie </label>
-                                    	        <input id="categorie" name="categorie" type="text" disabled value="'$UtilisateurEnCours->getCategorie()'"/>')
+                                    	        <input id="categorie" name="categorie" type="text" disabled value="'.$UtilisateurEnCours->getCategorie().'"/>')
                                            : (''))
     .'
     <br/>
@@ -94,9 +94,10 @@ if(isset($_COOKIE['Connect'])){
 
     </P>
 
-    <p> //CSS En haut à gauche de la page, dans un cadre
+    <p> 
     '.
-      PalmaresComp($UtilisateurEnCours,$ClasseUtilisateur);
+      //CSS En haut à gauche de la page, dans un cadre
+      PalmaresComp($UtilisateurEnCours,$ClasseUtilisateur)
     .'
 
     </P>
@@ -240,22 +241,25 @@ function PalmaresComp($ut,$cl){
       // Appeler la page palmares (T² vont la faire)
   }
 
-  return text;
+  return $text;
 }
 
 function infoParent($ut){
   $text = '';
-  ((getdate()['year'] - $ut->getDateNaissance()->format('Y') < '18') ? ($TableauResultat=$ut->getParente();
-                                                                        $TableauParents=$TableauResultat['Parent'];
-                                                                        $idParent=$TableauParents[0];
-                                                                        $Parent=loadUtilisateur($idParent);
-                                                                        $text = $text . '<label> Nom </label>
-                                                                                          <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
-                                                                                        <label> Prenom </label>
-                                                                                                    <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
-                                                                                        <label> Coordonnees </label>
-                                                                                                    <textarea id="coordonnees_responsable" name="coordonnees_responsable" value="'.$Parent->getTelephone().' '.$Parent->getAdresse().'" type="text" disabled> </textarea>')
-                                                                     : '')
+
+  if(getdate()['year'] - $ut->getDateNaissance()->format('Y') < '18'){
+	$TableauResultat=$ut->getParente();
+        $TableauParents=$TableauResultat['Parent'];
+        $idParent=$TableauParents[0];
+        $Parent=loadUtilisateur($idParent);
+        $text = $text . '<label> Nom </label>
+                           <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
+                         <label> Prenom </label>
+                           <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
+                         <label> Coordonnees </label>
+                           <textarea id="coordonnees_responsable" name="coordonnees_responsable" value="'.$Parent->getTelephone().' '.$Parent->getAdresse().'" type="text" disabled> </textarea>';
+
+  }
   return $text;
 }
 

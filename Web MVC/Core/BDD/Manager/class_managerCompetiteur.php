@@ -418,24 +418,24 @@ class ManagerCompetiteur extends ManagerAdherent{
 
         $requeteUt = $this->getDb()->query('SELECT Id_Competiteur
                                           FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur
-                                          WHERE Id_Utilisateur='.$id);
+                                          WHERE Utilisateur.Id_Utilisateur='.$id);
 
         $res = $requete->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($res,true));
+        //error_log(print_r($res,true));
 
         $resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($resAd,true));
+        //error_log(print_r($resAd,true));
 
         $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($resUt,true));
+        //error_log(print_r($resUt,true));
 
-        if($res){
+        if($res!=null){
           return $res;
 
-        }else if($resAd){
+        }else if($resAd!=null){
 
           return $resAd;
-        }else if($resUt){
+        }else if($resUt!=null){
 
           return $resUt;
         }else{

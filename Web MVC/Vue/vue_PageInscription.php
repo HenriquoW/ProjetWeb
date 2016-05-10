@@ -8,7 +8,7 @@ $response_array['Donne'] = '
 <div id="DivInscription" class="div_connexion_inscription_global">
   <div class="div_connexion_inscription" style="text-align:center;margin:auto;">
 
-    <form>
+    
       <label for="mail">Adresse mail:</label>
       <input type="email" placeholder="adresse mail." name="mail" id="IdMail" required/>
 
@@ -72,7 +72,7 @@ $response_array['Donne'] = '
 
       <input type="submit" value="Valider" id="btnInscription" module="Inscription;Accueil" regionSucess="#body;#body" regionError="#DivInscription;#body" donne="Mail;Pass1;Pass2;Nom;Prenom;Jour;Mois;Annee;Adresse;Telephone;Sexe;Terme;News" />
 
-    </form>
+    
   </div>
 </div>
 ';

@@ -108,21 +108,21 @@ class ManagerAdherent extends ManagerUtilisateur{
                                               WHERE Id_Competiteur='.$id);
 
         $res = $requete->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($res,true));
+        //error_log(print_r($res,true));
 
         $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($resUt,true));
+        //error_log(print_r($resUt,true));
 
         $resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
-        error_log(print_r($resComp,true));
+        //error_log(print_r($resComp,true));
 
-        if($res){
+        if($res!=null){
           return $res;
 
-        }else if($resUt){
+        }else if($resUt!=null){
 
           return $resUt;
-        }else if($resComp){
+        }else if($resComp!=null){
 
           return $resComp;
         }else{

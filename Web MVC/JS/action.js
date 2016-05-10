@@ -50,7 +50,7 @@ function Action(evenement){
                   Update,
                   'json'
                 );
-        }, 250);
+        }, 100 * i);
     }(i));
    }
   }
