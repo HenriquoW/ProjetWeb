@@ -541,7 +541,7 @@ INSERT INTO Tache VALUES(0,"Reunion de confirmation des inscriptions"),(1,"Depot
 #------------------------------------------------------------
 # Insertion: Droit_Acces
 #------------------------------------------------------------
-INSERT INTO Droit_Acces VALUES(0,"Visiteur"),(1,"Inscrit"),(2,"Adherent"),(4,"Entraineur"),(5,"Secretaire"),(6,"Administrateurs");
+INSERT INTO Droit_Acces VALUES(0,"Visiteur"),(1,"Inscrit"),(2,"Adherent"),(3,"Parent"),(4,"Entraineur"),(5,"Secretaire"),(6,"Administrateurs");
 
 #------------------------------------------------------------
 # Insertion: Type_Voyage
