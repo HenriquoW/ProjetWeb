@@ -94,5 +94,41 @@ class ManagerAdherent extends ManagerUtilisateur{
                                ));
     }
 
+    public function isAdherent($id){
+        $requete = $this->getDb()->query('SELECT Id_Adherent
+                                          FROM Adherent
+                                          WHERE Id_Adherent='.$id);
+
+        $requeteUt = $this->getDb()->query('SELECT Id_Adherent
+                                            FROM Adherent
+                                            WHERE Id_Utilisateur='.$id);
+
+        $requeteComp = $this->getDb()->query('SELECT Id_Adherent
+                                              FROM Competiteur
+                                              WHERE Id_Competiteur='.$id);
+
+        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($res,true));
+
+        $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resUt,true));
+
+        $resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resComp,true));
+
+        if($res){
+          return $res;
+
+        }else if($resUt){
+
+          return $resUt;
+        }else if($resComp){
+
+          return $resComp;
+        }else{
+          return false;
+        }
+    }
+
 }
 ?>

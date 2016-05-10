@@ -12,7 +12,7 @@
 
   }else if($_SESSION['Retour'] == "ErrorPass"){
     $response_array['Status'] = "Error";
-    $response_array['Type'] = "Replace";
+    $response_array['Type'] = "Append";
     $response_array['Donne'] = '
       <h2>Echec.</h2>
 			<p>Les mots de passe ne sont pas identiques. Veuillez recommencer.</p>';
@@ -21,7 +21,7 @@
 
   }else if($_SESSION['Retour'] == "ErrorTerme"){
     $response_array['Status'] = "Error";
-    $response_array['Type'] = "Replace";
+    $response_array['Type'] = "Append";
     $response_array['Donne'] = '
       <h2>Echec.</h2>
 			<p>Veuillez acceptez les termes.</p>';
@@ -30,7 +30,7 @@
 
   }else if($_SESSION['Retour'] == "Ok"){
     $response_array['Status'] = "Success";
-    $response_array['Type'] = "Replace";
+    $response_array['Type'] = "Alert";
     $response_array['Donne'] = "Utilisateur inscrit";
     $response_array['Stop'] = "false";
     $response_array['Region'] = $_POST['regionSucess'];

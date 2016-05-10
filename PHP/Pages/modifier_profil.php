@@ -21,7 +21,7 @@
 	<!-- CSS Sur la gauche de l ecran sous la partie photo-->
 	<p>
 		<?php
-	        	$DDNUser = date_parse($UtilisateurEnCours->getDateNaissance());
+	        $DDNUser = date_parse($UtilisateurEnCours->getDateNaissance());
 			$YearUser = $DDNUser['year'];
 			$YearToday = getdate()['year'];
 			if( $YearToday - $YearUser < '18')

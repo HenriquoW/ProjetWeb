@@ -1,5 +1,5 @@
 <?php
-$_SERVER["RACINE"] = $_SERVER["DOCUMENT_ROOT"]."/ProjetWeb/Web MVC";
+$_SERVER["RACINE"] = $_SERVER["DOCUMENT_ROOT"]."Web MVC";
 
 require_once "../Core/XML/class_xml.php";
 require_once "../Core/BDD/class_bdd.php";
@@ -23,7 +23,7 @@ $droit = $xml->getDroit($nomModule);
 
 if($droit=="Visiteur"){
   foreach ($actions as $value) {
-    
+
     include_once $_SERVER["RACINE"].$value;
   }
 }else{
@@ -37,14 +37,19 @@ if($droit=="Visiteur"){
       $acces = true;
     $i++;
   }
-	
+
   if($acces){
     foreach ($actions as $value) {
-      
+
       include_once $_SERVER["RACINE"].$value;
     }
   }else{
-    error_log("Erreur Droit");
+    $response_array = array();
+    $response_array['Status'] = "Error";
+    $response_array['Type'] = "Alert";
+    $response_array['Stop'] = "true";
+    $response_array['Donne'] = 'Vous n&apos;avez pas les droits nécessaires pour accéder a cette page.';
+    $response_array['Region'] = $_POST['regionError'];
   }
 
 }

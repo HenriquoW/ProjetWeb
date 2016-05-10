@@ -210,5 +210,41 @@ class ManagerUtilisateur extends Manager{
         $this->addParente($objet);
     }
 
+    public function isUtilisateur($id){
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur
+                                          FROM Utilisateur
+                                          WHERE Id_Utilisateur='.$id);
+
+        $requeteAd = $this->getDb()->query('SELECT Id_Utilisateur
+                                            FROM Adherent
+                                            WHERE Id_Adherent='.$id);
+
+        $requeteComp = $this->getDb()->query('SELECT Id_Utilisateur
+                                              FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur
+                                              WHERE Id_Competiteur='.$id);
+
+        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($res,true));
+
+        $resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resAd,true));
+
+        $resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resComp,true));
+
+        if($res){
+          return $res;
+
+        }else if($resAd){
+
+          return $resAd;
+        }else if($resComp){
+
+          return $resComp;
+        }else{
+          return false;
+        }
+    }
+
 }
 ?>

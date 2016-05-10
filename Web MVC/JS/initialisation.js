@@ -12,7 +12,9 @@ function initialiser()
 		'btnPageInscription' : Action,
 		'btnConnexion' : Action,
 		'btnDeconnexion' : Action,
-		'btnInscription' : Action
+		'btnInscription' : Action,
+		'btnSaveProfil' : Action,
+		'bntPagePalmares' : Action
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page

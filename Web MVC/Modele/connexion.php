@@ -20,6 +20,14 @@
   }else{
     $_SESSION['Retour'] = "OK";
 
+    if($id = isCompetiteur($utilisateur->getId_Utilisateur())){
+      $inf["Id"] = $id;
+      $utilisateur = loadCompetiteur($inf);
+    }else if($id = isAdherent($utilisateur->getId_Utilisateur())){
+      $inf["Id"] = $id;
+      $utilisateur = loadAdherent($inf);
+    }
+    
     $_SESSION['Utilisateur'] = $utilisateur;
   }
 

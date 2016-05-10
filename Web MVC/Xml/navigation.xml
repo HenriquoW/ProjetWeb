@@ -38,6 +38,17 @@
     <action>/Vue/vue_Deconnexion.php</action>
   </module>
 
+  <module droit="Inscrit">
+    <nom>SaveProfil</nom>
+    <action>/Modele/saveProfil.php</action>
+    <action>/Vue/vue_SaveProfil.php</action>
+  </module>
+
+  <module droit="Adherent">
+    <nom>PagePalmares</nom>
+    <action>/Vue/vue_PagePalmares.php</action>
+  </module>
+
   <module droit="Entraineur">
     <nom>listecompetiteurs</nom>
     <action>modele/listecompetiteurs.php</action>

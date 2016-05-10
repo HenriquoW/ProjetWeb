@@ -407,5 +407,41 @@ class ManagerCompetiteur extends ManagerAdherent{
                                ));
     }
 
+    public function isCompetiteur($id){
+        $requete = $this->getDb()->query('SELECT Id_Competiteur
+                                          FROM Competiteur
+                                          WHERE Id_Competiteur='.$id);
+
+        $requeteAd = $this->getDb()->query('SELECT Id_Competiteur
+                                          FROM Competiteur
+                                          WHERE Id_Adherent='.$id);
+
+        $requeteUt = $this->getDb()->query('SELECT Id_Competiteur
+                                          FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur
+                                          WHERE Id_Utilisateur='.$id);
+
+        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($res,true));
+
+        $resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resAd,true));
+
+        $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resUt,true));
+
+        if($res){
+          return $res;
+
+        }else if($resAd){
+
+          return $resAd;
+        }else if($resUt){
+
+          return $resUt;
+        }else{
+          return false;
+        }
+    }
+
 }
 ?>

@@ -196,6 +196,10 @@ function loadCompetiteur($info){
     return $competiteur;
 }
 
+function isCompetiteur($id){
+  return BDD::getInstance()->getManager("Competiteur")->isCompetiteur($id);
+}
+
 
 
 ?>

@@ -125,4 +125,8 @@ function loadAdherent($info){
     return $adherent;
 }
 
+function isAdherent($id){
+  return BDD::getInstance()->getManager("Adherent")->isAdherent($id);
+}
+
 ?>

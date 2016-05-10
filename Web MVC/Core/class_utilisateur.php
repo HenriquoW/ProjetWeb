@@ -264,4 +264,9 @@ function loadUtilisateur($info){
     return $utilisateur;
 }
 
+//function qui permet de savoir si l'id correspond a un utilisateur dans la base
+function isUtilisateur($id){
+  return BDD::getInstance()->getManager("Utilisateur")->isUtilisateur($id);
+}
+
 ?>

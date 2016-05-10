@@ -50,7 +50,7 @@ function Action(evenement){
                   Update,
                   'json'
                 );
-        }, 100 * i);
+        }, 250);
     }(i));
    }
   }
@@ -62,6 +62,8 @@ function Update(data){
     $(data.Region).append(data.Donne);
   else if(data.Type == "Replace"){
     $(data.Region).html(data.Donne);
+  }else if(data.Type == "Alert"){
+    alert(data.Donne);
   }
 
   if(data.Stop == "true"){
