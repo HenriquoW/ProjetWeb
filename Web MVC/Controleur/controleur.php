@@ -29,16 +29,7 @@ if($droit=="Visiteur"){
 }else{
   $utilisateur = $_SESSION['UtilisateurCourant'];
 
-  $i = 0;
-  $acces = false;
-  $DroitUti = $utilisateur->getDroit();
-  while(!$acces && $i!=count($DroitUti)){
-    if($DroitUti[$i]["Nom"] == $droit)
-      $acces = true;
-    $i++;
-  }
-
-  if($acces){
+  if($utilisateur->asDroit($droit)){
     foreach ($actions as $value) {
 
       include_once $_SERVER["RACINE"].$value;

@@ -3,6 +3,7 @@
 
   <module droit="Visiteur">
     <nom>Accueil</nom>
+    <action>/Modele/infoProfil.php</action>
     <action>/Vue/vue_Accueil.php</action>
   </module>
 
@@ -42,6 +43,11 @@
     <nom>SaveProfil</nom>
     <action>/Modele/saveProfil.php</action>
     <action>/Vue/vue_SaveProfil.php</action>
+  </module>
+
+  <module droit="Inscrit">
+    <nom>ModifierProfil</nom>
+    <action>/Vue/vue_ModifierProfil.php</action>
   </module>
 
   <module droit="Adherent">

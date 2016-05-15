@@ -10,8 +10,7 @@ if(isset($_COOKIE['Connect'])){
                     <li>
                             <a>PROFIL</a>
                             <ul>
-                                    <li><a>Modifier</a></li>
-                                    <li><a>Profil Enfant</a></li>
+                                    <li><a id="btnHeaderModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" >Modifier Profil</a></li>
                             </ul>
                     </li>
 

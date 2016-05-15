@@ -14,6 +14,8 @@ function initialiser()
 		'btnDeconnexion' : Action,
 		'btnInscription' : Action,
 		'btnSaveProfil' : Action,
+		'btnModifierProfil' : Action,
+		'btnHeaderModifierProfil' : Action,
 		'bntPagePalmares' : Action
 	};
 

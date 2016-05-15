@@ -232,6 +232,17 @@ class Utilisateur{
         }
     }
 
+    public function asDroit($droit){
+      $i = 0;
+      while($i!=count($this->_Droit)){
+        if($this->_Droit[$i]["Nom"] == $droit)
+          return true;
+        $i++;
+      }
+
+      return false;
+    }
+
 }
 
 function loadUtilisateur($info){
