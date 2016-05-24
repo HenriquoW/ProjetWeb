@@ -50,14 +50,53 @@
     <action>/Vue/vue_ModifierProfil.php</action>
   </module>
 
+  <module droit="Competiteur;Parent">
+    <nom>AddObjectif</nom>
+    <action>/Modele/addObjectif.php</action>
+    <action>/Vue/vue_AddObjectif.php</action>
+  </module>
+
+  <module droit="Competiteur;Parent">
+    <nom>InscriptionCourse</nom>
+    <action>/Modele/inscriptionCourse.php</action>
+    <action>/Vue/vue_InscriptionCourse.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>ValidationEquipe</nom>
+    <action>/Modele/validationEquipe.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>ValidationCompetiteur</nom>
+    <action>/Modele/validationCompetiteur.php</action>
+  </module>
+
+  <module droit="Competiteur;Entraineur;Parent;Secretaire">
+    <nom>PageListeCompetition</nom>
+    <action>/Modele/listeCompetition.php</action>
+    <action>/Vue/vue_PageListeCompetition.php</action>
+  </module>
+
+  <module droit="Competiteur;Entraineur;Parent;Secretaire">
+    <nom>PageCompetition</nom>
+    <action>/Modele/infoCompetition.php</action>
+    <action>/Vue/vue_PageCompetition.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>PageModifierCompetition</nom>
+    <action>/Vue/vue_PageModifierCompetition.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>PageAjoutCompetition</nom>
+    <action>/Vue/vue_PageAjoutCompetition.php</action>
+  </module>
+
   <module droit="Adherent">
     <nom>PagePalmares</nom>
     <action>/Vue/vue_PagePalmares.php</action>
   </module>
 
-  <module droit="Entraineur">
-    <nom>listecompetiteurs</nom>
-    <action>modele/listecompetiteurs.php</action>
-    <action>vue/vlistecompetiteurs.php</action>
-  </module>
 </navigation>

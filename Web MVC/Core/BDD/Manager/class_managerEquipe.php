@@ -133,7 +133,21 @@ class ManagerEquipe extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $equipe[] = $this->getId($donneId['Id_Equipe']);
+            $equipe[] = loadEquipe(array("Id"=>$donneId['Id_Equipe']));
+        }
+
+        return $equipe;
+    }
+
+    public function getListSpecialite($specialite){
+
+        $equipe = array();
+
+        $requete = $this->getDb()->query('SELECT Id_Equipe FROM Equipe WHERE Id_Type_Specialite='.$specialite['Id']);
+
+        while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
+        {
+            $equipe[] = loadEquipe(array("Id"=>$donneId['Id_Equipe']));
         }
 
         return $equipe;
@@ -158,7 +172,7 @@ class ManagerEquipe extends Manager{
     }
 
     // valide ou invalide la participation de l'equipe a une course
-    public function ValideCourse($IdCourse,$IdEquipe,$Validation){
+    public function valideCourse($IdCourse,$IdEquipe,$Validation){
 
         $requete = $this->getDb()->prepare('UPDATE Participant_Competition_Equipe SET Validation =:validation WHERE Id_Equipe = :id_Equipe AND Id_Course = :id_Course');
 

@@ -40,7 +40,7 @@ class Xml{
   }
 
   public function getDroit($nomModule){
-    return $this->_data->xpath("/navigation/module/nom[text()='".$nomModule."']/../@droit")[0];
+    return explode(";",$this->_data->xpath("/navigation/module/nom[text()='".$nomModule."']/../@droit")[0]);
   }
 }
 

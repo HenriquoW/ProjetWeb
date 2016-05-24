@@ -152,4 +152,8 @@ function loadVoyage($info){
     return $voyage;
 }
 
+function loadVoyageCompetition($id){
+  return BDD::getInstance()->getManager("Voyage")->getVoyageCompetition($id);
+}
+
 ?>

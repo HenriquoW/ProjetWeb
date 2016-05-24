@@ -25,10 +25,10 @@ function Action(evenement){
 
     for(var i=0;i<donneARecup.length;i++){
       if(!$('#Id'+donneARecup[i]).is(':checkbox')){
-        data[donneARecup[i]] = $('#Id'+donneARecup[i]).val();
+        data[donneARecup[i].split('.')[0]] = $('#Id'+donneARecup[i]).val();
       }
       else {
-        data[donneARecup[i]] = $('#Id'+donneARecup[i]).is(':checked');
+        data[donneARecup[i].split('.')[0] = $('#Id'+donneARecup[i]).is(':checked');
       }
     }
   }

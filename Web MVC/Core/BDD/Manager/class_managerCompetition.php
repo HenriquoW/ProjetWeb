@@ -17,7 +17,7 @@ class ManagerCompetition extends Manager{
         (Adresse,DateCompetition,Id_Sexe,Id_Type_Competition,Id_Club_Organisateur) VALUES(:adresse,:dateCompetition,:id_Sexe,:id_Type_Competition,id_Club_Organisateur)');
 
         $requete->execute(array('adresse' => $objet->getAdresse(),
-                                'dateCompetition' => $objet->getDateCompetition(),
+                                'dateCompetition' => $objet->getDateCompetition()->format('Y-m-d'),
                                 'id_Sexe' => $objet->getSexe()['Id'],
                                 'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
                                 'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),
@@ -27,7 +27,7 @@ class ManagerCompetition extends Manager{
         $requeteId_Competition = $this->getDb()->prepare('SELECT Id_Competition FROM Competition WHERE Adresse = :adresse AND DateCompetition = :dateCompetition AND Id_Sexe = :id_Sexe AND Id_Type_Competition = :id_Type_Competition AND Id_Club_Organisateur = :id_Club_Organisateur');
 
         $requeteId_Competition->execute(array('adresse' => $objet->getAdresse(),
-                                              'dateCompetition' => $objet->getDateCompetition(),
+                                              'dateCompetition' => $objet->getDateCompetition()->format('Y-m-d'),
                                               'id_Sexe' => $objet->getSexe()['Id'],
                                               'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
                                               'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),
@@ -95,6 +95,7 @@ class ManagerCompetition extends Manager{
         $donnees['TypeCompetition'] = $donnees['Id_Type_Competition'];
         $donnees['Club'] = $donnees['Id_Club_Organisateur'];
         $donnees['Courses'] = $this->getCourses($id);
+        $donnees['DateCompetition'] = new DateTime($donnees['DateCompetition']);
 
         unset($donnees['Id_Sexe']);
         unset($donnees['Id_Type_Competition']);
@@ -125,7 +126,23 @@ class ManagerCompetition extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $competitions[] = $this->getId($donneId['Id_Competiteur']);
+            $info['Id'] = $donneId['Id_Competition'];
+            $competitions[] = loadCompetition($info);
+        }
+
+        return $competitions;
+    }
+
+    public function getListEnCours()
+    {
+        $competitions= array();
+
+        $requete = $this->getDb()->query('SELECT Id_Competition FROM Competition WHERE CURRENT_DATE>Competition.DateCompetition');
+
+        while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
+        {
+          $info['Id'] = $donneId['Id_Competition'];
+          $competitions[] = loadCompetition($info);
         }
 
         return $competitions;
@@ -138,7 +155,7 @@ class ManagerCompetition extends Manager{
         $requete = $this->getDb()->prepare('UPDATE Competition SET Adresse = :adresse, DateCompetition = :dateCompetition, Id_Sexe = :id_Sexe, Id_Type_Competition = :id_Type_Competition, Id_Club_Organisateur = :id_Club_Organisateur WHERE Id_Competition = :id_Competition');
 
         $requete->execute(array('adresse' => $objet->getAdresse(),
-                                'dateCompetition' => $objet->getDateCompetition(),
+                                'dateCompetition' => $objet->getDateCompetition()->format('Y-m-d'),
                                 'id_Sexe' => $objet->getSexe()['Id'],
                                 'id_Type_Competition' => $objet->getTypeCompetition()['Id'],
                                 'id_Club_Organisateur' => $objet->getClub()->getId_Club_Organisateur(),

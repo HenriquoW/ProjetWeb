@@ -37,6 +37,15 @@ if ($ClasseUtilisateur == 'Competiteur'){
   // Appeler la page palmares (T² vont la faire)
 }
 
+$infoObjectif = '';
+if($ClasseUtilisateur == 'Competiteur'){
+  foreach ($UtilisateurEnCours->getObjectif() as $objectif) {
+    $compet = loadCompetition(array("Id"=>$objectif));
+
+    $infoObjectif = $infoObjectif . ''.$compet->getTypeCompetition()['Nom'].'-'.$compet->getAdresse().'/n';
+  }
+}
+
 $infoParent = '';
 
 if(getdate()['year'] - $UtilisateurEnCours->getDateNaissance()->format('Y') < '18'){
@@ -57,18 +66,14 @@ $TableauResultat=$UtilisateurEnCours->getParente();
 $TableauIDEnfant=$TableauResultat['Enfant'];
 
 $infoEnfant = '';
-$NbEnfant=0;
 foreach($TableauIDEnfant as $IDEnfant)
 {
-	$NbEnfant=$NbEnfant+1;
 	$Enfant=loadUtilisateur($IDEnfant);
 	$infoEnfant = $infoEnfant.'<label> Enfant '.$NbEnfant.' </label> <br/>
 		<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="'.$Enfant->getPrenom().' '.$Enfant->getNom().'" type="text" disabled/>
     <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$IDEnfant.'">
 		<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
 		<br/> <br/>
-		<!-- SI le bouton est cliqué, dans la session, l utilisateur courant passe à l enfant (pour qu on ai accès à ses valeurs dans le profil) -->
-		<!-- une fois le parent sorti du profil de son enfant, dans la session l utilisateur courant repasse à l adulte -->
 	';
 }
 
@@ -76,6 +81,7 @@ foreach($TableauIDEnfant as $IDEnfant)
 $retour['InfoPalmares'] = $infoPal;
 $retour['InfoParent'] = $infoParent;
 $retour['InfoEnfant'] = $infoEnfant;
+$retour['InfoObjectif'] = $infoObjectif;
 
 $_SESSION['Retour'] = $retour;
 

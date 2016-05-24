@@ -286,6 +286,15 @@ class ManagerCompetiteur extends ManagerAdherent{
             $courses[] = $donne;
         }
 
+        $requeteCourseEquipe = $this->getDb()->query('SELECT Id_Course,Validation,Participant_Competition_Equipe.Id_Equipe
+                                                      FROM Participant_Competition_Equipe JOIN Equipe ON Participant_Competition_Equipe.Id_Equipe = Equipe.Id_Equipe
+                                                                                          JOIN Participant_Equipe On Equipe.Id_Equipe = Participant_Equipe.Id_Competiteur
+                                                      WHERE Participant_Equipe.Id_Competiteur = '.$id);
+        while ($donne = $requeteCourseEquipe->fetch(PDO::FETCH_ASSOC))
+        {
+            $courses[] = $donne;
+        }
+
         return $courses;
     }
 
@@ -322,7 +331,7 @@ class ManagerCompetiteur extends ManagerAdherent{
         $requeteId = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur WHERE Utilisateur.Mail = '.$mail);
         $donneId = $requeteId->fetch(PDO::FETCH_ASSOC);
 
-        return $this->getId($donneId['Id_Competiteur']);
+        return loadCompetiteur(array("Id"=>$donneId['Id_Competiteur']));
     }
 
     //Fonction qui retourne la liste de tous les Competiteur présents dans la BDD
@@ -334,7 +343,7 @@ class ManagerCompetiteur extends ManagerAdherent{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $competiteurs[] = $this->getId($donneId['Id_Competiteur']);
+            $competiteurs[] = loadCompetiteur(array("Id"=>$donneId['Id_Competiteur']));
         }
 
         return $competiteurs;
@@ -347,7 +356,20 @@ class ManagerCompetiteur extends ManagerAdherent{
 
       while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
       {
-          $competiteurs[] = $this->getId($donneId['Id_Competiteur']);
+          $competiteurs[] = loadCompetiteur(array("Id"=>$donneId['Id_Competiteur']));
+      }
+
+      return $competiteurs;
+    }
+
+    public function getListCategorie($categorie){
+      $competiteurs = array();
+
+      $requete = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Categorie='$categorie['Id']);
+
+      while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
+      {
+          $competiteurs[] = loadCompetiteur(array("Id"=>$donneId['Id_Competiteur']));
       }
 
       return $competiteurs;
@@ -387,7 +409,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     }
 
     // valide ou invalide la participation du competiteur a une course
-    public function ValideCourse($IdCourse,$IdCompetiteur,$Validation){
+    public function valideCourse($IdCourse,$IdCompetiteur,$Validation){
 
         $requete = $this->getDb()->prepare('UPDATE Participant_Competition_Solo SET Validation =:validation WHERE Id_Competiteur = :id_Competiteur AND Id_Course = :id_Course');
 
@@ -398,7 +420,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     }
 
     // valide ou invalide la participation du competiteur a un voyage
-    public function ValideVoyage($IdVoyage,$IdCompetiteur,$Validation){
+    public function valideVoyage($IdVoyage,$IdCompetiteur,$Validation){
         $requete = $this->getDb()->prepare('UPDATE Participe_Voyage SET Autoriser =:autoriser WHERE Id_Competiteur = :id_Competiteur AND Id_Voyage = :id_Voyage');
 
         $requete->execute(array('autoriser' => $Validation,

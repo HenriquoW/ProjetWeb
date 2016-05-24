@@ -146,4 +146,8 @@ function loadCourse($info){
     return $course;
 }
 
+function loadCourseCompetition($id){
+  return BDD::getInstance()->getManager("Course")->getList_Competition($id);
+}
+
 ?>

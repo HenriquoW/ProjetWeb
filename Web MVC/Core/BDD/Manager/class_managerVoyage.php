@@ -78,7 +78,7 @@ class ManagerVoyage extends Manager{
         $donnees['Charge'] = $this->getCharge($id);
         $donnees['Participe'] = $this->getParticipe($id);
 
-        return new Equipe($donnees);
+        return new Voyage($donnees);
     }
 
     //recupere les charge pour un voyage
@@ -128,7 +128,7 @@ class ManagerVoyage extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $voyage[] = $this->getId($donneId['Id_Voyage']);
+            $voyage[] = loadVoyage(array("Id"=>$donneId['Id_Voyage']));
         }
 
         return $voyage;
@@ -143,7 +143,7 @@ class ManagerVoyage extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $voyage[] = $this->getId($donneId['Id_Voyage']);
+            $voyage[] = loadVoyage(array("Id"=>$donneId['Id_Voyage']));
         }
 
         return $voyage;
@@ -157,7 +157,7 @@ class ManagerVoyage extends Manager{
         $requete = $this->getDb()->query('SELECT Id_Voyage FROM Voyage Where Id_Competition='.$id);
         $donneId = $requete->fetch(PDO::FETCH_ASSOC);
 
-        return $this->getID($donneId['id_Voyage']);
+        return loadVoyage(array("Id"=>$donneId['Id_Voyage']));
     }
 
     //Procédure qui met à jour un voyage donné en paramètre dans la BDD

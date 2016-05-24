@@ -13,7 +13,7 @@ class Competiteur extends Adherent{
     private $_Specialite;
     private $_Categorie;
     private $_Objectif; //tableau avec id competition pour objectif
-    private $_CourseParticipe; //tableau avec id course et statut validation dont il participe
+    private $_CourseParticipe; //tableau avec id course et statut validation dont il participe, id equipe si il participe en equipe
     private $_EquipeParticipe; //tableau avec id equipe dont il fait partit
     private $_Palmares;
     private $_VoyageParticipe;
@@ -57,6 +57,15 @@ class Competiteur extends Adherent{
 
     public function getCourseParticipe(){
         return $this->_CourseParticipe;
+    }
+
+    public function getCourseParticipeId($id){
+      foreach ($this->_CourseParticipe as $course) {
+        if($course['Id_Course'] == $id){
+          return $course;
+        }
+      }
+      return null;
     }
 
     public function getEquipeParticipe(){

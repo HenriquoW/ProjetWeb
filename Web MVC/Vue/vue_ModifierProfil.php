@@ -3,16 +3,16 @@ $response_array = array();
 
 if(isset($_COOKIE['Connect'])){
 
-  if($_SESSION['UtilisateurCourant']->asDroit("Parent") && isset($_POST['Enfant'])){
+  if($_SESSION['UtilisateurCourant']->asDroit("Parent") && isset($data['Enfant'])){
 
-    if($id = isCompetiteur($_POST['Enfant'])){
+    if($id = isCompetiteur($data['Enfant'])){
       $inf["Id"] = $id;
       $UtilisateurEnCours = loadCompetiteur($inf);
-    }else if($id = isAdherent($_POST['Enfant'])){
+    }else if($id = isAdherent($data['Enfant'])){
       $inf["Id"] = $id;
       $UtilisateurEnCours = loadAdherent($inf);
     }else{
-      $inf["Id"] = $_POST['Enfant'];
+      $inf["Id"] = $data['Enfant'];
       $UtilisateurEnCours = loadUtilisateur($înf);
     }
   }else{
@@ -20,13 +20,38 @@ if(isset($_COOKIE['Connect'])){
   }
   $ClasseUtilisateur = get_class($UtilisateurEnCours);
 
+  $listObjectif = '';
+  if($ClasseUtilisateur == 'Competiteur'){
+    foreach ($UtilisateurEnCours->getObjectif() as $objectif) {
+      $compet = loadCompetition(array("Id"=>$objectif));
+
+      $listObjectif = $listObjectif . ''.$compet->getTypeCompetition()['Nom'].'-'.$compet->getAdresse().'/n';
+    }
+  }
+
+
+  $objectif ='';
+  if($ClasseUtilisateur == 'Competiteur'){
+    $objectif = $objectif . '<label> Ajout Objectif(s) :</label>
+                              <select name="Competition" id="IdNewObjectif" readonly>';
+
+    $competitions = BDD::getInstance()->getManager("Competition")->getListEnCours();
+
+    foreach($competitions as $competition){
+      $objectif = $objectif . '<option value="'.$competition->getId_Competition().'">'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'</option>';
+    }
+
+    $objectif = $objectif . '</select>
+                              <input type="input" id="btnAddObjectif" module="AddObjectif" regionSucess="#IdObjectif" regionError="#IdObjectif" donne="Utilisateur;NewObjectif" value="Sauvegarder les modifications"';
+  }
+
   $response_array['Status'] = "Success";
   $response_array['Type'] = "Replace";
   $response_array['Donne'] = '
   <input type="hidden" name="id_Utilisateur" id="IdUtilisateur" value="'.$UtilisateurEnCours->getId_Utilisateur().'">
   <p> //Paragraphe contenant l intégralité du formulaire
     <p> //CSS Sur la gauche de l écran sous l image actuelle du  profil
-    '. (($ClasseUtilisateur == 'Competiteur') ? ('<img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
+    '. (($ClasseUtilisateur == 'Competiteur') ? ('<img src="'.$UtilisateurEnCours->getPhoto().'" alt="probleme affichage"/>
                                                 </br>
                                                 <label> Photo </label>
                                                 <input id="IdPhoto" name="photo" type="file"/>
@@ -94,7 +119,8 @@ if(isset($_COOKIE['Connect'])){
                                                                                                     <option value="Canoe"  selected="selected" >Canoe</option>
                                                                                                   </select> </br>'))
                                               .'<label> Objectif(s) :</label> </br>
-                                                <textarea id="objectif" name="objectif" type="text" rows="3" cols="20" >'.$UtilisateurEnCours->getObjectif().' </textarea> </br>')
+                                                <textarea id="IdOjectif" name="objectif" type="text" rows="3" cols="20" disabled>'.$listObjectif.' </textarea> </br>
+                                                '.$objectif.'</br>')
                                            : (''))
     .'
 

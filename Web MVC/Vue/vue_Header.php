@@ -14,24 +14,45 @@ if(isset($_COOKIE['Connect'])){
                             </ul>
                     </li>
 
-                    <li>
-                            <a>SECRÉTARIAT</a>
-                            <ul>
-                                    <li>
-                                        <ul>
-                                            <li><a>Voir</a></li>
-                                        </ul>
+                    '.
+                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Secretaire","Administrateurs")))?('<li>
+                                                                                                          <a>SECRÉTARIAT</a>
+                                                                                                          <ul>
+                                                                                                              <li><a>Voir</a></li>
+                                                                                                          </ul>
+                                                                                                        </li>')
+                                                                                                       :(''))
+                    .'
+                    '.
 
-                                    </li>
-                            </ul>
-                    </li>
+                    (($_SESSION["UtilisateurEnCours"]->asDroit("Administrateurs"))?('<li>
+                                                                                        <a>ADMINISTRATION</a>
+                                                                                        <ul>
+                                                                                            <li><a>Contenu Base</a></li>
+                                                                                            <li><a>Droit Access</a></li>
+                                                                                        </ul>
+                                                                                    </li>')
+                                                                                 :(''))
 
-                    <li>
-                            <a>ADMINISTRATION</a>
-                            <ul>
-                                <li><a>Contenu Base</a></li>
-                                <li><a>Droit Access</a></li>
-                            </ul>
+
+                    .'
+
+                    '.
+                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Competiteur","Entraineur","Secretaire","Administrateurs")))?('<li>
+                                                                                                                                        <a>Competitions</a>
+                                                                                                                                        <ul>
+                                                                                                                                    <li><a id="btnPageListeCompetition" module="PageListeCompetition" regionSucess="#body" regionError="#body">Voir Competitions</a></li>')
+                                                                                                                                   :(''))
+                    .'
+
+                    '.
+
+                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Entraineur","Administrateurs")))?('<li><a id="btnPageAjoutCompetition" module="PageAjoutCompetition" regionSucess="#body" regionError="#body"> Ajouter Compétitions</a></li>')
+                                                                                                      :(''))
+
+
+                    .'
+                      </ul>
                     </li>
 
                     <li>

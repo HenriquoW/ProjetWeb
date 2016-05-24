@@ -19,9 +19,9 @@ $nomModule = $_POST['module'];
 $xml = XML::getInstance();
 
 $actions = $xml->getListeActions($nomModule);
-$droit = $xml->getDroit($nomModule);
+$droit[] = $xml->getDroit($nomModule);
 
-if($droit=="Visiteur"){
+if(in_array("Visiteur",$droit)){
   foreach ($actions as $value) {
 
     include_once $_SERVER["RACINE"].$value;
@@ -29,9 +29,8 @@ if($droit=="Visiteur"){
 }else{
   $utilisateur = $_SESSION['UtilisateurCourant'];
 
-  if($utilisateur->asDroit($droit)){
+  if($utilisateur->asDroit($droit) || $utilisateur->asDroit("Administrateurs")){
     foreach ($actions as $value) {
-
       include_once $_SERVER["RACINE"].$value;
     }
   }else{

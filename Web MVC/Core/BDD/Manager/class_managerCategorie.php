@@ -39,6 +39,17 @@ class ManagerCategorie extends Manager{
         return $categorie;
     }
 
+    public function getNom($nom)
+    {
+        $requete = $this->getDb()->query('SELECT Id_Categorie, Nom FROM Categorie WHERE Nom = "'.$nom.'"');
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        $categorie['Id'] = $donnees['Id_Categorie'];
+        $categorie['Nom'] = $donnees['Nom'];
+
+        return $categorie;
+    }
+
     //Fonction qui retourne la liste de toutes les categorie présents dans la BDD
     public function getList()
     {

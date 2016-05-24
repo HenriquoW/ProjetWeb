@@ -84,7 +84,7 @@ if(isset($_COOKIE['Connect'])){
                                                                                                     <option value="Canoe"  selected="selected" >Canoe</option>
                                                                                                   </select> </br>'))
                                               .'<label> Objectif(s) :</label> </br>
-					                                      <textarea id="objectif" name="objectif" type="text" rows="3" cols="20" disabled>'.$UtilisateurEnCours->getObjectif().' </textarea> </br>')
+					                                      <textarea id="objectif" name="objectif" type="text" rows="3" cols="20" disabled>'.$_SESSION['Retour']['InfoObjectif'].' </textarea> </br>')
                                            : (''))
     .'
 

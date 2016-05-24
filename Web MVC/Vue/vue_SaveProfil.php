@@ -20,6 +20,24 @@ if($_SESSION['Retour'] == "ErrorExist"){
   $response_array['Stop'] = "true";
   $response_array['Region'] = $_POST['regionError'];
 
+}else if($_SESSION['Retour'] == "ErrorAdherent"){
+  $response_array['Status'] = "Error";
+  $response_array['Type'] = "Append";
+  $response_array['Donne'] = '
+    <h2>Echec.</h2>
+    <p>Vous devez renseigner votre numéro de licence.</p>';
+  $response_array['Stop'] = "true";
+  $response_array['Region'] = $_POST['regionError'];
+
+}else if($_SESSION['Retour'] == "ErrorComp"){
+  $response_array['Status'] = "Error";
+  $response_array['Type'] = "Append";
+  $response_array['Donne'] = '
+    <h2>Echec.</h2>
+    <p>Vous devez renseigner une photo et votre spécialité.</p>';
+  $response_array['Stop'] = "true";
+  $response_array['Region'] = $_POST['regionError'];
+
 }else if($_SESSION['Retour'] == "Ok"){
   $response_array['Status'] = "Success";
   $response_array['Type'] = "Alert";

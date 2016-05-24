@@ -124,22 +124,22 @@ class ManagerCourse extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $courses[] = $this->getId($donneId['Id_Course']);
+            $courses[] = loadCourse(array("Id"=>$donneId['Id_Course']));
         }
 
         return $courses;
     }
 
     //Fonction qui retourne la liste de tous les courses d'une competition présentes dans la BDD
-    public function getList_Competition($objet)
+    public function getList_Competition($id)
     {
         $courses= array();
 
-        $requete = $this->getDb()->query('SELECT Id_Course FROM Course WHERE Id_Competition ='.$objet->getId_Competition());
+        $requete = $this->getDb()->query('SELECT Id_Course FROM Course WHERE Id_Competition ='.$id);
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $courses[] = $this->getId($donneId['Id_Course']);
+            $courses[] = loadCourse(array("Id"=>$donneId['Id_Course']));
         }
 
         return $courses;

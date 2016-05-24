@@ -150,5 +150,13 @@ function loadCompetition($info){
     return $competition;
 }
 
+function loadListeCompetition($bEncours){
+  if($bEnCours){
+    return BDD::getInstance()->getManager("Competition")->getListEnCours();
+  }else{
+    return BDD::getInstance()->getManager("Competition")->getList();
+  }
+}
+
 
 ?>
