@@ -94,7 +94,7 @@ class Club_Organisateur{
 }
 
 function loadClub($info){
-    $club;
+    $club = null;
 
     if(isset($info['Id'])){
         $club = BDD::getInstance()->getManager("Club_Organisateur")->getId($info['Id']);

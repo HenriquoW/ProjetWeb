@@ -7,7 +7,7 @@ $index = 0;
 foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
   $infoCourse = $infoCourse .'<tr>
   <td>
-  <input type="hidden" name="id_course" id="IdCourse.'.$index.'" value="'.$course->getId_Course().'" readonly/>
+  <input type="hidden" name="id_course" id="IdCourse_'.$index.'" value="'.$course->getId_Course().'" readonly/>
   <input type="text" name="distance" value="'.$course->getDistance().'" readonly/><br/>
   <input type="text" name="categorie" value="'.$course->getCategorie()['Nom'].'" readonly/><br/>
   <input type="text" name="typeEmbarcation" value="'.$course->getTypeSpecialite()['Nom'].'" readonly/><br/>
@@ -25,7 +25,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
         if($_SESSION['UtilisateurCourant']->asDroit("Competiteur")){// si l'utilisateur est un competiteur
           $infoCourse = $infoCourse .'<th>Selection Equipe</th><tr>';
 
-          $infoCourse = $infoCourse .'<td><select name="Equipe" id="IdEquipe.'.$index.'" onchange="if(this.selectedIndex == 0){$(".NewEquipe").show();}else{$(".NewEquipe").hide();}" readonly>
+          $infoCourse = $infoCourse .'<td><select name="Equipe" id="IdEquipe_'.$index.'" onchange="if(this.selectedIndex == 0){$(".NewEquipe").show();}else{$(".NewEquipe").hide();}" readonly>
           <option value="New" selected="selected">Nouvelle Equipe</option>';
 
           foreach($_SESSION['UtilisateurCourant']->getEquipeParticipe() as $IdEquipe){ //prend les equipe du competiteur en cours
@@ -41,9 +41,9 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
           $competiteurs = BDD::getInstance()->getManager("Competiteur")->getListCategorie($_SESSION['UtilisateurCourant']->getCategorie());
 
-          for(int $i=1;$i<str_split($course->getTypeSpecialite()['Nom'])[1];$i++){ //on recupere le chiffre a la fin du type ex: K2 et on ajoute les combobox
+          for($i=1;$i<str_split($course->getTypeSpecialite()['Nom'])[1];$i++){ //on recupere le chiffre a la fin du type ex: K2 et on ajoute les combobox
 
-            $infoCourse = $infoCourse .'<td><select class="NewEquipe" id="IdParticipant'.$i.'.'.$index.'"readonly>';
+            $infoCourse = $infoCourse .'<td><select class="NewEquipe" id="IdParticipant'.$i.'_'.$index.'"readonly>';
 
             foreach($competiteurs as $competiteur){// on remplit les combobox avec les competiteurs de la meme categorie
               $infoCourse = $infoCourse .'<option value="'.$competiteur->getId_Competiteur().'">'.$competiteur->getPrenom().' '.$competiteur->getNom().'</option>';
@@ -52,7 +52,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
             $infoCourse = $infoCourse .'</select></td>';
             unset($competiteurs);
 
-            $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course.'.$index.';Equipe.'.$index.';Participant1.'.$index.';Participant2.'.$index.';Participant3.'.$index.'" value="Inscrire"/></td></tr>';
+            $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_'.$index.';Equipe_'.$index.';Participant1_'.$index.';Participant2_'.$index.';Participant3_'.$index.'" value="Inscrire"/></td></tr>';
 
           }
         }
@@ -62,7 +62,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
           $IdEnfants = $_SESSION['UtilisateurCourant']->getParente()['Enfant'];
 
-          $infoCourse = $infoCourse .'<td><select name="Enfant" id="IdEnfant.'.$index.'" readonly>';
+          $infoCourse = $infoCourse .'<td><select name="Enfant" id="IdEnfant_'.$index.'" readonly>';
 
           foreach($IdEnfants as $IdEnfant){ // on prend tous ces enfants
 
@@ -78,9 +78,9 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
           $competiteurs = BDD::getInstance()->getManager("Competiteur")->getListMineur();
 
-          for(int $i=1;$i<str_split($course->getTypeSpecialite()['Nom'])[1];$i++){ //on recupere le chiffre a la fin du type ex: K2 et on ajoute les combobox
+          for($i=1;$i<str_split($course->getTypeSpecialite()['Nom'])[1];$i++){ //on recupere le chiffre a la fin du type ex: K2 et on ajoute les combobox
 
-            $infoCourse = $infoCourse .'<td><select class="NewEquipe" id="IdParticipantEnfant'.$i.'.'.$index.'"readonly>';
+            $infoCourse = $infoCourse .'<td><select class="NewEquipe" id="IdParticipantEnfant'.$i.'_'.$index.'"readonly>';
 
             foreach($competiteurs as $competiteur){// on remplit les combobox avec les competiteurs de la meme categorie
               $infoCourse = $infoCourse .'<option value="'.$competiteur->getId_Competiteur().'">'.$competiteur->getPrenom().' '.$competiteur->getNom().'</option>';
@@ -90,7 +90,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
           }
           unset($competiteurs);
 
-          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course.'.$index.';Enfant.'.$index.';ParticipantEnfant1.'.$index.';ParticipantEnfant2.'.$index.';ParticipantEnfant3.'.$index.'" value="Inscrire"/></td></tr>';
+          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_'.$index.';Enfant_'.$index.';ParticipantEnfant1_'.$index.';ParticipantEnfant2_'.$index.';ParticipantEnfant3_'.$index.'" value="Inscrire"/></td></tr>';
         }
 
         if($_SESSION['UtilisateurCourant']->asDroit("Entraineur")){
@@ -104,8 +104,8 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
             $infoCourse = $infoCourse .'<td>'.$equipe->getNom().'</td>';
 
             if(!$IdParticipant['Validation']){
-              $infoCourse = $infoCourse .'<td><input type="hidden" name="id_equipeValider" id="IdEquipeValider'.$i.'.'.$index.'" value="'.$equipe->getId_Equipe().'" readonly/>';
-              $infoCourse = $infoCourse .'<input type="input" name="Validation" id="btnValidationEquipe" module="ValidationEquipe;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course."'.$index.';EquipeValider'.$i.'.'.$index.'</td>';
+              $infoCourse = $infoCourse .'<td><input type="hidden" name="id_equipeValider" id="IdEquipeValider_'.$i.'_'.$index.'" value="'.$equipe->getId_Equipe().'" readonly/>';
+              $infoCourse = $infoCourse .'<input type="input" name="Validation" id="btnValidationEquipe" module="ValidationEquipe;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_"'.$index.';EquipeValider_'.$i.'_'.$index.'</td>';
             }else{
                 $infoCourse = $infoCourse .'<td>Valider</td>';
             }
@@ -122,7 +122,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
           $IdEnfants = $_SESSION['UtilisateurCourant']->getParente()['Enfant'];
 
-          $infoCourse = $infoCourse .'<td><select name="Enfant" id="IdEnfant.'.$index.'" readonly>';
+          $infoCourse = $infoCourse .'<td><select name="Enfant" id="IdEnfant_'.$index.'" readonly>';
 
           foreach($IdEnfants as $IdEnfant){ // on prend tous ces enfants
 
@@ -136,12 +136,12 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
           $infoCourse = $infoCourse .'</select></td>';
 
-          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course.'.$index.';Enfant.'.$index.'" value="Inscrire"/></td></tr>';
+          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_'.$index.';Enfant_'.$index.'" value="Inscrire"/></td></tr>';
 
         }
 
         if($_SESSION['UtilisateurCourant']->asDroit("Competiteur")){
-          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course.'.$index.'" value="Inscrire"/></td>>';
+          $infoCourse = $infoCourse .'<td><input type="input" name="Inscrit" id="btnInscritCourse" module="InscriptionCourse;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_'.$index.'" value="Inscrire"/></td>>';
         }
 
         if($_SESSION['UtilisateurCourant']->asDroit("Entraineur")){
@@ -155,8 +155,8 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
             $infoCourse = $infoCourse .'<td>'.$comp->getNom().'</td>';
 
             if(!$IdParticipant['Validation']){
-              $infoCourse = $infoCourse .'<td><input type="hidden" name="id_competiteureValider" id="IdCompetiteurValider'.$i.'.'.$index.'" value="'.$comp->getId_Competiteur().'" readonly/>';
-              $infoCourse = $infoCourse .'<input type="input" name="Validation" id="btnValidationCompetiteur" module="ValidationCompetiteur;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course."'.$index.';CompetiteurValider'.$i.'.'.$index.'</td>';
+              $infoCourse = $infoCourse .'<td><input type="hidden" name="id_competiteureValider" id="IdCompetiteurValider_'.$i.'_'.$index.'" value="'.$comp->getId_Competiteur().'" readonly/>';
+              $infoCourse = $infoCourse .'<input type="input" name="Validation" id="btnValidationCompetiteur" module="ValidationCompetiteur;PageCompetition" regionSucess="#competition" regionError="#competition" donne="Competition;Course_"'.$index.';CompetiteurValider_'.$i.'_'.$index.'</td>';
             }else{
                 $infoCourse = $infoCourse .'<td>Valider</td>';
             }
@@ -177,6 +177,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 $infoVoyage = '<tr><th>Informations Voyage</th>';
 $voyage = loadVoyageCompetition($competition->getId_Competition());
 
+if($voyage!=null){
 $infoVoyage = $infoVoyage .'<tr>
 <td>'.$voyage->getTransport().'</td>
 <td>'.$voyage->getHebergement().'</td>
@@ -212,10 +213,11 @@ foreach ($voyage->getCharge() as $infoCharge){
   <td>'.$infoCharge['Role']['Nom'].'</td>
   <td>'.$infoCharge['Tache']['Nom'].'</td></tr>';
 }
-
+}
 
 $res['Course'] = $infoCourse;
 $res['Voyage'] = $infoVoyage;
+$res['Competition'] = $competition;
 
 $_SESSION['Retour'] = $res;
 

@@ -8,8 +8,8 @@ if(isset($_COOKIE['Connect'])){
   $repAccueil['Status'] = "Success";
   $repAccueil['Type'] = "Replace";
   $repAccueil['Donne'] = '
-  <p> //Paragraphe contenant l intégralité du formulaire
-    <p> //CSS Sur la gauche de l écran sous l image actuelle du  profil
+  <p> <!--Paragraphe contenant l intégralité du formulaire-->
+    <p> <!--CSS Sur la gauche de l écran sous l image actuelle du  profil-->
     '. (($ClasseUtilisateur == 'Competiteur') ? ('<img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
                                                 </br>
                                                 <label> Photo </label>
@@ -25,7 +25,7 @@ if(isset($_COOKIE['Connect'])){
     .'
     </p>
 
-    <p>// Centré avec les valeurs actuelles des champs pré-rempli (utiliser value="")
+    <p><!-- Centré avec les valeurs actuelles des champs pré-rempli (utiliser value="")-->
       <label> Nom :</label>
   	      	<input id="IdNom" name="nom" value="'.$UtilisateurEnCours->getNom().'" type="text" disabled/> <br/>
   		<label> Prenom :</label>

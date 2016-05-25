@@ -145,6 +145,10 @@ class ManagerUtilisateur extends Manager{
 
         while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
         {
+	    $enfant = array();
+	    $enfant["Enfant"] = array();
+	    $enfant["Parent"] = array();
+
             $enfant["Enfant"] = $donne['Id_Enfant'];
 
             $requeteParent = $this->getDb()->query('SELECT Id_Parent FROM Parente WHERE Id_Enfant = '.$donne['Id_Enfant']);
@@ -172,7 +176,7 @@ class ManagerUtilisateur extends Manager{
 
         while ($donnees = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $utilisateurs[] = $this->getId($donnees['Id_Utilisateur']);
+            $utilisateurs[] = loadUtilisateur(array("Id" => $donnees['Id_Utilisateur']));
         }
 
         return $utilisateurs;

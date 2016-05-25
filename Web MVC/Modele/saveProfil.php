@@ -3,35 +3,35 @@
 $UtilisateurEnCours;
 $error = false;
 
-if($id = isCompetiteur($_POST['Utilisateur'])){
+if($id = isCompetiteur($data['Utilisateur'])){
   $inf["Id"] = $id;
   $UtilisateurEnCours = loadCompetiteur($inf);
-}else if($id = isAdherent($_POST['Utilisateur'])){
+}else if($id = isAdherent($data['Utilisateur'])){
   $inf["Id"] = $id;
   $UtilisateurEnCours = loadAdherent($inf);
 }else{
-  $inf["Id"] = $_POST['Utilisateur'];
-  $UtilisateurEnCours = loadUtilisateur($înf);
+  $inf["Id"] = $data['Utilisateur'];
+  $UtilisateurEnCours = loadUtilisateur($inf);
 }
 
 $ClasseUtilisateur = get_class($UtilisateurEnCours);
 
 if($ClasseUtilisateur=='Adherent' || $ClasseUtilisateur=='Competiteur'){
-  $UtilisateurEnCours->setNumeroLicence($_POST['NumLicence']);
+  $UtilisateurEnCours->setNumeroLicence($data['NumLicence']);
 
-}else if(isset($_POST['NumLicence'])){
-  $donneesAd['NumeroLicence'] = $_POST['NumLicence'];
+}else if(isset($data['NumLicence']) && $data['NumLicence']!=""){
+  $donneesAd['NumeroLicence'] = $data['NumLicence'];
   $UtilisateurEnCours = new Adherent(null,$UtilisateurEnCours,$donneesAd);
 }
 
 if($ClasseUtilisateur=='Competiteur'){
-  $UtilisateurEnCours->setPhoto($_POST['Photo']);
-  $UtilisateurEnCours->setSpecialite($_POST['Specialite']);
+  $UtilisateurEnCours->setPhoto($data['Photo']);
+  $UtilisateurEnCours->setSpecialite($data['Specialite']);
 
 }else if($ClasseUtilisateur='Adherent'){
-  if(isset($_POST['Photo']) && isset($_POST['Specialite'])){
-    $donneesComp['Photo'] = $_POST['Photo'];
-    $donneesComp['Specialite'] = $_POST['Specialite'];
+  if(isset($data['Photo']) && isset($data['Specialite'])){
+    $donneesComp['Photo'] = $data['Photo'];
+    $donneesComp['Specialite'] = $data['Specialite'];
 
     $AgeUser = $UtilisateurEnCours->getDateNaissance()->diff(new DateTime())->format('Y');
     $categorie;
@@ -70,39 +70,39 @@ if($ClasseUtilisateur=='Competiteur'){
   $_SESSION['Retour'] = "ErrorAdherent";
 }
 
-$UtilisateurEnCours->setNom($_POST['Nom']);
+$UtilisateurEnCours->setNom($data['Nom']);
 
-$UtilisateurEnCours->setPrenom($_POST['Prenom']);
+$UtilisateurEnCours->setPrenom($data['Prenom']);
 
-$UtilisateurEnCours->setSexe($_POST['Sexe']);
+$UtilisateurEnCours->setSexe($data['Sexe']);
 
-$UtilisateurEnCours->setTelephone($_POST['Telephone']);
+$UtilisateurEnCours->setTelephone($data['Telephone']);
 
-$UtilisateurEnCours->setAdresse($_POST['Adresse']);
+$UtilisateurEnCours->setAdresse($data['Adresse']);
 
 $date = $data["Annee"]."-".$data["Mois"]."-".$data["Jour"];
 
 $UtilisateurEnCours->setDateNaissance(new DateTime($date));
 
-if($_POST['Mail']!=$UtilisateurEnCours->getMail()){
-  $info["Mail"] = $_POST['Mail'];
+if($data['Mail']!=$UtilisateurEnCours->getMail()){
+  $info["Mail"] = $data['Mail'];
   $utilisateur = loadUtilisateur($info);
 
   if(isset($utilisateur)){
     $_SESSION['Retour'] = "ErrorExist";
     $error = true;
   }else{
-    $UtilisateurEnCours->setMail($_POST['Mail']);
+    $UtilisateurEnCours->setMail($data['Mail']);
   }
 }
 
-if(isset($_POST["Password1"])){
-  if(isset($_POST["Password2"]){
-    if($_POST["Password1"]!=$_POST["Password2"]){
+if(isset($data["Password1"])){
+  if(isset($data["Password2"])){
+    if($data["Password1"]!=$data["Password2"]){
       $_SESSION['Retour'] = "ErrorPass";
       $error = true;
     }else{
-      $UtilisateurEnCours->setPassword(sha1(htmlspecialchars($_POST['Password1'])));
+      $UtilisateurEnCours->setPassword(sha1(htmlspecialchars($data['Password1'])));
     }
   }else{
       $_SESSION['Retour'] = "ErrorPass";

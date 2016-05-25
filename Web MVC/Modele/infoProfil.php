@@ -1,5 +1,5 @@
 <?php
-
+if(isset($_COOKIE['Connect'])){
 $UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
 $ClasseUtilisateur = get_class($UtilisateurEnCours);
 
@@ -63,18 +63,19 @@ if(getdate()['year'] - $UtilisateurEnCours->getDateNaissance()->format('Y') < '1
 }
 
 $TableauResultat=$UtilisateurEnCours->getParente();
-$TableauIDEnfant=$TableauResultat['Enfant'];
-
 $infoEnfant = '';
-foreach($TableauIDEnfant as $IDEnfant)
-{
-	$Enfant=loadUtilisateur($IDEnfant);
-	$infoEnfant = $infoEnfant.'<label> Enfant '.$NbEnfant.' </label> <br/>
-		<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="'.$Enfant->getPrenom().' '.$Enfant->getNom().'" type="text" disabled/>
-    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$IDEnfant.'">
-		<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
-		<br/> <br/>
-	';
+
+if(isset($TableauResultat['Enfant'])){
+	$TableauIDEnfant=$TableauResultat['Enfant'];
+	foreach($TableauIDEnfant as $IDEnfant){
+		$Enfant=loadUtilisateur($IDEnfant);
+		$infoEnfant = $infoEnfant.'<label> Enfant '.$NbEnfant.' </label> <br/>
+			<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="'.$Enfant->getPrenom().' '.$Enfant->getNom().'" type="text" disabled/>
+	    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$IDEnfant.'">
+			<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
+			<br/> <br/>
+		';
+	}
 }
 
 
@@ -85,5 +86,5 @@ $retour['InfoObjectif'] = $infoObjectif;
 
 $_SESSION['Retour'] = $retour;
 
-
+}
 ?>

@@ -365,7 +365,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     public function getListCategorie($categorie){
       $competiteurs = array();
 
-      $requete = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Categorie='$categorie['Id']);
+      $requete = $this->getDb()->query('SELECT Id_Competiteur FROM Competiteur WHERE Id_Categorie='.$categorie['Id']);
 
       while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
       {

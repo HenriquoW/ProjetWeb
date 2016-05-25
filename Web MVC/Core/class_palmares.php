@@ -101,7 +101,7 @@ class Palmares{
 }
 
 function loadPalmares($info){
-    $palmares;
+    $palmares = null;
 
     if(isset($info['Id'])){
         $palmares = BDD::getInstance()->getManager("Palmares")->getId($info['Id']);

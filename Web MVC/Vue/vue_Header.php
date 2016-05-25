@@ -14,18 +14,10 @@ if(isset($_COOKIE['Connect'])){
                             </ul>
                     </li>
 
-                    '.
-                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Secretaire","Administrateurs")))?('<li>
-                                                                                                          <a>SECRÉTARIAT</a>
-                                                                                                          <ul>
-                                                                                                              <li><a>Voir</a></li>
-                                                                                                          </ul>
-                                                                                                        </li>')
-                                                                                                       :(''))
-                    .'
+                    
                     '.
 
-                    (($_SESSION["UtilisateurEnCours"]->asDroit("Administrateurs"))?('<li>
+                    (($_SESSION["UtilisateurCourant"]->asDroit("Administrateurs"))?('<li>
                                                                                         <a>ADMINISTRATION</a>
                                                                                         <ul>
                                                                                             <li><a>Contenu Base</a></li>
@@ -38,7 +30,7 @@ if(isset($_COOKIE['Connect'])){
                     .'
 
                     '.
-                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Competiteur","Entraineur","Secretaire","Administrateurs")))?('<li>
+                    (($_SESSION["UtilisateurCourant"]->asDroit(array("Competiteur","Entraineur","Secretaire","Administrateurs")))?('<li>
                                                                                                                                         <a>Competitions</a>
                                                                                                                                         <ul>
                                                                                                                                     <li><a id="btnPageListeCompetition" module="PageListeCompetition" regionSucess="#body" regionError="#body">Voir Competitions</a></li>')
@@ -47,16 +39,23 @@ if(isset($_COOKIE['Connect'])){
 
                     '.
 
-                    (($_SESSION["UtilisateurEnCours"]->asDroit(array("Entraineur","Administrateurs")))?('<li><a id="btnPageAjoutCompetition" module="PageAjoutCompetition" regionSucess="#body" regionError="#body"> Ajouter Compétitions</a></li>')
+                    (($_SESSION["UtilisateurCourant"]->asDroit(array("Entraineur","Administrateurs")))?('<li><a id="btnPageAjoutCompetition" module="PageAjoutCompetition" regionSucess="#body" regionError="#body"> Ajouter Compétitions</a></li>')
                                                                                                       :(''))
 
 
                     .'
-                      </ul>
-                    </li>
 
+		    '.
+		    (($_SESSION["UtilisateurCourant"]->asDroit(array("Entraineur","Administrateurs","Secretaire","Competiteur")))?('</ul>
+                    </li>')
+                                                                                                      :(''))
+
+		    .'	
+                      
                     <li>
+			
                             <a id="btnDeconnexion" module="Deconnexion;Accueil;Header" regionSucess="#body;#body;#header" regionError="#body;#body;#header">Deconnexion</a>
+			
                     </li>
 
                 </ul>

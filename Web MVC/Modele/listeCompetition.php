@@ -3,12 +3,13 @@
 $res = '';
 
 $competitions = loadListeCompetition(true);
+
 $index =0;
 foreach($competitions as $competition){
 
   $res = $res .'<tr>
                 <td>
-                  <input type="hidden" name="id_Competition" id="IdCompetition.'.$index.'" value="'.$competition->getId_Competition().'">
+                  <input type="hidden" name="id_Competition" id="IdCompetition_'.$index.'" value="'.$competition->getId_Competition().'">
                 </td>
                 <td>
                   <input type="text" placeholder="" name="nom" id="IdNom" value="'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'" readonly/>
@@ -22,11 +23,11 @@ foreach($competitions as $competition){
                   <input type="text" placeholder="" name="nomClub" id="IdNomClub" value="'.$competition->getClub()->getNom().'" readonly/>
                 </td>
                 <td>
-                  <input type="submit" id="btnDetailCompetition" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition.'.$index.'" value="Details"/>
+                  <input type="submit" id="btnDetailCompetition" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Details"/>
                 ';
 
-  if($_SESSION['UtilisateurEnCours']->asDroit(array("Entraineur","Secretaire"))){
-    $res = $res .'<input type="submit" id="btnModifierCompetition" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition.'.$index.'" value="Modifier"/>';
+  if($_SESSION['UtilisateurCourant']->asDroit(array("Entraineur","Secretaire"))){
+    $res = $res .'<input type="submit" id="btnModifierCompetition" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier"/>';
   }
 
   $res = $res .'</td></tr>';

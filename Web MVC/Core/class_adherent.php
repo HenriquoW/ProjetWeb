@@ -98,14 +98,14 @@ class Adherent extends Utilisateur{
 
 function loadAdherent($info){
 
-    $adherent;
+    $adherent = null;
 
     if(isset($info['Id'])){
         $adherent = BDD::getInstance()->getManager("Adherent")->getId($info['Id']);
     }else{
         $adherent = BDD::getInstance()->getManager("Adherent")->getMail($info['Mail']);
     }
-
+if($adherent!=null){
     //recupere message
     $adherent->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($adherent->getId_Utilisateur()));
 
@@ -121,7 +121,7 @@ function loadAdherent($info){
     }
     $adherent->setDroit($droits);
 
-
+}
     return $adherent;
 }
 

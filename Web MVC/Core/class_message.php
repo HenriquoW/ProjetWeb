@@ -113,7 +113,7 @@ class Message{
 }
 
 function loadMessage($info){
-    $message;
+    $message = null;
 
     if(isset($info['Id'])){
         $message = BDD::getInstance()->getManager("Message")->getId($info['Id']);

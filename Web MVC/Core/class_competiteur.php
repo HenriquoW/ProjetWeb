@@ -161,14 +161,14 @@ class Competiteur extends Adherent{
 
 function loadCompetiteur($info){
 
-    $competiteur;
+    $competiteur = null;
 
     if(isset($info['Id'])){
         $competiteur = BDD::getInstance()->getManager("Competiteur")->getId($info['Id']);
     }else{
         $competiteur = BDD::getInstance()->getManager("Competiteur")->getMail($info['Mail']);
     }
-
+if($competiteur!=null){
     //recupere specialite (id,nom)
     $competiteur->setSpecialite(BDD::getInstance()->getManager("Specialite")->getId($competiteur->getSpecialite()));
 
@@ -201,7 +201,7 @@ function loadCompetiteur($info){
         $droits[] = $droit;
     }
     $competiteur->setDroit($droits);
-
+}
     return $competiteur;
 }
 

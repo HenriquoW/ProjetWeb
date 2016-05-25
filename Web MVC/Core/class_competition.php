@@ -48,7 +48,7 @@ class Competition{
     }
 
     public function getTypeCompetition(){
-        return $this->_Type_Competition;
+        return $this->_TypeCompetition;
     }
 
     public function getSexe(){
@@ -131,12 +131,12 @@ class Competition{
 }
 
 function loadCompetition($info){
-    $competition;
+    $competition=null;
 
     if(isset($info['Id'])){
         $competition = BDD::getInstance()->getManager("Competition")->getId($info['Id']);
     }
-
+if($competition!=null){
     //recupere sexe (id,type)
     $competition->setSexe(BDD::getInstance()->getManager("Sexe")->getId($competition->getSexe()));
 
@@ -146,11 +146,11 @@ function loadCompetition($info){
     //recupre club organisateur
     $info['Id'] = $competition->getClub();
     $competition->setClub(loadClub($info));
-
+}
     return $competition;
 }
 
-function loadListeCompetition($bEncours){
+function loadListeCompetition($bEnCours){
   if($bEnCours){
     return BDD::getInstance()->getManager("Competition")->getListEnCours();
   }else{

@@ -103,8 +103,9 @@ if(isset($_COOKIE['Connect'])){
 
     '.
     (($ClasseUtilisateur == 'Adherent' || $ClasseUtilisateur == 'Competiteur') ? ('<label> N° Licence </label>
-                                                                                             <input id="IdNumLicence" name="num_licence" type="number" disabled="disabled" value="'.$UtilisateurEnCours->getNumeroLicence().'"/> <br/>')
-                                                                                          : (''))
+                                                                                             <input id="IdNumLicence" name="num_licence" type="number"  value="'.$UtilisateurEnCours->getNumeroLicence().'"/> <br/>')
+                                                                                          : ('<label> N° Licence </label>
+                                                                                             <input id="IdNumLicence" name="num_licence" type="number"  value=""/> <br/>'))
     .'
 
     '.

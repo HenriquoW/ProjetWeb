@@ -137,7 +137,7 @@ class ManagerCompetition extends Manager{
     {
         $competitions= array();
 
-        $requete = $this->getDb()->query('SELECT Id_Competition FROM Competition WHERE CURRENT_DATE>Competition.DateCompetition');
+        $requete = $this->getDb()->query('SELECT Id_Competition FROM Competition WHERE CURRENT_DATE<Competition.DateCompetition');
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {

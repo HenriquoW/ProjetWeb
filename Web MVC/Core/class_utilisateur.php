@@ -265,7 +265,7 @@ function loadUtilisateur($info){
         $utilisateur = BDD::getInstance()->getManager("Utilisateur")->getMail($info['Mail']);
     }
 
-    if(isset($utilisateur)){
+    if($utilisateur!=null){
       //recupere message
       $utilisateur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($utilisateur->getId_Utilisateur()));
 

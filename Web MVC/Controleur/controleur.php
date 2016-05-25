@@ -19,7 +19,7 @@ $nomModule = $_POST['module'];
 $xml = XML::getInstance();
 
 $actions = $xml->getListeActions($nomModule);
-$droit[] = $xml->getDroit($nomModule);
+$droit = $xml->getDroit($nomModule);
 
 if(in_array("Visiteur",$droit)){
   foreach ($actions as $value) {

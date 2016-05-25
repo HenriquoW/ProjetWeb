@@ -111,15 +111,15 @@ class Equipe{
 }
 
 function loadEquipe($info){
-    $equipe;
+    $equipe = null;
 
     if(isset($info['Id'])){
         $equipe = BDD::getInstance()->getManager("Equipe")->getId($info['Id']);
     }
-
+if($equipe!=null){
     //recupere le type le TypeSpecialite
     $equipe->setTypeSpecialite(BDD::getInstance()->getManager("Type_Specialite")->getId($equipe->getTypeSpecialite()));
-
+}
     return $equipe;
 }
 

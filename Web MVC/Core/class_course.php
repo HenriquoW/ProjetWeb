@@ -131,18 +131,18 @@ class Course{
 }
 
 function loadCourse($info){
-    $course;
+    $course = null;
 
     if(isset($info['Id'])){
         $course = BDD::getInstance()->getManager("Course")->getId($info['Id']);
     }
-
+if($course!=null){
     //recupere categorie (id,nom)
     $course->setCategorie(BDD::getInstance()->getManager("Categorie")->getId($course->getCategorie()));
 
     //recupere type specialite (id,nom)
     $course->setTypeSpecialite(BDD::getInstance()->getManager("Type_Specialite")->getId($course->getTypeSpecialite()));
-
+}
     return $course;
 }
 
