@@ -54,7 +54,7 @@ class ManagerClub_Organisateur extends Manager{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $club_organisateurs[] = $this->getId($donneId['Id_Club_Organisateur']);
+            $club_organisateurs[] = loadClub(array("Id"=>$donneId['Id_Club_Organisateur']));
         }
 
         return $club_organisateurs;

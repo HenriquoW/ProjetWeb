@@ -24,7 +24,11 @@ function initialiser()
 		'btnAddObjectif' : Action,
 		'btnInscritCourse' : Action,
 		'btnValidationCompetiteur' : Action,
-		'btnValidationEquipe' : Action
+		'btnValidationEquipe' : Action,
+		'btnAjouterCourse' : Action,
+		'btnSaveCourse' : Action,
+		'btnSupprimerCourse' : Action,
+		'btnAjouterCompetition' : Action
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page

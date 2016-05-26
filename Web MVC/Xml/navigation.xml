@@ -3,7 +3,6 @@
 
   <module droit="Visiteur">
     <nom>Accueil</nom>
-    <action>/Modele/infoProfil.php</action>
     <action>/Vue/vue_Accueil.php</action>
   </module>
 
@@ -74,24 +73,51 @@
 
   <module droit="Competiteur;Entraineur;Parent;Secretaire">
     <nom>PageListeCompetition</nom>
-    <action>/Modele/listeCompetition.php</action>
     <action>/Vue/vue_PageListeCompetition.php</action>
   </module>
 
   <module droit="Competiteur;Entraineur;Parent;Secretaire">
     <nom>PageCompetition</nom>
-    <action>/Modele/infoCompetition.php</action>
     <action>/Vue/vue_PageCompetition.php</action>
   </module>
 
   <module droit="Entraineur">
-    <nom>PageModifierCompetition</nom>
-    <action>/Vue/vue_PageModifierCompetition.php</action>
+    <nom>ModifierCompetition</nom>
+    <action>/Vue/vue_ModifierCompetition.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>SaveCourse</nom>
+    <action>/Modele/saveCourse.php</action>
+    <action>/Vue/vue_SaveCourse.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>AjouterCourse</nom>
+    <action>/Modele/ajouterCourse.php</action>
+    <action>/Vue/vue_AjouterCourse.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>SupprimerCourse</nom>
+    <action>/Modele/supprimerCourse.php</action>
+    <action>/Vue/vue_SupprimerCourse.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>ModifierCompetition</nom>
+    <action>/Vue/vue_ModifierCompetition.php</action>
   </module>
 
   <module droit="Entraineur">
     <nom>PageAjoutCompetition</nom>
     <action>/Vue/vue_PageAjoutCompetition.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>AjouterCompetition</nom>
+    <action>/Modele/ajouterCompetition.php</action>
+    <action>/Vue/vue_AjouterCompetition.php</action>
   </module>
 
   <module droit="Adherent">

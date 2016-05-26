@@ -1,7 +1,7 @@
 body
 {
 	margin:0;
-	background-image: url(images/cross_white.png);
+	background-image: url(../images/cross_white.png);
 	background-repeat:repeat;
 	font-family: 'Roboto', sans-serif;
 }
@@ -12,17 +12,23 @@ h2
 	padding-bottom:10px;
 	border-bottom: 1px dashed #3E3E3E;
 	margin-top:0;
+	padding-top:30px;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
 {
 	-webkit-box-shadow: 0 0 0px 1000px rgb(155,157,158) inset;
-    -webkit-text-fill-color: #a9a9a9 !important;
+    -webkit-text-fill-color: #a9a9a9 !important;
 }
 
 /****************************************/
 /*                DESIGN
 /****************************************/
+label
+{
+
+}
+
 .horizontal_separator
 {
 	width:100%;
@@ -40,7 +46,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
 	position: absolute;
 }
 
-form input[type="submit"]
+input[type="submit"]
 {
     background-image: -webkit-linear-gradient(45deg,rgba(54,63,154,1) 0,rgba(0,162,221,1) 100%);
     transition: background-color 1s;
@@ -66,6 +72,8 @@ form input[type="submit"]
     transition: all 0.3s ease-in-out;
 
     border: 2px outset buttonface;
+
+    margin-bottom:50px;
 }
 
 input[type="submit"]
@@ -77,12 +85,12 @@ input[type="submit"]
     transition: all 0.3s ease-in-out;
 }
 
-form input[type="submit"]:hover
+input[type="submit"]:hover
 {
 	box-shadow: 0 0 4px 2px RGBA(74,63,154,1);
 }
 
-form input[type="submit"]:disabled
+input[type="submit"]:disabled
 {
 	background:#ccc;
 	-webkit-transition: all 0.3s ease-in-out;
@@ -92,10 +100,36 @@ form input[type="submit"]:disabled
     transition: all 0.3s ease-in-out;
 }
 
-form input[type="submit"]:disabled:hover
+input[type="submit"]:disabled:hover
 {
 	cursor:default;
 	box-shadow: 0 0 4px 1px black;
+}
+
+input[type="password"], input[type="email"], input[type="text"], input[type="number"], select, #idTelephone, textarea
+{
+    transition: background-color 1s;
+
+    border-radius: 2px;
+    box-shadow: 0 0 2px 1px black;
+
+    color: black;
+    font-size: 14px;
+
+    padding-left:5px;
+    padding-right:5px;
+    padding-bottom:2px;
+    padding-top:2px;
+    margin-left:10px;
+    margin-top:10px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+    border: 2px outset buttonface;
 }
 
 /****************************************/
@@ -187,78 +221,11 @@ form input[type="submit"]:disabled:hover
 
 	margin-right:2%;
 }
-/*
-.div_header_onglets .row div
-{
-	-webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    -ms-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
-}
-.div_header_onglets .row div:hover
-{
-	cursor:pointer;
-	border-radius: 5px;
-    border: 3px outset buttonface;
-	background: RGBA(74,63,154,1);
 
-    -moz-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	-webkit-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	-o-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	-webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    -ms-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-    text-shadow: 2px 1px 2px black;
-}
-.div_header_onglets .row div:active
-{
-	border: 3px inset buttonface;
-	-webkit-transition: all 0s ease-in-out;
-    -moz-transition: all 0s ease-in-out;
-    -o-transition: all 0s ease-in-out;
-    -ms-transition: all 0s ease-in-out;
-    transition: all 0s ease-in-out;
-}
-.div_header_onglets .row a
-{
-	color:white;
-}
-.div_header_onglets .row a:hover
-{
-	color:white;
-}
-.actif
-{
-	background: RGBA(74,63,154,1);
-	border: 3px outset buttonface;
-    border-radius: 5px;
-    text-shadow: 2px 1px 2px black;
-}
-.div_header_onglets .row .actif
-{
-	color:white;
-	-moz-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	-webkit-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	-o-box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-	box-shadow: 0.5px 0.5px 0.5px 0.5px rgba(24,23,54,1);
-}
-.img_header_separator
-{
-	height:50px;
-	width:1px;
-	display: inline-block;
-	vertical-align: top;
-	margin-top:15px;
-}
-*/
 
 /************** NEW ******************/
 
-#menu, #menu ul /* Liste */
+#menu, #menu ul /* Liste */     
 {
         padding : 0; /* pas de marge intérieure */
         margin : 0; /* ni extérieure */
@@ -278,7 +245,7 @@ form input[type="submit"]:disabled:hover
 {
         display : block; /* on change le type d'élément, les liens deviennent des balises de type block */
         padding : 0; /* aucune marge intérieure */
-        background : #000; /* couleur de fond */
+        background : #000; /* couleur de fond */        
         color : #fff; /* couleur du texte */
         text-decoration : none; /* on supprime le style par défaut des liens (la plupart du temps = souligné) */
         width : 160px; /* largeur */
@@ -301,7 +268,7 @@ form input[type="submit"]:disabled:hover
 
 		background: RGBA(74,63,154,1);
 		border: 3px outset buttonface;
-	    border-radius: 5px;
+	    border-radius: 5px;   
 
 	    -webkit-transition: all 0.1s ease-in-out;
 	    -moz-transition: all 0.1s ease-in-out;
@@ -320,9 +287,9 @@ form input[type="submit"]:disabled:hover
     transition: all 0.3s ease-in-out;
 }
 
-#menu li /* Elements des listes */
-{
-        float : left;
+#menu li /* Elements des listes */      
+{ 
+        float : left; 
         /* pour IE qui ne reconnaît pas "transparent" */
         border-right : 1px solid #fff; /* on met une bordure blanche à droite de chaque élément */
         -webkit-transition: all 0.3s ease-in-out;
@@ -332,8 +299,8 @@ form input[type="submit"]:disabled:hover
 	    transition: all 0.3s ease-in-out;
 }
 
-#menu li:hover, #menu ul:hover /* Elements des listes */
-{
+#menu li:hover, #menu ul:hover /* Elements des listes */      
+{ 
         -webkit-transition: all 0.3s ease-in-out;
 	    -moz-transition: all 0.3s ease-in-out;
 	    -o-transition: all 0.3s ease-in-out;
@@ -352,7 +319,7 @@ html>body #menu li
 }
 
 #menu li ul /* Sous-listes */
-{
+{ 
         position: absolute; /* Position absolue */
         width: 144px; /* Largeur des sous-listes */
         left: -999em; /* Hop, on envoie loin du champ de vision */
@@ -390,7 +357,7 @@ html>body #menu li
 	overflow: hidden;
 }
 
-.carousel-inner > .item > img, .carousel-inner > .item > a > img
+.carousel-inner > .item > img, .carousel-inner > .item > a > img 
 {
 	margin: auto;
 	margin-top:auto;
@@ -407,7 +374,7 @@ html>body #menu li
 }
 
 .div_index_map iframe
-{
+{ 
 	width:80%;
 }
 
@@ -455,7 +422,6 @@ html>body #menu li
 {
 	display: inline-table;
 	width:40%;
-	height:500px;
 
 	background-color: rgba(0,0,0,0.1);
 	margin-top:80px;
@@ -494,5 +460,69 @@ html>body #menu li
 
 .div_connexion_inscription_global h2
 {
-	margin-top:20px;
+	
+}
+
+
+/****************************************/
+/*                PROFIL
+/****************************************/
+.div_profil_global
+{
+	width:100%;
+	margin:auto;
+	text-align:center;
+	overflow: hidden;
+}
+
+.div_profil
+{
+	display: inline-table;
+	width:40%;
+
+	background-color: rgba(0,0,0,0.1);
+	margin-top:80px;
+
+	-moz-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	-webkit-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	-o-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+}
+
+.div_profil #idAdresse
+{
+	width:500px;
+	resize:none;
+}
+
+/****************************************/
+/*            MODIFIERPROFIL
+/****************************************/
+
+.div_modifierProfil_global
+{
+	width:100%;
+	margin:auto;
+	text-align:center;
+	overflow: hidden;
+}
+
+.div_modifierProfil
+{
+	display: inline-table;
+	width:40%;
+
+	background-color: rgba(0,0,0,0.1);
+	margin-top:80px;
+
+	-moz-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	-webkit-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	-o-box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+	box-shadow: 0px 0px 15px 2px rgba(24,23,54,1);
+}
+
+.div_modifierProfil #idAdresse
+{
+	width:500px;
+	resize:none;
 }

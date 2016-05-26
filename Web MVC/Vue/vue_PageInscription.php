@@ -8,13 +8,12 @@ $response_array['Donne'] = '
 <div id="DivInscription" class="div_connexion_inscription_global">
   <div class="div_connexion_inscription" style="text-align:center;margin:auto;">
 
-
-      <label for="mail">Adresse mail:</label>
+      <label for="mail" style="padding-left: 77px;">Adresse mail:</label>
       <input type="email" placeholder="adresse mail." name="mail" id="IdMail" required/>
 
       <br/>
 
-      <label for="pass">Mot de passe:</label>
+      <label for="pass" style="padding-left: 73px;">Mot de passe:</label>
       <input type="password" placeholder="entrez le mot de passe." name="pass1" id="IdPass1" required/>
 
       </br>
@@ -24,29 +23,29 @@ $response_array['Donne'] = '
 
       <br/>
 
-      <label for="mail">Nom:</label>
+      <label for="nom" style="padding-left: 135px;">Nom:</label>
       <input type="text" placeholder="votre nom de famille." name="nom" id="IdNom" required/>
 
       <br/>
 
-      <label for="mail">Prénom:</label>
+      <label for="prenom" style="padding-left: 107px;">Prénom:</label>
       <input type="text" placeholder="votre prénom." name="prenom" id="IdPrenom" required/>
 
       <br/>
 
-      <p style="font-weight:bold;">Date de naissance:</p>
+      <p style="margin-bottom: 0px;">Date de naissance:</p>
       <input type="number" placeholder="jour" name="jour_user" id="IdJour" min="1" max="31"/>
       <input type="number" placeholder="mois" name="mois_user" id="IdMois" min="1" max="12"/>
       <input type="number" placeholder="année" name="annee_user" id="IdAnnee" min="1950" max="'.date('Y').'"/>
 
       <br/>
 
-      <label for="adresse">Adresse postale:</label>
+      <label for="adresse" style="padding-left: 54px;">Adresse postale:</label>
       <input type="text" placeholder="votre adresse." name="adresse" id="IdAdresse" />
 
       <br/>
 
-      <label for="adresse">Téléphone:</label>
+      <label for="telephone" style="padding-left: 80px;">Téléphone:</label>
       <input type="text" placeholder="votre numéro." name="telephone" pattern="[0-9]{10}" id="IdTelephone" />
 
       <br/>
@@ -74,6 +73,7 @@ $response_array['Donne'] = '
 
 
   </div>
+  <div class="horizontal_separator"></div>
 </div>
 ';
 $response_array['Stop'] = "false";

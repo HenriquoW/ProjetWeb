@@ -128,6 +128,10 @@ class Course{
             BDD::getInstance()->getManager("Course")->add($this);
         }
     }
+
+    public function delete(){
+      BDD::getInstance()->getManager("Course")->remove($this);
+    }
 }
 
 function loadCourse($info){

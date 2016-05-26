@@ -3,111 +3,188 @@ $repAccueil = array();
 
 if(isset($_COOKIE['Connect'])){
   $UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
-	$ClasseUtilisateur = get_class($UtilisateurEnCours);
+  $ClasseUtilisateur = get_class($UtilisateurEnCours);
+
+  $infoPal = '<p>';
+
+  if ($ClasseUtilisateur == 'Competiteur'){
+    $idPalmaresTableau=$UtilisateurEnCours->getPalmares();
+    $nbID = count($idPalmaresTableau);
+
+    if($nbID>=1){
+      $idDernierPalmares=$idPalmaresTableau[$nbID-1];
+      $DernierPalmares= loadPalmares($idDernierPalmares);
+
+      $infoPal = $infoPal .'<label> Dernier resultat </label> </br>
+      <input id="dernier_resultat" name="dernier_resultat" input="text" value="'.$DernierPalmares->getClassement().'" disabled/> </br>';
+
+      $nbID=$nbID-1;
+    }
+    if($nbID>=1){
+      $idAvantDernierPalmares=$idPalmaresTableau[$nbID-1];
+      $AvantDernierPalmares=loadPalmares($idAvantDernierPalmares);
+
+      $infoPal = $infoPal .'<label> Avant-dernier </label> </br>
+      <input id="avant_dernier_resultat" name="avant_dernier_resultat" input="text" value="'.$AvantDernierPalmares->getClassement().'" disabled /> </br>';
+
+      $nbID=$nbID-1;
+    }
+    if($nbID>=1){
+      $idAvantAvantDernierPalmares=$idPalmaresTableau[$nbID-1];
+      $AvantAvantDernierPalmares=loadPalmares($idAvantAvantDernierPalmares);
+      $infoPal = $infoPal .'<label> Avant avant-dernier</label> </br>
+      <input name="avant_avant_dernier_resultat" input="text" value="'.$AvantAvantDernierPalmares->getClassement().'" disabled/> </br>';
+    }
+    $infoPal = $infoPal .'<input type="submit" class="button" id="bntPagePalmares" module="PagePalmares" regionSucess="#Palmares" regionError="#Palmares" value="Afficher le palmarès complet"/>';
+
+    $infoPal = $infoPal .'<div id="Palmares"> </div></P>'
+  }
+
+  $infoObjectif = '';
+  if($ClasseUtilisateur == 'Competiteur'){
+    foreach ($UtilisateurEnCours->getObjectif() as $objectif) {
+      $compet = loadCompetition(array("Id"=>$objectif));
+
+      $infoObjectif = $infoObjectif . ''.$compet->getTypeCompetition()['Nom'].'-'.$compet->getAdresse().'/n';
+    }
+  }
+
+  $infoParent = '<p>';
+
+  if(getdate()['year'] - $UtilisateurEnCours->getDateNaissance()->format('Y') < '18'){
+    $TableauResultat=$UtilisateurEnCours->getParente();
+    $TableauParents=$TableauResultat['Parent'];
+    $idParent=$TableauParents[0];
+    $Parent=loadUtilisateur($idParent);
+    $infoParent = $infoParent . '<label> Nom </label>
+    <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
+    <label> Prenom </label>
+    <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
+    <label> Coordonnees </label>
+    <textarea id="coordonnees_responsable" name="coordonnees_responsable" value="'.$Parent->getTelephone().' '.$Parent->getAdresse().'" type="text" disabled> </textarea></p>';
+
+  }
+
+  $TableauResultat=$UtilisateurEnCours->getParente();
+  $infoEnfant = '<p>';
+
+  if(isset($TableauResultat['Enfant'])){
+  	$TableauIDEnfant=$TableauResultat['Enfant'];
+  	foreach($TableauIDEnfant as $IDEnfant){
+  		$Enfant=loadUtilisateur($IDEnfant);
+  		$infoEnfant = $infoEnfant.'<label> Enfant '.$NbEnfant.' </label> <br/>
+  			<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="'.$Enfant->getPrenom().' '.$Enfant->getNom().'" type="text" disabled/>
+  	    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$IDEnfant.'">
+  			<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
+  			<br/> <br/>';
+  	}
+    $infoEnfant = $infoEnfant.'</p>';
+  }
 
   $repAccueil['Status'] = "Success";
   $repAccueil['Type'] = "Replace";
   $repAccueil['Donne'] = '
-  <p> <!--Paragraphe contenant l intégralité du formulaire-->
-    <p> <!--CSS Sur la gauche de l écran sous l image actuelle du  profil-->
-    '. (($ClasseUtilisateur == 'Competiteur') ? ('<img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
-                                                </br>
-                                                <label> Photo </label>
-                                                <input id="IdPhoto" name="photo" type="file" disabled/>
-                                                </br>')
-                                              : '')
-    .'
-    </p>
+  <div class="div_profil_global">
+      <div class="div_profil">
+        <h2>Profil</h2>
+          <p>
 
-    <p>
-    '.
-      $_SESSION['Retour']['InfoParent']
-    .'
-    </p>
+            '. (($ClasseUtilisateur == 'Competiteur') ? ('<p><img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
+                                                        </br>
+                                                        <label> Photo </label>
+                                                        <input id="IdPhoto" name="photo" type="file" disabled/>
+                                                        </br></p>')
+                                                      : '')
+            .'
 
-    <p><!-- Centré avec les valeurs actuelles des champs pré-rempli (utiliser value="")-->
-      <label> Nom :</label>
-  	      	<input id="IdNom" name="nom" value="'.$UtilisateurEnCours->getNom().'" type="text" disabled/> <br/>
-  		<label> Prenom :</label>
-  	      	<input id="IdPrenom" name="prenom" value="'.$UtilisateurEnCours->getPrenom().'" type="text" disabled/> <br/>
-    '.
-    (($UtilisateurEnCours->getSexe()['Type']=='F') ? ('<select name="Sexe" id="IdSexe" disabled>
-                                                        <option value="Homme">Homme</option>
-                                                        <option value="Femme" selected="selected" >Femme</option>
-                                                      </select>')
-                                                   : ('<select name="Sexe" id="IdSexe" disabled>
-                                                       <option value="Homme" selected="selected">Homme</option>
-                                                       <option value="Femme">Femme</option>
-                                                     </select>  <br/>'))
-    .'
 
-      <label>Date de naissance :</label> <br/>
-  		<label> Jour </label>
-        <input id="IdJour" name="jour" type="number" min="1" max="31" value="'.$UtilisateurEnCours->getDateNaissance()->format('d').'" disabled/>
-      <label> Mois </label>
-        <input id="IdMois" name="mois" type="number" min="1" max="12" value="'.$UtilisateurEnCours->getDateNaissance()->format('m').'" disabled/>
-      <label> Annee </label>
-        <input id="IdAnnee" name="annee" type="number" min="1920" max="2016" value="'.$UtilisateurEnCours->getDateNaissance()->format('Y').'" disabled/> <br/>
 
-    '.
-    (($ClasseUtilisateur == 'Competiteur') ? ('<label> Categorie </label>
-                                    	        <input id="categorie" name="categorie" type="text" disabled value="'.$UtilisateurEnCours->getCategorie().'"/>')
-                                           : (''))
-    .'
-    <br/>
-		<label> Email </label>
-	   <input id="IdMail" name="email" type="email" value="'.$UtilisateurEnCours->getMail().'" disabled/> <br/>
-		<label> Telephone </label>
-	   <input id="IdTelephone" name="telephone" type="tel" pattern="[0-9]{10}" value="'.$UtilisateurEnCours->getTelephone().'" disabled/> <br/>
+            '.
+              $infoParent
+            .'
 
-		<!-- taille plus grande fixée en css (width et height) ?? (au lieu de rows & cols) && comment faire en sorter que l utilisateur ne puisse l agrandir avec les petites flèches ??-->
+            <p>
+              <label style="padding-left: 20px;"> Nom :</label>
+          	      	<input id="IdNom" name="nom" value="'.$UtilisateurEnCours->getNom().'" type="text" disabled/> <br/>
+          		<label> Prenom :</label>
+          	      	<input id="IdPrenom" name="prenom" value="'.$UtilisateurEnCours->getPrenom().'" type="text" disabled/> <br/>
+            '.
+            (($UtilisateurEnCours->getSexe()['Type']=='F') ? ('<select name="Sexe" id="IdSexe" disabled>
+                                                                <option value="Homme">Homme</option>
+                                                                <option value="Femme" selected="selected" >Femme</option>
+                                                              </select>')
+                                                           : ('<select name="Sexe" id="IdSexe" disabled>
+                                                               <option value="Homme" selected="selected">Homme</option>
+                                                               <option value="Femme">Femme</option>
+                                                             </select>  <br/>'))
+            .'
 
-		<label>Adresse complete :</label> <br/>
-	   <textarea id="IdAdresse" name="adresse" rows="7" cols="50" disabled>'.$UtilisateurEnCours->getAdresse().'</textarea> <br/>
-		<br/>
+              <label>Date de naissance :</label> <br/>
+          		<label> Jour </label>
+                <input id="IdJour" name="jour" type="number" min="1" max="31" value="'.$UtilisateurEnCours->getDateNaissance()->format('d').'" disabled/>
+              <label> Mois </label>
+                <input id="IdMois" name="mois" type="number" min="1" max="12" value="'.$UtilisateurEnCours->getDateNaissance()->format('m').'" disabled/>
+              <label> Annee </label>
+                <input id="IdAnnee" name="annee" type="number" min="1920" max="2016" value="'.$UtilisateurEnCours->getDateNaissance()->format('Y').'" disabled/> <br/>
 
-    '.
-    (($ClasseUtilisateur == 'Adherent' || $ClasseUtilisateur == 'Competiteur') ? ('<label> N° Licence </label>
-	                                                                                 <input id="IdNumLicence" name="num_licence" type="number" disabled="disabled" value="'.$UtilisateurEnCours->getNumeroLicence().'" disabled/> <br/>')
-                                                                               : (''))
-    .'
+            '.
+            (($ClasseUtilisateur == 'Competiteur') ? ('<label> Categorie </label>
+                                            	        <input id="categorie" name="categorie" type="text" disabled value="'.$UtilisateurEnCours->getCategorie().'"/>')
+                                                   : (''))
+            .'
+            <br/>
+        		<label style="padding-left: 15px;"> Email </label>
+        	   <input id="IdMail" name="email" type="email" value="'.$UtilisateurEnCours->getMail().'" disabled/> <br/>
+        		<label style="margin-left: -18px;"> Telephone </label>
+        	   <input id="IdTelephone" name="telephone" type="tel" pattern="[0-9]{10}" value="'.$UtilisateurEnCours->getTelephone().'" disabled/> <br/>
 
-    '.
-    (($ClasseUtilisateur == 'Competiteur') ? ('<label> Specialite </label> </br>
-					                                    <label> Kayak </label>'.
-                                              (($UtilisateurEnCours->getSpecialite()== "Kayak") ? ('<select name="specialite" id="IdSpecialite" disabled>
-                                                                                                      <option value="Kayak" selected="selected" >Kayak</option>
-                                                                                                      <option value="Canoe">Canoe</option>
-                                                                                                    </select></br>')
-                                                                                                : ('<select name="specialite" id="IdSpecialite" disabled>
-                                                                                                    <option value="Kayak">Kayak</option>
-                                                                                                    <option value="Canoe"  selected="selected" >Canoe</option>
-                                                                                                  </select> </br>'))
-                                              .'<label> Objectif(s) :</label> </br>
-					                                      <textarea id="objectif" name="objectif" type="text" rows="3" cols="20" disabled>'.$_SESSION['Retour']['InfoObjectif'].' </textarea> </br>')
-                                           : (''))
-    .'
+        		<label>Adresse complete :</label> <br/>
+        	   <textarea id="IdAdresse" name="adresse" rows="7" cols="50" disabled>'.$UtilisateurEnCours->getAdresse().'</textarea> <br/>
+        		<br/>
 
-    </P>
+            '.
+            (($ClasseUtilisateur == 'Adherent' || $ClasseUtilisateur == 'Competiteur') ? ('<label> N° Licence </label>
+        	                                                                                 <input id="IdNumLicence" name="num_licence" type="number" disabled="disabled" value="'.$UtilisateurEnCours->getNumeroLicence().'" disabled/> <br/>')
+                                                                                       : (''))
+            .'
 
-    <p>
-    '.
-      //CSS En haut à gauche de la page, dans un cadre
-      $_SESSION['Retour']['InfoPalmares']
-    .'
-    </P>
+            '.
+            (($ClasseUtilisateur == 'Competiteur') ? ('<label> Specialite </label> </br>
+        					                                    <label> Kayak </label>'.
+                                                      (($UtilisateurEnCours->getSpecialite()== "Kayak") ? ('<select name="specialite" id="IdSpecialite" disabled>
+                                                                                                              <option value="Kayak" selected="selected" >Kayak</option>
+                                                                                                              <option value="Canoe">Canoe</option>
+                                                                                                            </select></br>')
+                                                                                                        : ('<select name="specialite" id="IdSpecialite" disabled>
+                                                                                                            <option value="Kayak">Kayak</option>
+                                                                                                            <option value="Canoe"  selected="selected" >Canoe</option>
+                                                                                                          </select> </br>'))
+                                                      .'<label> Objectif(s) :</label> </br>
+        					                                      <textarea id="objectif" name="objectif" type="text" rows="3" cols="20" disabled>'.$infoObjectif.' </textarea> </br>')
+                                                   : (''))
+            .'
 
-    <p>
-    '.
-      $_SESSION['Retour']['InfoEnfant']
-    .'
-    </p>
-  </p>
-  ';
+            </P>
+
+
+            '.
+              
+              $infoPal
+            .'
+
+
+
+            '.
+              $infoEnfant
+            .'
+
+          </p>
+        </div>
+      <div class="horizontal_separator"></div>
+    </div>';
   $repAccueil['Stop'] = "false";
   $repAccueil['Region'] = $_POST['regionSucess'];
 
-  unset($_SESSION['Retour']);
 }else{
   $repAccueil['Status'] = "Error";
   $repAccueil['Type'] = "Replace";
