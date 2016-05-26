@@ -18,7 +18,7 @@ if(isset($_COOKIE['Connect'])){
                     '.
 
                     (($_SESSION["UtilisateurCourant"]->asDroit("Administrateurs"))?('<li>
-                                                                                        <a>ADMINISTRATION</a>
+                                                                                        <a>Administration</a>
                                                                                         <ul>
                                                                                             <li><a>Contenu Base</a></li>
                                                                                             <li><a>Droit Access</a></li>

@@ -31,20 +31,20 @@ $response_array['Donne'] = '<label>Adresse de la compétition</label> <input typ
                             </div>
 
                             <label>Type de competition</label> <select name="TypeCompetition" id="IdType" onchange="if(this.selectedIndex == 0){$("#NewType").show();}else{$("#NewType").hide();}" readonly>
-                                                                      <option value="New" selected="selected">Nouveau Club</option>
+                                                                      <option value="New" selected="selected">Nouveau Type de compétition</option>
                                                                     '.
                                                                     $infoType
                                                                     .'
                                                                     </select></br>
                             <div id="NewType">
                               <label>Nom du Type</label> <input type="text" placeholder="" name="nom" id="IdNomType" value="" /><br/>
-                              <label>La competition est-elle sélectif ?</label> <select name="selectif" id="IdSelectif" readonly/>
+                              <label>La competition est-elle sélectif ?</label> <select name="selectif" id="IdSelectif" readonly>
                                                                                   <option value="false">Non</option>
                                                                                   <option value="true">Oui</option>
                                                                                 </select>
                             </div>
 
-                            <input type="input" name="Modifier" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition" regionError="#competition" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;NomType;Selectif" value="Modifier"/>';
+                            <input type="submit" name="Ajouter" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition;#body" regionError="#competition;#body" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;NomType;Selectif" value="Ajouter"/>';
 $response_array['Stop'] = "false";
 $response_array['Region'] = $_POST['regionSucess'];
 

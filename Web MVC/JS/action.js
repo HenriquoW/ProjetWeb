@@ -33,8 +33,6 @@ function Action(evenement){
     }
   }
 
-  console.log(data);
-
   CoupeChoix = false;
 
   for(var i=0;i<modules.length; i++){
