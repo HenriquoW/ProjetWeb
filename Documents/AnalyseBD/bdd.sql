@@ -195,18 +195,6 @@ CREATE TABLE Type_Competition(
 
 
 #------------------------------------------------------------
-# Table: Palmares
-#------------------------------------------------------------
-
-CREATE TABLE Palmares(
-        Id_Palmares    INT NOT NULL AUTO_INCREMENT,
-        Classement     INT ,
-        Id_Course INT ,
-        PRIMARY KEY (Id_Palmares )
-)ENGINE=InnoDB;
-
-
-#------------------------------------------------------------
 # Table: Voyage
 #------------------------------------------------------------
 
