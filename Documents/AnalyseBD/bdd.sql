@@ -125,10 +125,10 @@ CREATE TABLE Type_Specialite(
 #------------------------------------------------------------
 
 CREATE TABLE Club_Organisateur(
-        ID_Club_Organisateur INT NOT NULL AUTO_INCREMENT,
+        Id_Club_Organisateur INT NOT NULL AUTO_INCREMENT,
         Nom                  Varchar (25) ,
         President            Varchar (25) ,
-        PRIMARY KEY (ID_Club_Organisateur ) ,
+        PRIMARY KEY (Id_Club_Organisateur ) ,
         UNIQUE (Nom )
 )ENGINE=InnoDB;
 
