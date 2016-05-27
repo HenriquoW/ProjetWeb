@@ -12,8 +12,16 @@ if(isset($_COOKIE['Connect'])){
     $nbID = count($idPalmaresTableau);
 
     if($nbID>=1){
-      $idDernierPalmares=$idPalmaresTableau[$nbID-1];
-      $DernierPalmares= loadPalmares($idDernierPalmares);
+      $course = loadCourse(array("Id"=>$idPalmaresTableau[$nbID-1]['Id_Course']));
+
+      $competition = loadCompetitions(array("Id"=>$course->getId_Competition()));
+
+      $DernierPalmares;
+      if($course->getIsEquipe()){
+        $DernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Equipe"=>$idPalmaresTableau[$nbID-1]['Id_Equipe']));
+      }else{
+        $DernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Competiteur"=>$idPalmaresTableau[$nbID-1]['Id_Competiteur']));
+      }
 
       $infoPal = $infoPal .'<label> Dernier resultat </label> </br>
       <input id="dernier_resultat" name="dernier_resultat" input="text" value="'.$DernierPalmares->getClassement().'" disabled/> </br>';
@@ -21,8 +29,16 @@ if(isset($_COOKIE['Connect'])){
       $nbID=$nbID-1;
     }
     if($nbID>=1){
-      $idAvantDernierPalmares=$idPalmaresTableau[$nbID-1];
-      $AvantDernierPalmares=loadPalmares($idAvantDernierPalmares);
+      $course = loadCourse(array("Id"=>$idPalmaresTableau[$nbID-1]['Id_Course']));
+
+      $competition = loadCompetitions(array("Id"=>$course->getId_Competition()));
+
+      $AvantDernierPalmares;
+      if($course->getIsEquipe()){
+        $AvantDernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Equipe"=>$idPalmaresTableau[$nbID-1]['Id_Equipe']));
+      }else{
+        $AvantDernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Competiteur"=>$idPalmaresTableau[$nbID-1]['Id_Competiteur']));
+      }
 
       $infoPal = $infoPal .'<label> Avant-dernier </label> </br>
       <input id="avant_dernier_resultat" name="avant_dernier_resultat" input="text" value="'.$AvantDernierPalmares->getClassement().'" disabled /> </br>';
@@ -30,8 +46,17 @@ if(isset($_COOKIE['Connect'])){
       $nbID=$nbID-1;
     }
     if($nbID>=1){
-      $idAvantAvantDernierPalmares=$idPalmaresTableau[$nbID-1];
-      $AvantAvantDernierPalmares=loadPalmares($idAvantAvantDernierPalmares);
+      $course = loadCourse(array("Id"=>$idPalmaresTableau[$nbID-1]['Id_Course']));
+
+      $competition = loadCompetitions(array("Id"=>$course->getId_Competition()));
+
+      $AvantAvantDernierPalmares;
+      if($course->getIsEquipe()){
+        $AvantAvantDernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Equipe"=>$idPalmaresTableau[$nbID-1]['Id_Equipe']));
+      }else{
+        $AvantAvantDernierPalmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Competiteur"=>$idPalmaresTableau[$nbID-1]['Id_Competiteur']));
+      }
+
       $infoPal = $infoPal .'<label> Avant avant-dernier</label> </br>
       <input name="avant_avant_dernier_resultat" input="text" value="'.$AvantAvantDernierPalmares->getClassement().'" disabled/> </br>';
     }

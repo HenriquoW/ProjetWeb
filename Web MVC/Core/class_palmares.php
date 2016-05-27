@@ -103,8 +103,8 @@ class Palmares{
 function loadPalmares($info){
     $palmares = null;
 
-    if(isset($info['Id'])){
-        $palmares = BDD::getInstance()->getManager("Palmares")->getId($info['Id']);
+    if(isset($info['Id_Course']) && (isset($info['Id_Equipe'])||isset($info['Id_Competiteur']))){
+        $palmares = BDD::getInstance()->getManager("Palmares")->getId($info);
     }
 
     return $palmares;

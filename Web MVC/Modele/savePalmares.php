@@ -1,4 +1,4 @@
 <?php
-"Palmares_'.$index.';Classement_'.$index.'"
+"ParticipantPalmares'.$index.';CoursePalmares'.$index.';Classement_'.$index.'"
 
  ?>

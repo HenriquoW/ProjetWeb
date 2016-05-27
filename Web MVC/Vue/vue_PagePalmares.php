@@ -6,16 +6,22 @@ $tabCourse = getCourse();
 $res = "<h1>Palmares<h1><table>";
 
 foreach($tabPalmares as $palma){
+  $course = loadCourse(array("Id"=>$palma['Id_Course']));
 
-  $palmares = loadPalmares(array("Id"=>$palma['Id_Palmares']));
+  $competition = loadCompetitions(array("Id"=>$course->getId_Competition()));
 
-  $course = loadCourse(array("Id"=>$palmares->getId_Course()));
+  $palmares;
+  if($course->getIsEquipe()){
+    $palmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Equipe"=>$palma['Id_Equipe']));
+  }else{
+    $palmares = loadPalmares(array("Id_Course"=>$course->getId_Course(),"Id_Competiteur"=>$palma['Id_Competiteur']));
+  }
 
-  $competition = loadCompetitions(array("Id"=>$palmares->getId_Competition()));
 
   $res = $res .'<tr>
 	                <td>
-	                  <input type="hidden" name="id_palma" id="IdPalmares_'.$index.'" value="'.$palmares->getId_Palmares().'"/>
+	                  <input type="hidden" name="id_course" id="IdCoursePalmares_'.$index.'" value="'.$palmares->getId_Course().'"/>
+                    <input type="hidden" name="id_course" id="IdParticipantPalmares_'.$index.'" value="'.$palmares->getId_Participant().'"/>
 	                </td>
 	                <td>
 	                  <input type="text" placeholder="" name="nom" id="IdNom" value="'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'" readonly/>
@@ -30,7 +36,7 @@ foreach($tabPalmares as $palma){
 	                  <input type="text" placeholder="" name="date" id="IdClassement_'.$index.'" value="'.$palmares->getClassement().'" />
 	                </td>
                   <td>
-                    <input type="submit" name="ModifierPalmares" id="btnSavePalmares" module="SavePalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="Palmares_'.$index.';Classement_'.$index.'" value="Ajouter"/>
+                    <input type="submit" name="ModifierPalmares" id="btnSavePalmares" module="SavePalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="ParticipantPalmares'.$index.';CoursePalmares'.$index.';Classement_'.$index.'" value="Ajouter"/>
                   </td>
                 </tr>
                 ';

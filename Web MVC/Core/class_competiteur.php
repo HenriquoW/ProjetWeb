@@ -185,7 +185,13 @@ if($competiteur!=null){
     $competiteur->setVoyageParticipe($voyages);
 
     //recupere palmares
-    $competiteur->setPalmares(BDD::getInstance()->getManager("Palmares")->getListCompetiteur($competiteur->getId_Competiteur()));
+    $palmares;
+    foreach($competiteur->getEquipeParticipe() as $idEquipe){
+      $palmares = BDD::getInstance()->getManager("Palmares")->getListEquipe($idEquipe);
+    }
+    $palmares = array_merge($palmares,BDD::getInstance()->getManager("Palmares")->getListCompetiteur($competiteur->getId_Competiteur()));
+    
+    $competiteur->setPalmares($palmares);
 
     //recupere message
     $competiteur->setMessage(BDD::getInstance()->getManager("Message")->getListUtilisateur($competiteur->getId_Utilisateur()));
