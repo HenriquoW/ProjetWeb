@@ -182,6 +182,20 @@ class ManagerUtilisateur extends Manager{
         return $utilisateurs;
     }
 
+    public function getListMajeur()
+    {
+        $utilisateurs = array();
+
+        $requete = $this->getDb()->query('SELECT Id_Utilisateur FROM Utilisateur WHERE DATEDIFF(Utilisateur.DateNaissance,CURRENT_DATE)>18*365');
+
+        while ($donnees = $requete->fetch(PDO::FETCH_ASSOC))
+        {
+            $utilisateurs[] = loadUtilisateur(array("Id" => $donnees['Id_Utilisateur']));
+        }
+
+        return $utilisateurs;
+    }
+
     //Procédure qui met à jour un utilisateur donné en paramètre dans la BDD
     public function update($objet)
     {

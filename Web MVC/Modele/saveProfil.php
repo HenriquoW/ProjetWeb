@@ -59,7 +59,7 @@ if($ClasseUtilisateur=='Competiteur'){
     }
 
     $donneesComp['Categorie'] = $categorie;
-    
+
     $UtilisateurEnCours = new Competiteur($UtilisateurEnCours,$donneesComp);
   }else{
       $error = true;
@@ -70,31 +70,42 @@ if($ClasseUtilisateur=='Competiteur'){
   $_SESSION['Retour'] = "ErrorAdherent";
 }
 
-$UtilisateurEnCours->setNom($data['Nom']);
+if($data['Nom']!="")
+  $UtilisateurEnCours->setNom($data['Nom']);
 
-$UtilisateurEnCours->setPrenom($data['Prenom']);
+if($data['Prenom']!="")
+  $UtilisateurEnCours->setPrenom($data['Prenom']);
 
-$UtilisateurEnCours->setSexe($data['Sexe']);
+if($data['Sexe']!="")
+  $UtilisateurEnCours->setSexe($data['Sexe']);
 
-$UtilisateurEnCours->setTelephone($data['Telephone']);
+if($data['Telephone']!="")
+  $UtilisateurEnCours->setTelephone($data['Telephone']);
 
-$UtilisateurEnCours->setAdresse($data['Adresse']);
+if($data['Adresse']!="")
+  $UtilisateurEnCours->setAdresse($data['Adresse']);
 
-$date = $data["Annee"]."-".$data["Mois"]."-".$data["Jour"];
-
-$UtilisateurEnCours->setDateNaissance(new DateTime($date));
-
-if($data['Mail']!=$UtilisateurEnCours->getMail()){
-  $info["Mail"] = $data['Mail'];
-  $utilisateur = loadUtilisateur($info);
-
-  if(isset($utilisateur)){
-    $_SESSION['Retour'] = "ErrorExist";
-    $error = true;
-  }else{
-    $UtilisateurEnCours->setMail($data['Mail']);
-  }
+if($data["Annee"]!="" && $data["Mois"]!="" && $data["Jour"]!=""){
+  $date = $data["Annee"]."-".$data["Mois"]."-".$data["Jour"];
+  $UtilisateurEnCours->setDateNaissance(new DateTime($date));
 }
+
+if(isset($data['Mail'])){
+  if($data['Mail']!=$UtilisateurEnCours->getMail()){
+    $info["Mail"] = $data['Mail'];
+    $utilisateur = loadUtilisateur($info);
+
+    if(isset($utilisateur)){
+      $_SESSION['Retour'] = "ErrorExist";
+      $error = true;
+    }else{
+      $UtilisateurEnCours->setMail($data['Mail']);
+    }
+  }
+}else{
+  $_SESSION['Retour'] = "ErrorMail";
+}
+
 
 if(isset($data["Password1"])){
   if(isset($data["Password2"])){

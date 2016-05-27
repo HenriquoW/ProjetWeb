@@ -7,7 +7,7 @@ $utilisateur = loadUtilisateur($info);
 if(isset($utilisateur)){
   $_SESSION['Retour'] = "ErrorExist";
 
-}else if($data["Pass1"]!=$data["Pass2"]){
+}else if($data["Pass1"]=="" || $data["Pass1"]!=$data["Pass2"]){
   $_SESSION['Retour'] = "ErrorPass";
 
 }else if(!$data["Terme"]){
@@ -38,7 +38,7 @@ if(isset($utilisateur)){
       $donnee["Sexe"] = BDD::getInstance()->getManager("Sexe")->getType("M");
   }
 
-  
+
   $utilisateur = new Utilisateur($donnee);
 
   $utilisateur->save(false);

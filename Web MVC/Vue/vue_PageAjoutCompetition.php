@@ -10,6 +10,11 @@ foreach (BDD::getInstance()->getManager("Type_Competition")->getList() as $type)
   $infoType = $infoType.'<option value="'.$type['Id'].'" >'.$type['Nom'].'</option>';
 }
 
+$infoSexe ='';
+foreach (BDD::getInstance()->getManager("Sexe")->getList() as $sexe) {
+  $infoSexe = $infoSexe.'<option value="'.$sexe['Id'].'" >'.$sexe['Nom'].'</option>';
+}
+
 $response_array = array();
 $response_array['Status'] = "Success";
 $response_array['Type'] = "Replace";
@@ -30,21 +35,20 @@ $response_array['Donne'] = '<label>Adresse de la compétition</label> <input typ
                               <label>Nom du President</label> <input type="text" placeholder="" name="president" id="IdNomPresident" value="" /><br/>
                             </div>
 
-                            <label>Type de competition</label> <select name="TypeCompetition" id="IdType" onchange="if(this.selectedIndex == 0){$("#NewType").show();}else{$("#NewType").hide();}" readonly>
+                            <label>Type de competition</label> <select name="TypeCompetition" id="IdType" readonly>
                                                                       <option value="New" selected="selected">Nouveau Type de compétition</option>
                                                                     '.
                                                                     $infoType
                                                                     .'
                                                                     </select></br>
-                            <div id="NewType">
-                              <label>Nom du Type</label> <input type="text" placeholder="" name="nom" id="IdNomType" value="" /><br/>
-                              <label>La competition est-elle sélectif ?</label> <select name="selectif" id="IdSelectif" readonly>
-                                                                                  <option value="false">Non</option>
-                                                                                  <option value="true">Oui</option>
-                                                                                </select>
-                            </div>
+                            <label>Limitation de sexe</label> <select name="limiteSexe" id="IdSexe" readonly>
+                                                                  <option value="Aucune" selected="selected">Aucune</option>
+                                                                    '.
+                                                                    $infoSexe
+                                                                    .'
+                                                                    </select></br>
 
-                            <input type="submit" name="Ajouter" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition;#body" regionError="#competition;#body" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;NomType;Selectif" value="Ajouter"/>';
+                            <input type="submit" name="Ajouter" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition;#body" regionError="#competition;#body" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;Sexe" value="Ajouter"/>';
 $response_array['Stop'] = "false";
 $response_array['Region'] = $_POST['regionSucess'];
 

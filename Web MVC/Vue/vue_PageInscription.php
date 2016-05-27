@@ -7,7 +7,7 @@ $response_array['Type'] = "Replace";
 $response_array['Donne'] = '
 <div id="DivInscription" class="div_connexion_inscription_global">
   <div class="div_connexion_inscription" style="text-align:center;margin:auto;">
-
+      <h2>Inscription</h2>
       <label for="mail" style="padding-left: 77px;">Adresse mail:</label>
       <input type="email" placeholder="adresse mail." name="mail" id="IdMail" required/>
 

@@ -164,11 +164,11 @@ if(isset($_COOKIE['Connect'])){
                                                    : (''))
             .'
 
-            </P>
+            </p>
 
 
             '.
-              
+
               $infoPal
             .'
 

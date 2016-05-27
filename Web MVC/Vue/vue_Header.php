@@ -8,13 +8,13 @@ if(isset($_COOKIE['Connect'])){
   $response_array['Donne'] = '
   <ul id="menu">
                     <li>
-                            <a>PROFIL</a>
+                            <a>Profil</a>
                             <ul>
                                     <li><a id="btnHeaderModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" >Modifier Profil</a></li>
                             </ul>
                     </li>
 
-                    
+
                     '.
 
                     (($_SESSION["UtilisateurCourant"]->asDroit("Administrateurs"))?('<li>
@@ -50,12 +50,12 @@ if(isset($_COOKIE['Connect'])){
                     </li>')
                                                                                                       :(''))
 
-		    .'	
-                      
+		    .'
+
                     <li>
-			
+
                             <a id="btnDeconnexion" module="Deconnexion;Accueil;Header" regionSucess="#body;#body;#header" regionError="#body;#body;#header">Deconnexion</a>
-			
+
                     </li>
 
                 </ul>
@@ -74,7 +74,7 @@ if(isset($_COOKIE['Connect'])){
                 </li>
 
                 <li>
-                        <a>PROFIL</a>
+                        <a>Profil</a>
                         <ul>
                                 <li><a id="btnPageConnexion" module="PageConnexion" regionSucess="#body">Connexion</a></li>
                                 <li><a id="btnPageInscription" module="PageInscription" regionSucess="#body">Inscription</a></li>

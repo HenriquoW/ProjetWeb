@@ -1,7 +1,14 @@
 <?php
 $res = '';
 
-$competitions = loadListeCompetition(true);
+$competitions;
+
+if($_SESSION['UtilisateurCourant']->asDroit("Entraineur")){
+  $competitions = loadListeCompetition(false);
+}else{
+  $competitions = loadListeCompetition(true);
+}
+
 
 $index =0;
 foreach($competitions as $competition){
