@@ -37,7 +37,7 @@ if(isset($_COOKIE['Connect'])){
     }
     $infoPal = $infoPal .'<input type="submit" class="button" id="bntPagePalmares" module="PagePalmares" regionSucess="#Palmares" regionError="#Palmares" value="Afficher le palmarès complet"/>';
 
-    $infoPal = $infoPal .'<div id="Palmares"> </div></p>';
+    $infoPal = $infoPal .'<div id="palmares"> </div></p>';
   }
 
   $infoObjectif = '';
@@ -168,7 +168,6 @@ if(isset($_COOKIE['Connect'])){
 
 
             '.
-
               $infoPal
             .'
 
