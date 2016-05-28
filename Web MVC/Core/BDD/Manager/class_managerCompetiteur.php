@@ -205,14 +205,14 @@ class ManagerCompetiteur extends ManagerAdherent{
     // Function qui enleve le competiteur d'une course
     public function removeCompetiteurCourse($IdCompetiteur,$IdCourse)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse.' AND Id_Competiteur ='.$IdCompetiteur);
+        $this->getDb()->exec('DELETE FROM Participe_Competition_Solo WHERE Id_Course = '.$IdCourse.' AND Id_Competiteur ='.$IdCompetiteur);
 
     }
 
     // Function qui enleve le competiteur de toutes les courses
     public function removeCompetiteurCourses($IdCompetiteur)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Competiteur ='.$IdCompetiteur);
+        $this->getDb()->exec('DELETE FROM Participe_Competition_Solo WHERE Id_Competiteur ='.$IdCompetiteur);
 
     }
 
@@ -286,7 +286,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     public function getCompetiteurCourse($id){
         $courses = array();
 
-        $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participant_Competition_Solo WHERE Id_Competiteur = '.$id);
+        $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participe_Competition_Solo WHERE Id_Competiteur = '.$id);
 
 	if($requeteCourse){
 		while($donne = $requeteCourse->fetch(PDO::FETCH_ASSOC))
@@ -297,8 +297,8 @@ class ManagerCompetiteur extends ManagerAdherent{
 	}
         
 
-        $requeteCourseEquipe = $this->getDb()->query('SELECT Id_Course,Validation,Participant_Competition_Equipe.Id_Equipe
-                                                      FROM Participant_Competition_Equipe JOIN Equipe ON Participant_Competition_Equipe.Id_Equipe = Equipe.Id_Equipe
+        $requeteCourseEquipe = $this->getDb()->query('SELECT Id_Course,Validation,Participe_Competition_Equipe.Id_Equipe
+                                                      FROM Participe_Competition_Equipe JOIN Equipe ON Participe_Competition_Equipe.Id_Equipe = Equipe.Id_Equipe
                                                                                           JOIN Participant_Equipe On Equipe.Id_Equipe = Participant_Equipe.Id_Competiteur
                                                       WHERE Participant_Equipe.Id_Competiteur = '.$id);
 	if($requeteCourseEquipe){
@@ -431,7 +431,7 @@ class ManagerCompetiteur extends ManagerAdherent{
     // valide ou invalide la participation du competiteur a une course
     public function valideCourse($IdCourse,$IdCompetiteur,$Validation){
 
-        $requete = $this->getDb()->prepare('UPDATE Participant_Competition_Solo SET Validation =:validation WHERE Id_Competiteur = :id_Competiteur AND Id_Course = :id_Course');
+        $requete = $this->getDb()->prepare('UPDATE Participe_Competition_Solo SET Validation =:validation WHERE Id_Competiteur = :id_Competiteur AND Id_Course = :id_Course');
 
         $requete->execute(array('validation' => $Validation,
                                 'id_Competiteur' => $IdCompetiteur,

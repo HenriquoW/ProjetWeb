@@ -29,11 +29,11 @@ foreach($competitions as $competition){
                   <input type="text" placeholder="" name="nomClub" id="IdNomClub" value="'.$competition->getClub()->getNom().'" readonly/>
                 </td>
                 <td>
-                  <input type="submit" id="btnDetailCompetition" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Details"/>
+                  <input type="submit" id="btnDetailCompetition_'.$index.'" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Details" onclick="Action(btnDetailCompetition_'.$index.')"/>
                 ';
 
   if($_SESSION['UtilisateurCourant']->asDroit(array("Entraineur","Secretaire"))){
-    $res = $res .'<input type="submit" id="btnModifierCompetition" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier"/>';
+    $res = $res .'<input type="submit" id="btnModifierCompetition_'.$index.'" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier" onclick="Action(btnModifierCompetition_'.$index.')"/>';
   }
 
   $res = $res .'</td></tr>';

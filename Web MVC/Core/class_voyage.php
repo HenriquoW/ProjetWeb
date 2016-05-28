@@ -78,7 +78,7 @@ class Voyage{
     }
 
     public function setHebergement($Hebergment){
-        $this->_Hebergment = htmlspecialchars($Hebergment);
+        $this->_Hebergement = htmlspecialchars($Hebergment);
     }
 
     public function setCharge($Charge){
@@ -127,6 +127,7 @@ function loadVoyage($info){
 
     if(isset($info['Id'])){
         $voyage = BDD::getInstance()->getManager("Voyage")->getId($info['Id']);
+	error_log(print_r($voyage,true));
     }
 	
 if($voyage!=null){

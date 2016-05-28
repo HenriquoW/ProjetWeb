@@ -54,9 +54,9 @@ class ManagerCourse extends Manager{
     public function removeParticipant($IdCourse,$IsEquipe)
     {
         if($IsEquipe){
-            $this->getDb()->exec('DELETE FROM Participant_Competition_Equipe WHERE Id_Course = '.$IdCourse);
+            $this->getDb()->exec('DELETE FROM Participe_Competition_Equipe WHERE Id_Course = '.$IdCourse);
         }else{
-            $this->getDb()->exec('DELETE FROM Participant_Competition_Solo WHERE Id_Course = '.$IdCourse);
+            $this->getDb()->exec('DELETE FROM Participe_Competition_Solo WHERE Id_Course = '.$IdCourse);
         }
 
     }
@@ -97,8 +97,11 @@ class ManagerCourse extends Manager{
     public function getParticipant($id,$isEquipe){
         $participants = array();
 
+	error_log(print_r($isEquipe,true));
+
         if($isEquipe==1){
-            $requete = $this->getDb()->query('SELECT Id_Equipe,Validation FROM Participant_Competition_Equipe WHERE Id_Course = '.$id);
+            error_log(print_r($id,true));
+            $requete = $this->getDb()->query('SELECT Id_Equipe,Validation FROM Participe_Competition_Equipe WHERE Id_Course = '.$id);
 	    if($requete){
 		$donne = $requete->fetch(PDO::FETCH_ASSOC);
 
@@ -111,7 +114,8 @@ class ManagerCourse extends Manager{
 
 	    }
         }else{
-            $requete = $this->getDb()->query('SELECT Id_Competiteur,Validation FROM Participant_Competition_Solo WHERE Id_Course = '.$id);
+	    error_log(print_r($id,true));
+            $requete = $this->getDb()->query('SELECT Id_Competiteur,Validation FROM Participe_Competition_Solo WHERE Id_Course = '.$id);
 
 	    if($requete){
 		while ($donne = $requete->fetch(PDO::FETCH_ASSOC))

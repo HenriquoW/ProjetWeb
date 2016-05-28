@@ -34,10 +34,10 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 		                          </select>
 		                        </td>
 		                        <td>
-		                          <input type="submit" name="Modifier" id="btnSaveCourse" module="SaveCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.';Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Modifier"/>
+		                          <input type="submit" name="Modifier" id="btnSaveCourse_'.$index.'" module="SaveCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.';Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Modifier" onclick="Action(btnSaveCourse_'.$index.')"/>
 		                        </td>
 		                        <td>
-		                          <input type="submit" name="Supprimer" id="btnSupprimerCourse" module="SupprimerCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.'" value="Modifier"/>
+		                          <input type="submit" name="Supprimer" id="btnSupprimerCourse_'.$index.'" module="SupprimerCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.'" value="Modifier" onclick="Action(btnSupprimerCourse_'.$index.')"/>
 		                        </td>
 		                      </tr>';
 	  $index++;
@@ -73,7 +73,7 @@ $infoCourse = $infoCourse .'<tr>
                                 </select>
                               </td>
                               <td>
-                                <input type="submit" name="Ajouter" id="btnAjouterCourse" module="AjouterCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Ajouter"/>
+                                <input type="submit" name="Ajouter" id="btnAjouterCourse_'.$index.'" module="AjouterCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Ajouter" onclick="Action(btnAjouterCourse_'.$index.')"/>
                               </td>
                             </tr>';
 
@@ -102,7 +102,13 @@ if($voyage!=null){
     }
 
     if($participant->getDateNaissance()->diff(new DateTime())->format('Y')<18){
-      $infoVoyage = $infoVoyage .'<td>'.$infoParticipant['Autoriser'].'</td>';
+      			$auto;
+			if($infoParticipant['Autoriser']==1){
+				$auto = 'Autoriser';
+			}else{
+				$auto = 'En attente d&apos;autorisation';
+			}
+			$infoVoyage = $infoVoyage .'<td>'.$auto.'</td>';
     }
 
     $infoVoyage = $infoVoyage .'</tr>';
@@ -126,7 +132,7 @@ if($voyage!=null){
     }
 
     $charge = $charge .'</select></td>
-    <td><input type="submit" name="SupprimerRole" id="btnSupprimerRole" module="SupprimeRole;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Role_'.$index.'" value="Supprimer"/></td>
+    <td><input type="submit" name="SupprimerRole" id="btnSupprimerRole_'.$index.'" module="SupprimeRole;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Role_'.$index.'" value="Supprimer" onclick="Action(btnSupprimerRole_'.$index.')"/></td>
 
     <td><select name="role" id="IdTache_'.$index.'" disabled>';
 
@@ -135,7 +141,7 @@ if($voyage!=null){
     }
 
     $charge = $charge .'</select></td>
-    <td><input type="submit" name="SupprimerTache" id="btnSupprimerTache" module="SupprimeTache;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Tache'.$index.'" value="Supprimer"/></td>';
+    <td><input type="submit" name="SupprimerTache" id="btnSupprimerTache_'.$index.'" module="SupprimeTache;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Tache'.$index.'" value="Supprimer" onclick="Action(btnSupprimerTache_'.$index.')"/></td>';
 
     $infoVoyage = $infoVoyage .'<tr>
     <td><input type="text" name="voyageHebergement" id="IdUtilisateurChargeNom" value="'.$uti->getNom().' '.$uti->getPrenom().'" /><input type="hidden" name="IdUtilisateurCharge" id="IdUtilisateurCharge_'.$index.'" value="'.$uti->getId_Utilisateur().'" /></td>
@@ -176,7 +182,7 @@ if($voyage!=null){
                                 '.
                                   $addCharge
                                 .'
-                                <td><input type="submit" name="AjouteCharge" id="btnAjouteCharge" module="AjouteCharge;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Tache'.$index.';Role_'.$index.'" value="Ajouter"/></td>
+                                <td><input type="submit" name="AjouteCharge" id="btnAjouteCharge_'.$index.'" module="AjouteCharge;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Voyage;UtilisateurCharge_'.$index.';Tache'.$index.';Role_'.$index.'" value="Ajouter" onclick="Action(btnAjouteCharge_'.$index.')"/></td>
                               </tr>';
 
 }

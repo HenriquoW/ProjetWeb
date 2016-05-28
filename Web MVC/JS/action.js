@@ -5,34 +5,64 @@
 var CoupeChoix = false;
 
 function Action(evenement){
+
   var modules = [];
   var regionSucess = [];
   var regionError = [];
   var donneARecup = [];
   var data = {};
 
-  if($('#'+evenement.target.id).attr('module')!=null)
-    modules = $('#'+evenement.target.id).attr('module').split(';');
+  if(evenement.button!=0){
+	if(evenement.getAttribute('module')!=null)
+	    modules = evenement.getAttribute('module').split(';');
 
-  if($('#'+evenement.target.id).attr('regionSucess')!=null)
-    regionSucess = $('#'+evenement.target.id).attr('regionSucess').split(';');
+	  if(evenement.getAttribute('regionSucess')!=null)
+	    regionSucess = evenement.getAttribute('regionSucess').split(';');
 
-  if($('#'+evenement.target.id).attr('regionError')!=null)
-    regionError = $('#'+evenement.target.id).attr('regionError').split(';');
+	  if(evenement.getAttribute('regionError')!=null)
+	    regionError = evenement.getAttribute('regionError').split(';');
 
-  if($('#'+evenement.target.id).attr('donne')!=null){
-    donneARecup = $('#'+evenement.target.id).attr('donne').split(';');
+	  if(evenement.getAttribute('donne')!=null){
+	    donneARecup = evenement.getAttribute('donne').split(';');
 
-    for(var i=0;i<donneARecup.length;i++){
-      if(!$('#Id'+donneARecup[i]).is(':checkbox')){
-        data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).val();
-      }
-      else {
-        data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).is(':checked');
-      }
-    }
+	    for(var i=0;i<donneARecup.length;i++){
+
+	      if(!$('#Id'+donneARecup[i]).is(':checkbox')){
+		data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).val(); 
+	      }
+	      else {
+		data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).is(':checked');
+	      }
+	    }
+	  }
+  }else{
+	  if($('#'+evenement.target.id).attr('module')!=null)
+	    modules = $('#'+evenement.target.id).attr('module').split(';');
+
+	  if($('#'+evenement.target.id).attr('regionSucess')!=null)
+	    regionSucess = $('#'+evenement.target.id).attr('regionSucess').split(';');
+
+	  if($('#'+evenement.target.id).attr('regionError')!=null)
+	    regionError = $('#'+evenement.target.id).attr('regionError').split(';');
+
+	  if($('#'+evenement.target.id).attr('donne')!=null){
+	    donneARecup = $('#'+evenement.target.id).attr('donne').split(';');
+
+	    for(var i=0;i<donneARecup.length;i++){
+
+	      if(!$('#Id'+donneARecup[i]).is(':checkbox')){
+		data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).val();
+	      }
+	      else {
+		data[donneARecup[i].split('_')[0]] = $('#Id'+donneARecup[i]).is(':checked');
+	      }
+	    }
+	  }
   }
 
+  
+
+  
   CoupeChoix = false;
 
   for(var i=0;i<modules.length; i++){

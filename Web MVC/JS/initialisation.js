@@ -20,16 +20,9 @@ function initialiser()
 		'bntPagePalmares' : Action,
 		'btnPageAjoutCompetition' : Action,
 		'btnPageListeCompetition' : Action,
-		'btnModifierCompetition' : Action,
-		'btnDetailCompetition' : Action,
 		'btnAddObjectif' : Action,
-		'btnInscritCourse' : Action,
-		'btnValidationCompetiteur' : Action,
-		'btnValidationEquipe' : Action,
-		'btnAjouterCourse' : Action,
-		'btnSaveCourse' : Action,
-		'btnSupprimerCourse' : Action,
-		'btnAjouterCompetition' : Action
+		'btnAjouterCompetition' : Action,
+		'btnSaveCompetition' : Action
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page

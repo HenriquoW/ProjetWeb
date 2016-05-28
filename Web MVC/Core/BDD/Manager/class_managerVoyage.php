@@ -72,11 +72,15 @@ class ManagerVoyage extends Manager{
     //Fonction qui retourne un voyage à partir de son id
     public function getId($id)
     {
+	error_log(print_r($id,true));
         $requete = $this->getDb()->query('SELECT Id_Voyage, Transport_Propose, Hebergement, Id_Competition FROM Voyage WHERE Id_Voyage = '.$id);
         $donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         $donnees['Charge'] = $this->getCharge($id);
         $donnees['Participe'] = $this->getParticipe($id);
+	$donnees['Transport'] = $donnees['Transport_Propose'];
+
+	unset($donnees['Transport_Propose']);
 
         return new Voyage($donnees);
     }
@@ -85,7 +89,7 @@ class ManagerVoyage extends Manager{
     public function getCharge($id){
         $charges = array();
 
-        $requeteCharge = $this->getDb()->query('SELECT Id_Utilisateur,Id_Role,Id_Tache FROM Charge WHERE Id_Voyage = '.$id);
+        $requeteCharge = $this->getDb()->query('SELECT Id_Utilisateur,Id_Role,Id_Tache FROM Charger WHERE Id_Voyage = '.$id);
 
 	if($requeteCharge){
 	  while ($donne = $requeteCharge->fetch(PDO::FETCH_ASSOC))
@@ -109,7 +113,7 @@ class ManagerVoyage extends Manager{
     public function getParticipe($id){
         $participants = array();
 
-        $requeteParticipe = $this->getDb()->query('SELECT Id_Competiteur,Autorise,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Voyage = '.$id);
+        $requeteParticipe = $this->getDb()->query('SELECT Id_Competiteur,Autoriser,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Voyage = '.$id);
 
 	if($requeteParticipe){
 	while ($donne = $requeteParticipe->fetch(PDO::FETCH_ASSOC))

@@ -36,7 +36,7 @@ class ManagerEquipe extends Manager{
 
             if(!in_array($donneCour['Id_Course'],$course['Id_Course'])){
 
-                $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Equipe (Id_Equipe,Id_Course,Validation) VALUES(:id_Equipe,:id_Course,:validation)');
+                $requete = $this->getDb()->prepare('INSERT INTO Participe_Competition_Equipe (Id_Equipe,Id_Course,Validation) VALUES(:id_Equipe,:id_Course,:validation)');
 
                 $requete->execute(array('id_Equipe' => $objet->getId_Equipe(),
                                         'id_Course' => $course['Id_Course'],
@@ -49,7 +49,7 @@ class ManagerEquipe extends Manager{
     // Function qui ajoute UNE Equipe a une course
     public function addEquipeCourse($IdCourse,$IdEquipe,$Validation){
 
-        $requete = $this->getDb()->prepare('INSERT INTO Participant_Competition_Equipe (Id_Equipe,Id_Course,Validation) VALUES(:id_Equipe,:id_Course,:validation)');
+        $requete = $this->getDb()->prepare('INSERT INTO Participe_Competition_Equipe (Id_Equipe,Id_Course,Validation) VALUES(:id_Equipe,:id_Course,:validation)');
 
         $requete->execute(array('id_Equipe' => $IdEquipe,
                                 'id_Course' => $IdCourse,
@@ -73,13 +73,13 @@ class ManagerEquipe extends Manager{
     // Function qui enleve UNE Equipe a une course
     public function removeEquipeCourse($IdCourse,$IdEquipe)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Equipe WHERE Id_Course = '.$IdCourse.' AND Id_Equipe = '.$IdEquipe);
+        $this->getDb()->exec('DELETE FROM Participe_Competition_Equipe WHERE Id_Course = '.$IdCourse.' AND Id_Equipe = '.$IdEquipe);
     }
 
     // Function qui enleve toutes les course de l'equipe
     public function removeEquipeCourses($objet)
     {
-        $this->getDb()->exec('DELETE FROM Participant_Competition_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
+        $this->getDb()->exec('DELETE FROM Participe_Competition_Equipe WHERE Id_Equipe = '.$objet->getId_Equipe());
 
     }
 
@@ -114,7 +114,7 @@ class ManagerEquipe extends Manager{
     public function getEquipeCourse($id){
         $courses;
 
-        $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participant_Competition_Equipe WHERE Id_Equipe = '.$id);
+        $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participe_Competition_Equipe WHERE Id_Equipe = '.$id);
 
         while ($donne = $requeteCourse->fetch(PDO::FETCH_ASSOC))
         {
@@ -174,7 +174,7 @@ class ManagerEquipe extends Manager{
     // valide ou invalide la participation de l'equipe a une course
     public function valideCourse($IdCourse,$IdEquipe,$Validation){
 
-        $requete = $this->getDb()->prepare('UPDATE Participant_Competition_Equipe SET Validation =:validation WHERE Id_Equipe = :id_Equipe AND Id_Course = :id_Course');
+        $requete = $this->getDb()->prepare('UPDATE Participe_Competition_Equipe SET Validation =:validation WHERE Id_Equipe = :id_Equipe AND Id_Course = :id_Course');
 
         $requete->execute(array('validation' => $Validation,
                                 'id_Equipe' => $IdEquipe,
