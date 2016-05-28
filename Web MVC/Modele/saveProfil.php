@@ -3,12 +3,16 @@
 $UtilisateurEnCours;
 $error = false;
 
-if($id = isCompetiteur($data['Utilisateur'])){
-  $inf["Id"] = $id;
+$id = isCompetiteurUtilisateur($data['Utilisateur']);
+if($id){
+  $inf["Id"] = $id['Id_Competiteur'];
   $UtilisateurEnCours = loadCompetiteur($inf);
-}else if($id = isAdherent($data['Utilisateur'])){
-  $inf["Id"] = $id;
-  $UtilisateurEnCours = loadAdherent($inf);
+}else{ 
+	$id = isAdherentUtilisateur($data['Utilisateur']);
+	if($id){
+	  $inf["Id"] = $id['Id_Adherent'];
+	  $UtilisateurEnCours = loadAdherent($inf);
+	}
 }else{
   $inf["Id"] = $data['Utilisateur'];
   $UtilisateurEnCours = loadUtilisateur($inf);

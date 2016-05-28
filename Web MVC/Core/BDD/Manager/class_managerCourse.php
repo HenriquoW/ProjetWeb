@@ -72,44 +72,56 @@ class ManagerCourse extends Manager{
     //Fonction qui retourne une course à partir de son id
     public function getId($id)
     {
-        $requete = $this->getDb()->query('SELECT Id_Course, Distance, Equipe, Id_Categorie, Id_Competition, Id_Type_Specialite, FROM Course WHERE Id_Course = '.$id);
-        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+        $requete = $this->getDb()->query('SELECT Id_Course, Distance, Equipe, Id_Categorie, Id_Competition, Id_Type_Specialite FROM Course WHERE Id_Course = '.$id);
+	if($requete){
 
-        $donnees['Categorie'] = $donnees['Id_Categorie'];
-        $donnees['TypeSpecialite'] = $donnees['Id_Type_Specialite'];
-        $donnees['IsEquipe'] = $donnees['Equipe'];
-        $donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe']);
+		$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        unset($donnees['Id_Type_Specialite']);
-        unset($donnees['Equipe']);
-        unset($donnees['Id_Categorie']);
+		$donnees['Categorie'] = $donnees['Id_Categorie'];
+		$donnees['TypeSpecialite'] = $donnees['Id_Type_Specialite'];
+		$donnees['IsEquipe'] = $donnees['Equipe'];
+		$donnees['Participant'] = $this->getParticipant($id,$donnees['Equipe']);
 
-        return new Course($donnees);
+		unset($donnees['Id_Type_Specialite']);
+		unset($donnees['Equipe']);
+		unset($donnees['Id_Categorie']);
+
+		return new Course($donnees);
+
+	}else{
+		return null;
+	}
+        
     }
 
     public function getParticipant($id,$isEquipe){
-        $participants;
+        $participants = array();
 
-        if($isEquipe){
+        if($isEquipe==1){
             $requete = $this->getDb()->query('SELECT Id_Equipe,Validation FROM Participant_Competition_Equipe WHERE Id_Course = '.$id);
-            $donne = $requete->fetch(PDO::FETCH_ASSOC);
+	    if($requete){
+		$donne = $requete->fetch(PDO::FETCH_ASSOC);
 
-            while ($donne = $requete->fetch(PDO::FETCH_ASSOC))
-            {
-                $participant['Id'] = $donne['Id_Equipe'];
-                $participant['Validation'] = $donne['Validation'];
-                $participants[] = $participant;
-            }
+		    while ($donne = $requete->fetch(PDO::FETCH_ASSOC))
+		    {
+		        $participant['Id'] = $donne['Id_Equipe'];
+		        $participant['Validation'] = $donne['Validation'];
+		        $participants[] = $participant;
+		    }
+
+	    }
         }else{
             $requete = $this->getDb()->query('SELECT Id_Competiteur,Validation FROM Participant_Competition_Solo WHERE Id_Course = '.$id);
 
-            while ($donne = $requete->fetch(PDO::FETCH_ASSOC))
-            {
-                $participant['Id'] = $donne['Id_Competiteur'];
-                $participant['Validation'] = $donne['Validation'];
-                $participants[] = $participant;
-            }
+	    if($requete){
+		while ($donne = $requete->fetch(PDO::FETCH_ASSOC))
+		    {
+		        $participant['Id'] = $donne['Id_Competiteur'];
+		        $participant['Validation'] = $donne['Validation'];
+		        $participants[] = $participant;
+		    }
 
+	    }
         }
 
         return $participants;
@@ -142,6 +154,7 @@ class ManagerCourse extends Manager{
             $courses[] = loadCourse(array("Id"=>$donneId['Id_Course']));
         }
 
+	
         return $courses;
     }
 

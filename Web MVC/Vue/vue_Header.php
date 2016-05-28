@@ -8,7 +8,7 @@ if(isset($_COOKIE['Connect'])){
   $response_array['Donne'] = '
   <ul id="menu">
                     <li>
-                            <a>Profil</a>
+                            <a id="btnAccueilConnecter" module="Accueil;Header" regionSucess="#body;#header" regionError="#body;#header">Profil</a>
                             <ul>
                                     <li><a id="btnHeaderModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" >Modifier Profil</a></li>
                             </ul>
@@ -74,7 +74,7 @@ if(isset($_COOKIE['Connect'])){
                 </li>
 
                 <li>
-                        <a>Profil</a>
+                        <a>PROFIL</a>
                         <ul>
                                 <li><a id="btnPageConnexion" module="PageConnexion" regionSucess="#body">Connexion</a></li>
                                 <li><a id="btnPageInscription" module="PageInscription" regionSucess="#body">Inscription</a></li>

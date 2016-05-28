@@ -138,6 +138,7 @@ function loadCompetition($info){
     }
 if($competition!=null){
     //recupere sexe (id,type)
+    if($competition->getSexe()!=null)
     $competition->setSexe(BDD::getInstance()->getManager("Sexe")->getId($competition->getSexe()));
 
     //recupere type de competition (id,nom,selectif)

@@ -45,20 +45,27 @@ class ManagerAdherent extends ManagerUtilisateur{
     public function getId($id)
     {
         $requete = $this->getDb()->query('SELECT Id_Adherent, NumeroLicence, DateInscription, Id_Utilisateur FROM Adherent WHERE Id_Adherent = '.$id);
-        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+	
+	if($requete){
+		$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        $user = parent::getId($donnees['Id_Utilisateur']);
+		$user = parent::getId($donnees['Id_Utilisateur']);
 
-        unset($donnees['Id_Utilisateur']);
+		unset($donnees['Id_Utilisateur']);
 
-        return new Adherent(null,$user,$donnees);
+		return new Adherent($donnees,$user,null);
+
+	}else{
+		return null;
+	}
+        
     }
 
     public function getMail($mail){
         $requeteId = $this->getDb()->query('SELECT Id_Adherent FROM Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur WHERE Utilisateur.Mail = '.$mail);
         $donneId = $requeteId->fetch(PDO::FETCH_ASSOC);
 
-        return $this->getId($donneId['Id_Adherent']);
+        return loadAdherent(array("Id"=>$donneId['Id_Adherent']));
     }
 
     //Fonction qui retourne la liste de tous les adherent présents dans la BDD
@@ -70,7 +77,7 @@ class ManagerAdherent extends ManagerUtilisateur{
 
         while ($donneId = $requete->fetch(PDO::FETCH_ASSOC))
         {
-            $adherents[] = $this->getId($donneId['Id_Adherent']);
+            $adherents[] = loadAdherent(array("Id"=>$donneId['Id_Adherent']));
         }
 
         return $adherents;
@@ -94,41 +101,60 @@ class ManagerAdherent extends ManagerUtilisateur{
                                ));
     }
 
-    public function isAdherent($id){
-        $requete = $this->getDb()->query('SELECT Id_Adherent
+    public function isAdherentUtilisateur($id){
+        /*$requete = $this->getDb()->query('SELECT Id_Adherent
                                           FROM Adherent
                                           WHERE Id_Adherent='.$id);
+
+	$requeteComp = $this->getDb()->query('SELECT Id_Adherent
+                                              FROM Competiteur
+                                              WHERE Id_Competiteur='.$id);*/
 
         $requeteUt = $this->getDb()->query('SELECT Id_Adherent
                                             FROM Adherent
                                             WHERE Id_Utilisateur='.$id);
 
-        $requeteComp = $this->getDb()->query('SELECT Id_Adherent
-                                              FROM Competiteur
-                                              WHERE Id_Competiteur='.$id);
+        
 
-        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        /*$res = $requete->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($res,true));
+
+	$resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
+        //error_log(print_r($resComp,true));*/
 
         $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($resUt,true));
 
-        $resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
-        //error_log(print_r($resComp,true));
+        
 
-        if($res!=null){
+        /*if($res!=null){
           return $res;
 
-        }else if($resUt!=null){
-
-          return $resUt;
         }else if($resComp!=null){
 
           return $resComp;
+        }else */if($resUt!=null){
+
+          return $resUt;
         }else{
           return false;
         }
     }
+
+    public function isAdherent($id){
+	$requete = $this->getDb()->query('SELECT Id_Adherent
+                                          FROM Adherent
+                                          WHERE Id_Adherent='.$id);
+
+	$res = $requete->fetch(PDO::FETCH_ASSOC);
+        //error_log(print_r($res,true));
+
+	if($res!=null){
+          return $res;
+        }else{
+	  return false;
+	}
+    }	
 
 }
 ?>

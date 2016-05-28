@@ -5,15 +5,19 @@ if(isset($_COOKIE['Connect'])){
 
   if($_SESSION['UtilisateurCourant']->asDroit("Parent") && isset($data['Enfant'])){
 
-    if($id = isCompetiteur($data['Enfant'])){
-      $inf["Id"] = $id;
+    $id = isCompetiteurUtilisateur($data['Enfant']);	
+    if($id){
+      $inf["Id"] = $id['Id_Competiteur'];
       $UtilisateurEnCours = loadCompetiteur($inf);
-    }else if($id = isAdherent($data['Enfant'])){
-      $inf["Id"] = $id;
-      $UtilisateurEnCours = loadAdherent($inf);
-    }else{
-      $inf["Id"] = $data['Enfant'];
-      $UtilisateurEnCours = loadUtilisateur($înf);
+    }else{ 
+	$id = isAdherentUtilisateur($data['Enfant']);
+	if($id){
+	      $inf["Id"] = $id['Id_Adherent'];
+	      $UtilisateurEnCours = loadAdherent($inf);
+	}else{
+	      $inf["Id"] = $data['Enfant'];
+	      $UtilisateurEnCours = loadUtilisateur($înf);
+    	}
     }
   }else{
     $UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
@@ -25,7 +29,7 @@ if(isset($_COOKIE['Connect'])){
     foreach ($UtilisateurEnCours->getObjectif() as $objectif) {
       $compet = loadCompetition(array("Id"=>$objectif));
 
-      $listObjectif = $listObjectif . ''.$compet->getTypeCompetition()['Nom'].'-'.$compet->getAdresse().'/n';
+      $listObjectif = $listObjectif . ''.$compet->getTypeCompetition()['Nom'].'-'.$compet->getAdresse().'';
     }
   }
 
@@ -42,7 +46,7 @@ if(isset($_COOKIE['Connect'])){
     }
 
     $objectif = $objectif . '</select>
-                              <input type="input" id="btnAddObjectif" module="AddObjectif" regionSucess="#IdObjectif" regionError="#IdObjectif" donne="Utilisateur;NewObjectif" value="Sauvegarder les modifications"';
+                              <input type="submit" id="btnAddObjectif" module="AddObjectif" regionSucess="#Objectif" regionError="#Objectif" donne="Utilisateur;NewObjectif" value="Ajouter Objectif"';
   }
 
   $response_array['Status'] = "Success";

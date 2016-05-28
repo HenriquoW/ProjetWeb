@@ -116,7 +116,11 @@ class ManagerUtilisateur extends Manager{
           $donnees['DateNaissance'] = new datetime($donnees['DateNaissance']);
           $donnees['Sexe'] = $donnees['Id_Sexe'];
           $donnees['Droit'] = $this->getDroit($id);
-          $donnees['Parente'] = $this->getParente($id);
+	  
+	  if(getdate()['year'] - $donnees['DateNaissance']->format('Y') < '18')
+          	$donnees['Parente'] = $this->getParente($id,true);
+	  else
+		$donnees['Parente'] = $this->getParente($id,false);
 
           unset($donnees['Id_Sexe']);
 
@@ -138,26 +142,34 @@ class ManagerUtilisateur extends Manager{
         return $droits;
     }
 
-    public function getParente($id){
-        $enfants = array();
+    public function getParente($id,$isEnfant){
+        $enfant = array();
 
-        $requeteEnfants = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$id);
+	if(!$isEnfant){
+		$requeteEnfants = $this->getDb()->query('SELECT Id_Enfant FROM Parente WHERE Id_Parent = '.$id);
 
-        while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
-        {
-	    $enfant = array();
-	    $enfant["Enfant"] = array();
-	    $enfant["Parent"] = array();
+		$enfant["Enfant"] = array();
 
-            $enfant["Enfant"] = $donne['Id_Enfant'];
+		while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
+		{
+		    $enfant["Enfant"][] = $donne['Id_Enfant'];
 
-            $requeteParent = $this->getDb()->query('SELECT Id_Parent FROM Parente WHERE Id_Enfant = '.$donne['Id_Enfant']);
-            $enfant["Parent"] = $requeteEnfants->fetchAll(PDO::FETCH_ASSOC);
+		}
 
-            $enfants[] = $enfant;
-        }
+	}else{
+		$requeteEnfants = $this->getDb()->query('SELECT Id_Parent FROM Parente WHERE Id_Enfant = '.$id);
 
-        return $enfants;
+		$enfant["Parent"] = array();
+
+		while ($donne = $requeteEnfants->fetch(PDO::FETCH_ASSOC))
+		{
+		    $enfant["Parent"][] = $donne['Id_Parent'];
+
+		}
+	}
+        
+
+        return $enfant;
     }
 
     public function getMail($mail){
@@ -229,34 +241,34 @@ class ManagerUtilisateur extends Manager{
     }
 
     public function isUtilisateur($id){
-        $requete = $this->getDb()->query('SELECT Id_Utilisateur
+        /*$requete = $this->getDb()->query('SELECT Id_Utilisateur
                                           FROM Utilisateur
                                           WHERE Id_Utilisateur='.$id);
 
         $requeteAd = $this->getDb()->query('SELECT Id_Utilisateur
                                             FROM Adherent
-                                            WHERE Id_Adherent='.$id);
+                                            WHERE Id_Adherent='.$id);*/
 
         $requeteComp = $this->getDb()->query('SELECT Id_Utilisateur
                                               FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur
                                               WHERE Competiteur.Id_Competiteur='.$id);
 
-        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        /*$res = $requete->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($res,true));
 
         $resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
-        //error_log(print_r($resAd,true));
+        //error_log(print_r($resAd,true));/*
 
         $resComp = $requeteComp->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($resComp,true));
 
-        if($res!=null){
+        /*if($res!=null){
           return $res;
 
         }else if($resAd!=null){
 
           return $resAd;
-        }else if($resComp!=null){
+        }else */if($resComp!=null){
 
           return $resComp;
         }else{

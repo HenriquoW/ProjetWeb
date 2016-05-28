@@ -244,85 +244,105 @@ class ManagerCompetiteur extends ManagerAdherent{
     public function getId($id)
     {
         $requete = $this->getDb()->query('SELECT Id_Competiteur, Photo, Id_Adherent, Id_Specialite, Id_Categorie FROM Competiteur WHERE Id_Competiteur = '.$id);
-        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+	if($requete){
+		$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-        $user = parent::getId($donnees['Id_Adherent']);
+		$user = parent::getId($donnees['Id_Adherent']);
 
-        unset($donnees['Id_Adherent']);
+		unset($donnees['Id_Adherent']);
 
-        $donnees['Specialite'] = $donnees['Id_Specialite'];
-        $donnees['Categorie'] = $donnees['Id_Categorie'];
-        $donnees['Objectif'] = $this->getObjectif($id);
-        $donnees['CourseParticipe'] = $this->getCompetiteurCourse($id);
-        $donnees['EquipeParticipe'] = $this->getCompetiteurEquipe($id);
-        $donnees['VoyageParticipe'] = $this->getCompetiteurVoyage($id);
+		$donnees['Specialite'] = $donnees['Id_Specialite'];
+		$donnees['Categorie'] = $donnees['Id_Categorie'];
+		$donnees['Objectif'] = $this->getObjectif($id);
+		$donnees['CourseParticipe'] = $this->getCompetiteurCourse($id);
+		$donnees['EquipeParticipe'] = $this->getCompetiteurEquipe($id);
+		$donnees['VoyageParticipe'] = $this->getCompetiteurVoyage($id);
 
-        unset($donnees['Id_Specialite']);
-        unset($donnees['Id_Categorie']);
-
-        return new Competiteur($user,$donnees);
+		unset($donnees['Id_Specialite']);
+		unset($donnees['Id_Categorie']);
+		
+		return new Competiteur($user,$donnees);
+	}else{
+		return null;
+	}
+        
     }
 
     public function getObjectif($id){
-        $objectifs;
+        $objectifs = array();
 
         $requeteObjectif = $this->getDb()->query('SELECT Id_Competition FROM Objectif WHERE Id_Competiteur = '.$id);
-
-        while ($donne = $requeteObjectif->fetch(PDO::FETCH_ASSOC))
-        {
-            $objectifs[] = $donne['Id_Competition'];
-        }
+	
+	if($requeteObjectif){
+		while ($donne = $requeteObjectif->fetch(PDO::FETCH_ASSOC))
+		{
+		    $objectifs[] = $donne['Id_Competition'];
+		}
+	}
 
         return $objectifs;
     }
 
     public function getCompetiteurCourse($id){
-        $courses;
+        $courses = array();
 
         $requeteCourse = $this->getDb()->query('SELECT Id_Course,Validation FROM Participant_Competition_Solo WHERE Id_Competiteur = '.$id);
 
-        while ($donne = $requeteCourse->fetch(PDO::FETCH_ASSOC))
-        {
-            $courses[] = $donne;
-        }
+	if($requeteCourse){
+		while($donne = $requeteCourse->fetch(PDO::FETCH_ASSOC))
+		{
+		    $courses[] = $donne;
+		}
+
+	}
+        
 
         $requeteCourseEquipe = $this->getDb()->query('SELECT Id_Course,Validation,Participant_Competition_Equipe.Id_Equipe
                                                       FROM Participant_Competition_Equipe JOIN Equipe ON Participant_Competition_Equipe.Id_Equipe = Equipe.Id_Equipe
                                                                                           JOIN Participant_Equipe On Equipe.Id_Equipe = Participant_Equipe.Id_Competiteur
                                                       WHERE Participant_Equipe.Id_Competiteur = '.$id);
-        while ($donne = $requeteCourseEquipe->fetch(PDO::FETCH_ASSOC))
-        {
-            $courses[] = $donne;
-        }
+	if($requeteCourseEquipe){
+		while ($donne = $requeteCourseEquipe->fetch(PDO::FETCH_ASSOC))
+		{
+		    $courses[] = $donne;
+		}	
+	}
+        
 
         return $courses;
     }
 
     public function getCompetiteurVoyage($id){
-        $voyages;
+        $voyages = array();
 
         $requeteVoyage= $this->getDb()->query('SELECT Id_Voyage,Id_Competiteur,Autoriser,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Competiteur = '.$id);
+	
+	if($requeteVoyage){
+		while ($donne = $requeteVoyage->fetch(PDO::FETCH_ASSOC))
+		{
+		    $donne['Type_Voyage'] = $donne['Id_Type_Voyage'];
+		    unset($donne['Id_Type_Voyage']);
 
-        while ($donne = $requeteVoyage->fetch(PDO::FETCH_ASSOC))
-        {
-            $donne['Type_Voyage'] = $donne['Id_Type_Voyage'];
-            unset($donne['Id_Type_Voyage']);
-
-            $voyages[] = $donne;
-        }
+		    $voyages[] = $donne;
+		}
+	}
+        
 
         return $voyages;
     }
 
     public function getCompetiteurEquipe($id){
-        $equipes;
+        $equipes = array();
 
         $requeteEquipe = $this->getDb()->query('SELECT Id_Equipe FROM Participant_Equipe WHERE Id_Competiteur = '.$id);
 
-        while ($donne = $requeteEquipe->fetch(PDO::FETCH_ASSOC))
-        {
-            $equipes[] = $donne['Id_Equipe'];
-        }
+	if($requeteEquipe){
+		while ($donne = $requeteEquipe->fetch(PDO::FETCH_ASSOC))
+		{
+		    $equipes[] = $donne['Id_Equipe'];
+		}
+	}
+        
 
         return $equipes;
     }
@@ -429,35 +449,35 @@ class ManagerCompetiteur extends ManagerAdherent{
                                ));
     }
 
-    public function isCompetiteur($id){
-        $requete = $this->getDb()->query('SELECT Id_Competiteur
+    public function isCompetiteurUtilisateur($id){
+        /*$requete = $this->getDb()->query('SELECT Id_Competiteur
                                           FROM Competiteur
                                           WHERE Id_Competiteur='.$id);
 
         $requeteAd = $this->getDb()->query('SELECT Id_Competiteur
                                           FROM Competiteur
-                                          WHERE Id_Adherent='.$id);
+                                          WHERE Id_Adherent='.$id);*/
 
         $requeteUt = $this->getDb()->query('SELECT Id_Competiteur
                                           FROM Competiteur JOIN Adherent ON Competiteur.Id_Adherent = Adherent.Id_Adherent JOIN Utilisateur ON Adherent.Id_Utilisateur = Utilisateur.Id_Utilisateur
                                           WHERE Utilisateur.Id_Utilisateur='.$id);
 
-        $res = $requete->fetch(PDO::FETCH_ASSOC);
+        /*$res = $requete->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($res,true));
 
         $resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
-        //error_log(print_r($resAd,true));
+        //error_log(print_r($resAd,true));*/
 
         $resUt = $requeteUt->fetch(PDO::FETCH_ASSOC);
         //error_log(print_r($resUt,true));
 
-        if($res!=null){
+        /*if($res!=null){
           return $res;
 
         }else if($resAd!=null){
 
           return $resAd;
-        }else if($resUt!=null){
+        }else */if($resUt!=null){
 
           return $resUt;
         }else{
@@ -465,5 +485,21 @@ class ManagerCompetiteur extends ManagerAdherent{
         }
     }
 
+    public function isCompetiteurAdherent($id){
+	$requeteAd = $this->getDb()->query('SELECT Id_Competiteur
+                                          FROM Competiteur
+                                          WHERE Id_Adherent='.$id);
+
+	$resAd = $requeteAd->fetch(PDO::FETCH_ASSOC);
+        error_log(print_r($resAd,true));
+
+	if($resAd!=null){
+
+          return $resAd;
+        }else{
+	  return false;
+	}
+
+    }
 }
 ?>

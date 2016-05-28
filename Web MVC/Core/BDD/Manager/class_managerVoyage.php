@@ -83,11 +83,12 @@ class ManagerVoyage extends Manager{
 
     //recupere les charge pour un voyage
     public function getCharge($id){
-        $charge;
+        $charges = array();
 
         $requeteCharge = $this->getDb()->query('SELECT Id_Utilisateur,Id_Role,Id_Tache FROM Charge WHERE Id_Voyage = '.$id);
 
-        while ($donne = $requeteCharge->fetch(PDO::FETCH_ASSOC))
+	if($requeteCharge){
+	  while ($donne = $requeteCharge->fetch(PDO::FETCH_ASSOC))
         {
             $donne['Role'] = $donne['Id_Role'];
             $donne['Tache'] = $donne['Id_Tache'];
@@ -95,19 +96,23 @@ class ManagerVoyage extends Manager{
             unset($donne['Id_Role']);
             unset($donne['Id_Tache']);
 
-            $charge[] = $donne;
+            $charges[] = $donne;
         }
+
+	}
+        
 
         return $charges;
     }
 
     //recupere les competiteur qui participe au voyage pour un voyage
     public function getParticipe($id){
-        $participants;
+        $participants = array();
 
         $requeteParticipe = $this->getDb()->query('SELECT Id_Competiteur,Autorise,Id_Type_Voyage,Id_Utilisateur FROM Participe_Voyage WHERE Id_Voyage = '.$id);
 
-        while ($donne = $requeteParticipe->fetch(PDO::FETCH_ASSOC))
+	if($requeteParticipe){
+	while ($donne = $requeteParticipe->fetch(PDO::FETCH_ASSOC))
         {
 
             $donne['Type_Voyage'] = $donne['Id_Type_Voyage'];
@@ -115,6 +120,10 @@ class ManagerVoyage extends Manager{
 
             $participants[] = $donne;
         }
+
+
+	}
+        
 
         return $participants;
     }

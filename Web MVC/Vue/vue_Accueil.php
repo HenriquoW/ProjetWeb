@@ -5,9 +5,10 @@ if(isset($_COOKIE['Connect'])){
   $UtilisateurEnCours = $_SESSION['UtilisateurCourant'];
   $ClasseUtilisateur = get_class($UtilisateurEnCours);
 
-  $infoPal = '<p>';
+  $infoPal = '';
 
   if ($ClasseUtilisateur == 'Competiteur'){
+    $infoPal = '<p>';	
     $idPalmaresTableau=$UtilisateurEnCours->getPalmares();
     $nbID = count($idPalmaresTableau);
 
@@ -74,14 +75,15 @@ if(isset($_COOKIE['Connect'])){
     }
   }
 
-  $infoParent = '<p>';
+  $infoParent = '';
 
   if(getdate()['year'] - $UtilisateurEnCours->getDateNaissance()->format('Y') < '18'){
     $TableauResultat=$UtilisateurEnCours->getParente();
     $TableauParents=$TableauResultat['Parent'];
+
     $idParent=$TableauParents[0];
     $Parent=loadUtilisateur($idParent);
-    $infoParent = $infoParent . '<label> Nom </label>
+    $infoParent = $infoParent . '<p><label> Nom </label>
     <input id="nom_responsable" name="nom_responsable" value="'.$Parent->getNom().'" type="text" disabled/> </br>
     <label> Prenom </label>
     <input id="prenom_responsable" name="prenom_responsable" value="'.$Parent->getPrenom().'" type="text" disabled/> </br>
@@ -90,20 +92,21 @@ if(isset($_COOKIE['Connect'])){
 
   }
 
-  $TableauResultat=$UtilisateurEnCours->getParente();
-  $infoEnfant = '<p>';
-
-  if(isset($TableauResultat['Enfant'])){
-  	$TableauIDEnfant=$TableauResultat['Enfant'];
-  	foreach($TableauIDEnfant as $IDEnfant){
-  		$Enfant=loadUtilisateur($IDEnfant);
-  		$infoEnfant = $infoEnfant.'<label> Enfant '.$NbEnfant.' </label> <br/>
+  $TableauResultat=$UtilisateurEnCours->getParente();	
+  $infoEnfant = '';
+  if($UtilisateurEnCours->asDroit("Parent")){
+	$infoEnfant = '<p>';
+	error_log(print_r($UtilisateurEnCours->getParente(),true));
+	foreach($UtilisateurEnCours->getParente()['Enfant'] as $parente){
+		$Enfant=loadUtilisateur(array("Id"=>$parente));
+  		$infoEnfant = $infoEnfant.'<label> Enfant</label> <br/>
   			<input id="nom_prenom_enfant" name="nom_prenom_enfant" value="'.$Enfant->getPrenom().' '.$Enfant->getNom().'" type="text" disabled/>
-  	    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$IDEnfant.'">
+  	    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$Enfant->getId_Utilisateur().'">
   			<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
   			<br/> <br/>';
+	
   	}
-    $infoEnfant = $infoEnfant.'</p>';
+	$infoEnfant = $infoEnfant.'</p>';
   }
 
   $repAccueil['Status'] = "Success";
@@ -112,7 +115,7 @@ if(isset($_COOKIE['Connect'])){
   <div class="div_profil_global">
       <div class="div_profil">
         <h2>Profil</h2>
-          <p>
+          
 
             '. (($ClasseUtilisateur == 'Competiteur') ? ('<p><img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
                                                         </br>
@@ -169,7 +172,7 @@ if(isset($_COOKIE['Connect'])){
 
             '.
             (($ClasseUtilisateur == 'Adherent' || $ClasseUtilisateur == 'Competiteur') ? ('<label> N° Licence </label>
-        	                                                                                 <input id="IdNumLicence" name="num_licence" type="number" disabled="disabled" value="'.$UtilisateurEnCours->getNumeroLicence().'" disabled/> <br/>')
+        	                                                                                 <input id="IdNumLicence" name="num_licence" type="number" value="'.$UtilisateurEnCours->getNumeroLicence().'" disabled/> <br/>')
                                                                                        : (''))
             .'
 
@@ -202,7 +205,7 @@ if(isset($_COOKIE['Connect'])){
               $infoEnfant
             .'
 
-          </p>
+          
         </div>
       <div class="horizontal_separator"></div>
     </div>';

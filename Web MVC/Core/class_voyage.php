@@ -131,7 +131,7 @@ function loadVoyage($info){
 	
 if($voyage!=null){
     //recupere tache (id,nom) et role (id,titre)
-    $charges;
+    $charges = array();
     foreach($voyage->getCharge() as $charge){
         $charge['Role'] = BDD::getInstance()->getManager("Role")->getId($charge['Role']);
 
@@ -142,7 +142,7 @@ if($voyage!=null){
     $voyage->setCharge($charges);
 
     //recupere type de voyage (id,nom)
-    $participes;
+    $participes = array();
     foreach($voyage->getParticipe() as $participe){
         $participe['Type_Voyage'] = BDD::getInstance()->getManager("Type_Voyage")->getId($participe['Type_Voyage']);
 

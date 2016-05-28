@@ -4,42 +4,44 @@ $competition = loadCompetition(array("Id"=>$data['Competition']));
 $infoCourse = '';
 $index = 0;
 foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
-  $infoCat ='';
-  foreach (BDD::getInstance()->getManager("Categorie")->getList() as $cat) {
-    $infoCat = $infoCat.'<option value="'.$cat["Id"].'" '.(($cat["Nom"]==$course->getCategorie()["Nom"])?('selected="selected"'):('')).'>'.$cat["Nom"].'</option>';
-  }
+  if($course!=null){
+	  $infoCat ='';
+	  foreach (BDD::getInstance()->getManager("Categorie")->getList() as $cat) {
+	    $infoCat = $infoCat.'<option value="'.$cat["Id"].'" '.(($cat["Nom"]==$course->getCategorie()["Nom"])?('selected="selected"'):('')).'>'.$cat["Nom"].'</option>';
+	  }
 
-  $infoSpe ='';
-  foreach (BDD::getInstance()->getManager("Type_Specialite")->getList() as $spe) {
-    $infoSpe = $infoSpe.'<option value="'.$spe["Id"].'" '.(($spe["Nom"]==$course->getCategorie()["Nom"])?('selected="selected"'):('')).'>'.$spe["Nom"].'</option>';
-  }
+	  $infoSpe ='';
+	  foreach (BDD::getInstance()->getManager("Type_Specialite")->getList() as $spe) {
+	    $infoSpe = $infoSpe.'<option value="'.$spe["Id"].'" '.(($spe["Nom"]==$course->getCategorie()["Nom"])?('selected="selected"'):('')).'>'.$spe["Nom"].'</option>';
+	  }
 
-  $infoCourse = $infoCourse .'<tr>
-                                <td>
-                                  <input type="text" name="distance" id="IdDistance_'.$index.'" value="'.$course->getDistance().'" />
-                                </td>
-                                <td>
-                                  <select name="Categorie" id="IdCategorie_'.$index.'" readonly>
-                                  '.
-                                    $infoCat
-                                  .'
-                                  </select>
-                                </td>
-                                <td>
-                                  <select name="Categorie" id="IdSpecialite_'.$index.'" readonly>
-                                  '.
-                                    $infoSpe
-                                  .'
-                                  </select>
-                                </td>
-                                <td>
-                                  <input type="submit" name="Modifier" id="btnSaveCourse" module="SaveCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.';Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Modifier"/>
-                                </td>
-                                <td>
-                                  <input type="submit" name="Supprimer" id="btnSupprimerCourse" module="SupprimerCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.'" value="Modifier"/>
-                                </td>
-                              </tr>';
-  $index++;
+	  $infoCourse = $infoCourse .'<tr>
+		                        <td>
+		                          <input type="text" name="distance" id="IdDistance_'.$index.'" value="'.$course->getDistance().'" />
+		                        </td>
+		                        <td>
+		                          <select name="Categorie" id="IdCategorie_'.$index.'" readonly>
+		                          '.
+		                            $infoCat
+		                          .'
+		                          </select>
+		                        </td>
+		                        <td>
+		                          <select name="Categorie" id="IdSpecialite_'.$index.'" readonly>
+		                          '.
+		                            $infoSpe
+		                          .'
+		                          </select>
+		                        </td>
+		                        <td>
+		                          <input type="submit" name="Modifier" id="btnSaveCourse" module="SaveCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.';Distance_'.$index.';Categorie_'.$index.';Specialite_'.$index.'" value="Modifier"/>
+		                        </td>
+		                        <td>
+		                          <input type="submit" name="Supprimer" id="btnSupprimerCourse" module="SupprimerCourse;PageCompetition" regionSucess="#competition;#competition" regionError="#competition;#competition" donne="Competition;Course_'.$index.'" value="Modifier"/>
+		                        </td>
+		                      </tr>';
+	  $index++;
+	}
 }
 
 $infoCat ='';
@@ -120,7 +122,7 @@ if($voyage!=null){
     $charge = '<td><select name="role" id="IdRole_'.$index.'" disabled>';
 
     foreach($listRole as $role) {
-      $charge = $charge . '<option value="'.$role['Id'].'" '.(($role['Nom']==$infoCharge['Role']['Nom'])?('selected="selected"'):('')).'>'.$role['Nom'].'</option>';
+      $charge = $charge . '<option value="'.$role['Id'].'" '.(($role['Titre']==$infoCharge['Role']['Titre'])?('selected="selected"'):('')).'>'.$role['Titre'].'</option>';
     }
 
     $charge = $charge .'</select></td>
@@ -159,7 +161,7 @@ if($voyage!=null){
   <td><select name="role" id="IdRole_'.$index.'" readonly>';
 
   foreach($listRole as $role) {
-    $addCharge = $addCharge . '<option value="'.$role['Id'].'">'.$role['Nom'].'</option>';
+    $addCharge = $addCharge . '<option value="'.$role['Id'].'">'.$role['Titre'].'</option>';
   }
 
   $addCharge = $addCharge .'</select></td>
@@ -193,7 +195,7 @@ foreach (BDD::getInstance()->getManager("Type_Competition")->getList() as $type)
 
 $infoSexe ='';
 foreach (BDD::getInstance()->getManager("Sexe")->getList() as $sexe) {
-  $infoSexe = $infoSexe.'<option value="'.$sexe['Id'].'" '.(($sexe['Nom']==$competition->getSexe()['Nom'])?('selected="selected"'):('')).'>'.$sexe['Nom'].'</option>';
+  $infoSexe = $infoSexe.'<option value="'.$sexe['Id'].'" '.(($sexe['Type']==$competition->getSexe()['Type'])?('selected="selected"'):('')).'>'.$sexe['Type'].'</option>';
 }
 
 $response_array = array();
@@ -232,7 +234,7 @@ $response_array['Donne'] = '<input type="hidden" name="id_Competition" id="IdCom
 
                             <table name="InfoEpreuve">
                             '.
-                              $infoCourse;
+                              $infoCourse
                             .'
                             </table>
 

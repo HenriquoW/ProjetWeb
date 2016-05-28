@@ -29,7 +29,7 @@ class Utilisateur{
     */
 
     //Constructeur qui initialisera l'utilisateur avec la fonction hydrate
-    public function __construct(array $donnees,Utilisateur $user = null)
+    public function __construct(array $donnees = null,Utilisateur $user = null)
     {
         if(isset($user)){
           //Copie les valeurs
@@ -44,12 +44,12 @@ class Utilisateur{
           $this->setSexe($user->getSexe());
           $this->setDroit($user->getDroit());
           $this->setParente($user->getParente());
-
-
+	
           //Detruit ancienne utilisateur
-          unset($user);
+          //unset($user);
         }else{
-          $this->hydrate($donnees);
+	  if(isset($donnees))	
+          	$this->hydrate($donnees);
         }
 
     }

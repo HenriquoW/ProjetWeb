@@ -55,25 +55,36 @@ class ManagerPalmares extends Manager{
     public function getId($id)
     {
         $requeteIsEquipe = $this->getDb()->query('SELECT Equipe FROM Course WHERE Id_Course = '.$id['Id_Course']);
-        $donneIsEquipe = $requeteIsEquipe->fetch(PDO::FETCH_ASSOC);
+        
+        $donnees = array();
 
-        $donnees;
+	if($requeteIsEquipe){
+		$donneIsEquipe = $requeteIsEquipe->fetch(PDO::FETCH_ASSOC);
 
-        if($donneIsEquipe['Equipe']){
-            $requete = $this->getDb()->query('SELECT Id_Equipe, Classement, Id_Course  FROM Palmares_Equipe WHERE Id_Equipe = '.$id['Id_Equipe'].'AND Id_Course ='.$id['Id_Course']);
-            $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+		if($donneIsEquipe['Equipe']){
+		    $requete = $this->getDb()->query('SELECT Id_Equipe, Classement, Id_Course  FROM Palmares_Equipe WHERE Id_Equipe = '.$id['Id_Equipe'].'AND Id_Course ='.$id['Id_Course']);
+		    
+		    if($requete){
+			$donnees = $requete->fetch(PDO::FETCH_ASSOC);
+	
+		        $donnees['Id_Participant'] = $donnees['Id_Equipe'];
+		        unset($donnees['Id_Equipe']);
+		    }
+		    
+		}else{
+		    $requete = $this->getDb()->query('SELECT Id_Competiteur, Classement, Id_Course FROM Palmares_Competiteur WHERE Id_Competiteur = '.$id['Id_Competiteur'].'AND Id_Course ='.$id['Id_Course']);
+		    
+		    if($requete){
+			$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
-            $donnees['Id_Participant'] = $donnees['Id_Equipe'];
-            unset($donnees['Id_Equipe']);
-        }else{
-            $requete = $this->getDb()->query('SELECT Id_Competiteur, Classement, Id_Course FROM Palmares_Competiteur WHERE Id_Competiteur = '.$id['Id_Competiteur'].'AND Id_Course ='.$id['Id_Course']);
-            $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+		    	$donnees['Id_Participant'] = $donnees['Id_Competiteur'];
+		    	unset($donnees['Id_Competiteur']);
+		    }
+		}
 
-            $donnees['Id_Participant'] = $donnees['Id_Competiteur'];
-            unset($donnees['Id_Competiteur']);
-        }
-
-        $donnees['IsEquipe'] = $donneIsEquipe['Equipe'];
+		$donnees['IsEquipe'] = $donneIsEquipe['Equipe'];
+	}
+        
 
         return new Palmares($donnees);
     }

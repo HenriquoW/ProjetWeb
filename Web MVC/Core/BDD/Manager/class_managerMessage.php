@@ -116,18 +116,24 @@ class ManagerMessage extends Manager{
         $requeteEnvoie = $this->getDb()->query('SELECT Id_Message FROM Envoie WHERE Id_Utilisateur = '.$id);
         $messagesEnvoi = array();
 
-        while ($donneId = $requeteEnvoie->fetch(PDO::FETCH_ASSOC))
-        {
-            $messagesEnvoi[] = $this->getId($donneId['Id_Message']);
-        }
+	if($requeteEnvoie){
+		while ($donneId = $requeteEnvoie->fetch(PDO::FETCH_ASSOC))
+		{
+		    $messagesEnvoi[] = $this->getId($donneId['Id_Message']);
+		}
+	}
+        
 
         $requeteRecois = $this->getDb()->query('SELECT Id_Message FROM Recois WHERE Id_Utilisateur = '.$id);
         $messagesRecois = array();
         
-        while ($donneId = $requeteRecois->fetch(PDO::FETCH_ASSOC))
-        {
-            $messagesRecois[] = $this->getId($donneId['Id_Message']);
-        }
+	if($requeteRecois){
+		while ($donneId = $requeteRecois->fetch(PDO::FETCH_ASSOC))
+		{
+		    $messagesRecois[] = $this->getId($donneId['Id_Message']);
+		}
+	}
+        
 
         $messages['Envoyer'] = $messagesEnvoi;
         $messages['Recus'] = $messagesRecois;

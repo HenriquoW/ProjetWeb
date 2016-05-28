@@ -12,7 +12,7 @@ foreach (BDD::getInstance()->getManager("Type_Competition")->getList() as $type)
 
 $infoSexe ='';
 foreach (BDD::getInstance()->getManager("Sexe")->getList() as $sexe) {
-  $infoSexe = $infoSexe.'<option value="'.$sexe['Id'].'" >'.$sexe['Nom'].'</option>';
+  $infoSexe = $infoSexe.'<option value="'.$sexe['Id'].'" >'.$sexe['Type'].'</option>';
 }
 
 $response_array = array();

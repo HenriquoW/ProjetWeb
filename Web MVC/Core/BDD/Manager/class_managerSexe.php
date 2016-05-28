@@ -30,13 +30,15 @@ class ManagerSexe extends Manager{
     //Fonction qui retourne un sexe à partir de son id
     public function getId($id)
     {
+
         $requete = $this->getDb()->query('SELECT Id_Sexe, Type FROM Sexe WHERE Id_Sexe = '.$id);
-        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+	$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
         $sexe['Id'] = $donnees['Id_Sexe'];
         $sexe['Type'] = $donnees['Type'];
 
-        return $sexe;
+	return $sexe;
+        
     }
 
     public function getType($type)

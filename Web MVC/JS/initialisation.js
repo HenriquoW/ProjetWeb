@@ -8,6 +8,7 @@ function initialiser()
 	//Création d'un tableau associant l'id d'un élément et la fonction à appeler en cas de clic sur cet élement
 	window.evenementsClic = {
 		'btnAccueil' : Action,
+		'btnAccueilConnecter' : Action,
 		'btnPageConnexion' : Action,
 		'btnPageInscription' : Action,
 		'btnConnexion' : Action,
