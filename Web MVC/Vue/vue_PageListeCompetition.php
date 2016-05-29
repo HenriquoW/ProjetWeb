@@ -46,13 +46,14 @@ $response_array = array();
 $response_array['Status'] = "Success";
 $response_array['Type'] = "Replace";
 $response_array['Donne'] = '<div id="listeCompetition" class="div_liste_competition">
-                              <h1> Liste des compétitions </h1>
+                              <h2> Liste des compétitions </h2>
                               <table>
                                 '.
                                   $res
                                 .'
                               </table>
                             </div>
+                            <div class="horizontal_separator"></div>
                             <div id="competition">
 
 

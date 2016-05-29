@@ -156,11 +156,11 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 
 				if($course->getIsEquipe()){
 					$infoCourse = $infoCourse .'<tr><th>Validation Equipe</th>';
-					
+
 					$i=0;
 					foreach ($course->getParticipant() as $IdParticipant){
 
-						
+
 						$equipe = loadEquipe(array("Id"=>$IdParticipant['Id']));
 
 						$infoCourse = $infoCourse .'<td>'.$equipe->getNom().'</td>';
@@ -178,7 +178,7 @@ foreach (loadCourseCompetition($competition->getId_Competition()) as $course) {
 					$infoCourse = $infoCourse .'</tr>';
 				}else{
 					$infoCourse = $infoCourse .'<tr><th>Validation Competiteur</th>';
-					
+
 					$i=0;
 					foreach ($course->getParticipant() as $IdParticipant) {
 						$comp = loadCompetiteur(array("Id"=>$IdParticipant['Id']));
@@ -325,7 +325,7 @@ $infoTransport
 </table>')
 :(''))
 .'
-
+<div class="horizontal_separator"></div>
 ';
 $response_array['Stop'] = "false";
 $response_array['Region'] = $_POST['regionSucess'];
