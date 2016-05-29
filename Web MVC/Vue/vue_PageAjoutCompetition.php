@@ -18,8 +18,8 @@ foreach (BDD::getInstance()->getManager("Sexe")->getList() as $sexe) {
 $response_array = array();
 $response_array['Status'] = "Success";
 $response_array['Type'] = "Replace";
-$response_array['Donne'] = '<div class="div_Ajoutcompetition_global">
-                            <div class="div_Ajoutcompetition">
+$response_array['Donne'] = '<div class="div_AjoutCompetition_global">
+                            <div class="div_AjoutCompetition">
                             <label>Adresse de la compétition</label> <input type="text" placeholder="" name="adresse" id="IdAdresse" value="" /><br/>
 
                             <label>Date de la compétition</label> <input type="number" placeholder="jour" name="jour" id="IdJour" min="1" max="31" value="" />
