@@ -18,7 +18,8 @@ foreach (BDD::getInstance()->getManager("Sexe")->getList() as $sexe) {
 $response_array = array();
 $response_array['Status'] = "Success";
 $response_array['Type'] = "Replace";
-$response_array['Donne'] = '<label>Adresse de la compétition</label> <input type="text" placeholder="" name="adresse" id="IdAdresse" value="" /><br/>
+$response_array['Donne'] = '<div class="div_Ajoutcompetition_global">
+                            <label>Adresse de la compétition</label> <input type="text" placeholder="" name="adresse" id="IdAdresse" value="" /><br/>
 
                             <label>Date de la compétition</label> <input type="number" placeholder="jour" name="jour" id="IdJour" min="1" max="31" value="" />
                             <input type="number" placeholder="mois" name="mois" id="IdMois" min="1" max="12" value="" />
@@ -48,7 +49,9 @@ $response_array['Donne'] = '<label>Adresse de la compétition</label> <input typ
                                                                     .'
                                                                     </select></br>
 
-                            <input type="submit" name="Ajouter" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition;#body" regionError="#competition;#body" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;Sexe" value="Ajouter"/>';
+                            <input type="submit" name="Ajouter" id="btnAjouterCompetition" module="AjouterCompetition;PageListeCompetition" regionSucess="#competition;#body" regionError="#competition;#body" donne="Adresse;Jour;Mois;Annee;Club;NomClub;NomPresident;Type;Sexe" value="Ajouter"/>
+                            </div>
+                            <div class="horizontal_separator"></div>';
 $response_array['Stop'] = "false";
 $response_array['Region'] = $_POST['regionSucess'];
 
