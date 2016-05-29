@@ -20,8 +20,9 @@ foreach($tabPalmares as $palma){
 
   $res = $res .'<tr>
 	                <td>
-	                  <input type="hidden" name="id_course" id="IdCoursePalmares_'.$index.'" value="'.$palmares->getId_Course().'"/>
-                    <input type="hidden" name="id_course" id="IdParticipantPalmares_'.$index.'" value="'.$palmares->getId_Participant().'"/>
+	                  <input type="hidden"  id="IdCoursePalmares_'.$index.'" value="'.$palmares->getId_Course().'"/>
+                    <input type="hidden"  id="IdParticipantPalmares_'.$index.'" value="'.$palmares->getId_Participant().'"/>
+                    <input type="hidden"  id="IdEquipePalmares_'.$index.'" value="'.$palmares->getIsEquipe().'"/>
 	                </td>
 	                <td>
 	                  <input type="text" placeholder="" name="nom" id="IdNom" value="'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'" readonly/>
@@ -36,7 +37,7 @@ foreach($tabPalmares as $palma){
 	                  <input type="text" placeholder="" name="date" id="IdClassement_'.$index.'" value="'.$palmares->getClassement().'" />
 	                </td>
                   <td>
-                    <input type="submit" name="ModifierPalmares" id="btnSavePalmares" module="SavePalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="ParticipantPalmares'.$index.';CoursePalmares'.$index.';Classement_'.$index.'" value="Ajouter"/>
+                    <input type="submit" name="ModifierPalmares" id="btnSavePalmares_'.$index.'" module="SavePalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="ParticipantPalmares'.$index.';CoursePalmares'.$index.';Classement_'.$index.';EquipePalmares_'.$index.'" value="Ajouter" onclick="Action(btnSavePalmares_'.$index.')"/>
                   </td>
                 </tr>
                 ';
@@ -50,22 +51,22 @@ $infoCompetition = '';
 foreach($_SESSION['UtilisateurCourant']->getCourseParticipe() as $idcourse){
   $course = loadCourse(array("Id"=>$idcourse['Id_Course']));
   $competition = loadCompetition(array("Id"=>$course->getId_Competition()));
-  $infoCompetition = $infoCompetition.'<option value="'.$competition->getId_Competition().'" >'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'</option>';
+  $infoCompetition = $infoCompetition.'<option value="'.$course->getId_Course().'" >'.$competition->getTypeCompetition()['Nom'].'-'.$competition->getAdresse().'/'.$course->getDistance().'-'.$course->getTypeSpecialite()['Nom'].'</option>';
 }
 
 $res = $res .'<tr>
                 <td>
-                  <select name="competition" id="IdCompetitionPalmares">
+                  <select name="competition" id="IdCoursePalmares">
                   '.
                     $infoCompetition
                   .'
                   </select>
                 </td>
                 <td>
-                  <input type="text" placeholder="" name="date" id="IdClassement_'.$index.'" value="" readonly/>
+                  <input type="text" placeholder="" name="date" id="IdNewClassement" value="" readonly/>
                 </td>
                 <td>
-                  <input type="submit" name="AjouterPalmares" id="btnAjouterPalmares" module="AjouterPalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="CompetitionPalmares;Classement_'.$index.'" value="Ajouter"/>
+                  <input type="submit" name="AjouterPalmares" id="btnAjouterPalmares" module="AjouterPalmares;PagePalmares" regionSucess="#palmares;#palmares" regionError="#palmares;#palmares" donne="CoursePalmares;NewClassement" value="Ajouter"/>
                 </td>
               </tr>
               ';

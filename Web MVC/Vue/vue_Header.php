@@ -33,7 +33,7 @@ if(isset($_COOKIE['Connect'])){
                     (($_SESSION["UtilisateurCourant"]->asDroit(array("Competiteur","Entraineur","Secretaire","Administrateurs")))?('<li>
                                                                                                                                         <a>Competitions</a>
                                                                                                                                         <ul>
-                                                                                                                                    <li><a id="btnPageListeCompetition" module="PageListeCompetition" regionSucess="#body" regionError="#body">Voir Competitions</a></li>')
+                                                                                                                                    <li><a id="btnPageListeCompetitionConnecter" module="PageListeCompetition" regionSucess="#body" regionError="#body">Voir Competitions</a></li>')
                                                                                                                                    :(''))
                     .'
 
@@ -91,7 +91,7 @@ if(isset($_COOKIE['Connect'])){
                 <li>
                         <a>COMPÉTITIONS</a>
                         <ul>
-                            <li><a>Competitions a venir</a></li>
+                            <li><a id="btnPageListeCompetition" module="PageListeCompetition" regionSucess="#body" regionError="#body">Competitions à venir</a></li>
                         </ul>
                 </li>
 

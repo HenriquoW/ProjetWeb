@@ -55,7 +55,7 @@ class ManagerPalmares extends Manager{
     public function getId($id)
     {
         $requeteIsEquipe = $this->getDb()->query('SELECT Equipe FROM Course WHERE Id_Course = '.$id['Id_Course']);
-        
+
         $donnees = array();
 
 	if($requeteIsEquipe){
@@ -63,17 +63,17 @@ class ManagerPalmares extends Manager{
 
 		if($donneIsEquipe['Equipe']){
 		    $requete = $this->getDb()->query('SELECT Id_Equipe, Classement, Id_Course  FROM Palmares_Equipe WHERE Id_Equipe = '.$id['Id_Equipe'].'AND Id_Course ='.$id['Id_Course']);
-		    
+
 		    if($requete){
 			$donnees = $requete->fetch(PDO::FETCH_ASSOC);
-	
+
 		        $donnees['Id_Participant'] = $donnees['Id_Equipe'];
 		        unset($donnees['Id_Equipe']);
 		    }
-		    
+
 		}else{
 		    $requete = $this->getDb()->query('SELECT Id_Competiteur, Classement, Id_Course FROM Palmares_Competiteur WHERE Id_Competiteur = '.$id['Id_Competiteur'].'AND Id_Course ='.$id['Id_Course']);
-		    
+
 		    if($requete){
 			$donnees = $requete->fetch(PDO::FETCH_ASSOC);
 
@@ -84,7 +84,7 @@ class ManagerPalmares extends Manager{
 
 		$donnees['IsEquipe'] = $donneIsEquipe['Equipe'];
 	}
-        
+
 
         return new Palmares($donnees);
     }
@@ -124,7 +124,7 @@ class ManagerPalmares extends Manager{
 
         while ($donneId = $requeteCompetiteur->fetch(PDO::FETCH_ASSOC))
         {
-            $palmares[] = $this->getId($donneId);
+            $palmares[] = loadPalmares($donneId);
         }
 
         return $palmares;
@@ -138,9 +138,8 @@ class ManagerPalmares extends Manager{
 
         while ($donneId = $requeteEquipe->fetch(PDO::FETCH_ASSOC))
         {
-            $palmares[] = $this->getId($donneId);
+            $palmares[] = loadPalmares($donneId);
         }
-
 
         return $palmares;
     }

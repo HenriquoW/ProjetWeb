@@ -5,11 +5,11 @@ if(isset($_COOKIE['Connect'])){
 
   if($_SESSION['UtilisateurCourant']->asDroit("Parent") && isset($data['Enfant'])){
 
-    $id = isCompetiteurUtilisateur($data['Enfant']);	
+    $id = isCompetiteurUtilisateur($data['Enfant']);
     if($id){
       $inf["Id"] = $id['Id_Competiteur'];
       $UtilisateurEnCours = loadCompetiteur($inf);
-    }else{ 
+    }else{
 	$id = isAdherentUtilisateur($data['Enfant']);
 	if($id){
 	      $inf["Id"] = $id['Id_Adherent'];
@@ -46,7 +46,7 @@ if(isset($_COOKIE['Connect'])){
     }
 
     $objectif = $objectif . '</select>
-                              <input type="submit" id="btnAddObjectif" module="AddObjectif" regionSucess="#Objectif" regionError="#Objectif" donne="Utilisateur;NewObjectif" value="Ajouter Objectif"';
+                              <input type="submit" id="btnAjouterObjectif" module="AddObjectif" regionSucess="#Objectif" regionError="#Objectif" donne="Utilisateur;NewObjectif" value="Ajouter Objectif"';
   }
 
   $response_array['Status'] = "Success";

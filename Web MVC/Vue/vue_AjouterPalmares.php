@@ -10,14 +10,11 @@ if($_SESSION['Retour']=="ErrorInfo"){
 }else if($_SESSION['Retour']=="Ok"){
   $response_array['Status'] = "Success";
   $response_array['Type'] = "Alert";
-  $response_array['Donne'] = "Inscription effectuée;
+  $response_array['Donne'] = "Palmares Ajouter";
   $response_array['Stop'] = "false";
   $response_array['Region'] = $_POST['regionSucess'];
 }
 
 header('Content-type: application/json');
 echo json_encode($response_array);
-
-
-
  ?>

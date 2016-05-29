@@ -98,6 +98,14 @@ class ManagerEquipe extends Manager{
         return new Equipe($donnees);
     }
 
+    public function getNom($nom)
+    {
+        $requete = $this->getDb()->query('SELECT Id_Equipe FROM Equipe WHERE Nom = "'.$nom.'"');
+        $donnees = $requete->fetch(PDO::FETCH_ASSOC);
+
+        return loadEquipe(array("Id"=>$donnees['Id_Equipe']));
+    }
+
     public function getMembre($id){
         $membre;
 

@@ -3,7 +3,7 @@ $res = '';
 
 $competitions;
 
-if($_SESSION['UtilisateurCourant']->asDroit("Entraineur")){
+if(isset($_COOKIE['Connect']) && $_SESSION['UtilisateurCourant']->asDroit("Entraineur")){
   $competitions = loadListeCompetition(false);
 }else{
   $competitions = loadListeCompetition(true);
@@ -28,9 +28,11 @@ foreach($competitions as $competition){
                 <td>
                   <input type="text" placeholder="" name="nomClub" id="IdNomClub" value="'.$competition->getClub()->getNom().'" readonly/>
                 </td>
-                <td>
-                  <input type="submit" id="btnDetailCompetition_'.$index.'" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Details" onclick="Action(btnDetailCompetition_'.$index.')"/>
-                ';
+                '.
+                  ((isset($_COOKIE['Connect']))?('<td>
+                    <input type="submit" id="btnDetailCompetition_'.$index.'" module="PageCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Details" onclick="Action(btnDetailCompetition_'.$index.')"/>
+                  </td>'):(''))
+                .'';
 
   if($_SESSION['UtilisateurCourant']->asDroit(array("Entraineur","Secretaire"))){
     $res = $res .'<input type="submit" id="btnModifierCompetition_'.$index.'" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier" onclick="Action(btnModifierCompetition_'.$index.')"/>';

@@ -8,7 +8,7 @@ if(isset($_COOKIE['Connect'])){
   $infoPal = '';
 
   if ($ClasseUtilisateur == 'Competiteur'){
-    $infoPal = '<p>';	
+    $infoPal = '<p>';
     $idPalmaresTableau=$UtilisateurEnCours->getPalmares();
     $nbID = count($idPalmaresTableau);
 
@@ -61,7 +61,7 @@ if(isset($_COOKIE['Connect'])){
       $infoPal = $infoPal .'<label> Avant avant-dernier</label> </br>
       <input name="avant_avant_dernier_resultat" input="text" value="'.$AvantAvantDernierPalmares->getClassement().'" disabled/> </br>';
     }
-    $infoPal = $infoPal .'<input type="submit" class="button" id="bntPagePalmares" module="PagePalmares" regionSucess="#Palmares" regionError="#Palmares" value="Afficher le palmarès complet"/>';
+    $infoPal = $infoPal .'<input type="submit" class="button" id="btnPagePalmares" module="PagePalmares" regionSucess="#Palmares" regionError="#Palmares" value="Afficher le palmarès complet"/>';
 
     $infoPal = $infoPal .'<div id="palmares"> </div></p>';
   }
@@ -92,7 +92,7 @@ if(isset($_COOKIE['Connect'])){
 
   }
 
-  $TableauResultat=$UtilisateurEnCours->getParente();	
+  $TableauResultat=$UtilisateurEnCours->getParente();
   $infoEnfant = '';
   if($UtilisateurEnCours->asDroit("Parent")){
 	$infoEnfant = '<p>';
@@ -104,7 +104,7 @@ if(isset($_COOKIE['Connect'])){
   	    <input type="hidden" name="id_enfant" id="IdEnfant" value="'.$Enfant->getId_Utilisateur().'">
   			<input type="submit" id="btnModifierProfil" module="ModifierProfil" regionSucess="#body" regionError="#body" donne="Enfant" value="Voir le profil"/>
   			<br/> <br/>';
-	
+
   	}
 	$infoEnfant = $infoEnfant.'</p>';
   }
@@ -115,7 +115,7 @@ if(isset($_COOKIE['Connect'])){
   <div class="div_profil_global">
       <div class="div_profil">
         <h2>Profil</h2>
-          
+
 
             '. (($ClasseUtilisateur == 'Competiteur') ? ('<p><img src="$UtilisateurEnCours->getPhoto()" alt="probleme affichage"/>
                                                         </br>
@@ -205,7 +205,7 @@ if(isset($_COOKIE['Connect'])){
               $infoEnfant
             .'
 
-          
+
         </div>
       <div class="horizontal_separator"></div>
     </div>';

@@ -1,9 +1,93 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <navigation>
 
   <module droit="Visiteur">
     <nom>Accueil</nom>
     <action>/Vue/vue_Accueil.php</action>
+  </module>
+
+  <module droit="Adherent;Parent">
+    <nom>AddObjectif</nom>
+    <action>/Modele/addObjectif.php</action>
+    <action>/Vue/vue_AddObjectif.php</action>
+  </module>
+
+  <module droit="Entraineur;Secretaire">
+    <nom>AjouterCharge</nom>
+    <action>/Modele/ajouterCharge.php</action>
+    <action>/Vue/vue_AjouterCharge.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>AjouterCompetition</nom>
+    <action>/Modele/ajouterCompetition.php</action>
+    <action>/Vue/vue_AjouterCompetition.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>AjouterCourse</nom>
+    <action>/Modele/ajouterCourse.php</action>
+    <action>/Vue/vue_AjouterCourse.php</action>
+  </module>
+
+  <module droit="Adherent">
+    <nom>AjouterTransport</nom>
+    <action>/Modele/ajouterTransport.php</action>
+    <action>/Vue/vue_AjouterTransport.php</action>
+  </module>
+
+  <module droit="Adherent">
+    <nom>AjouterPalmares</nom>
+    <action>/Modele/ajouterPalmares.php</action>
+    <action>/Vue/vue_AjouterPalmares.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>Connexion</nom>
+    <action>/Modele/connexion.php</action>
+    <action>/Vue/vue_Connexion.php</action>
+  </module>
+
+  <module droit="Inscrit">
+    <nom>Deconnexion</nom>
+    <action>/Vue/vue_Deconnexion.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>Header</nom>
+    <action>/Vue/vue_Header.php</action>
+  </module>
+
+  <module droit="Visiteur">
+    <nom>Inscription</nom>
+    <action>/Modele/inscription.php</action>
+    <action>/Vue/vue_Inscription.php</action>
+  </module>
+
+  <module droit="Adherent;Parent">
+    <nom>InscriptionCourse</nom>
+    <action>/Modele/inscriptionCourse.php</action>
+    <action>/Vue/vue_InscriptionCourse.php</action>
+  </module>
+
+  <module droit="Entraineur;Secretaire">
+    <nom>ModifierCompetition</nom>
+    <action>/Vue/vue_ModifierCompetition.php</action>
+  </module>
+
+  <module droit="Inscrit">
+    <nom>ModifierProfil</nom>
+    <action>/Vue/vue_ModifierProfil.php</action>
+  </module>
+
+  <module droit="Entraineur">
+    <nom>PageAjoutCompetition</nom>
+    <action>/Vue/vue_PageAjoutCompetition.php</action>
+  </module>
+
+  <module droit="Adherent;Entraineur;Parent;Secretaire">
+    <nom>PageCompetition</nom>
+    <action>/Vue/vue_PageCompetition.php</action>
   </module>
 
   <module droit="Visiteur">
@@ -16,26 +100,32 @@
     <action>/Vue/vue_PageInscription.php</action>
   </module>
 
-  <module droit="Visiteur">
-    <nom>Header</nom>
-    <action>/Vue/vue_Header.php</action>
+  <module droit="Adherent;Entraineur;Parent;Secretaire">
+    <nom>PageListeCompetition</nom>
+    <action>/Vue/vue_PageListeCompetition.php</action>
   </module>
 
-  <module droit="Visiteur">
-    <nom>Connexion</nom>
-    <action>/Modele/connexion.php</action>
-    <action>/Vue/vue_Connexion.php</action>
+  <module droit="Adherent">
+    <nom>PagePalmares</nom>
+    <action>/Vue/vue_PagePalmares.php</action>
   </module>
 
-  <module droit="Visiteur">
-    <nom>Inscription</nom>
-    <action>/Modele/inscription.php</action>
-    <action>/Vue/vue_Inscription.php</action>
+  <module droit="Entraineur;Secretaire">
+    <nom>SaveCompetition</nom>
+    <action>/Modele/saveCompetition.php</action>
+    <action>/Vue/vue_SaveCompetition.php</action>
   </module>
 
-  <module droit="Inscrit">
-    <nom>Deconnexion</nom>
-    <action>/Vue/vue_Deconnexion.php</action>
+  <module droit="Entraineur">
+    <nom>SaveCourse</nom>
+    <action>/Modele/saveCourse.php</action>
+    <action>/Vue/vue_SaveCourse.php</action>
+  </module>
+
+  <module droit="Adherent">
+    <nom>SavePalmares</nom>
+    <action>/Modele/savePalmares.php</action>
+    <action>/Vue/vue_SavePalmares.php</action>
   </module>
 
   <module droit="Inscrit">
@@ -44,21 +134,28 @@
     <action>/Vue/vue_SaveProfil.php</action>
   </module>
 
-  <module droit="Inscrit">
-    <nom>ModifierProfil</nom>
-    <action>/Vue/vue_ModifierProfil.php</action>
+  <module droit="Entraineur;Secretaire">
+    <nom>SaveVoyage</nom>
+    <action>/Modele/saveVoyage.php</action>
+    <action>/Vue/vue_SaveVoyage.php</action>
   </module>
 
-  <module droit="Competiteur;Parent">
-    <nom>AddObjectif</nom>
-    <action>/Modele/addObjectif.php</action>
-    <action>/Vue/vue_AddObjectif.php</action>
+  <module droit="Entraineur">
+    <nom>SupprimerCourse</nom>
+    <action>/Modele/supprimerCourse.php</action>
+    <action>/Vue/vue_SupprimerCourse.php</action>
   </module>
 
-  <module droit="Competiteur;Parent">
-    <nom>InscriptionCourse</nom>
-    <action>/Modele/inscriptionCourse.php</action>
-    <action>/Vue/vue_InscriptionCourse.php</action>
+  <module droit="Entraineur;Secretaire">
+    <nom>SupprimerRole</nom>
+    <action>/Modele/supprimerRole.php</action>
+    <action>/Vue/vue_SupprimerRole.php</action>
+  </module>
+
+  <module droit="Entraineur;Secretaire">
+    <nom>SupprimerTache</nom>
+    <action>/Modele/supprimerTache.php</action>
+    <action>/Vue/vue_SupprimerTache.php</action>
   </module>
 
   <module droit="Entraineur">
@@ -69,60 +166,6 @@
   <module droit="Entraineur">
     <nom>ValidationCompetiteur</nom>
     <action>/Modele/validationCompetiteur.php</action>
-  </module>
-
-  <module droit="Competiteur;Entraineur;Parent;Secretaire">
-    <nom>PageListeCompetition</nom>
-    <action>/Vue/vue_PageListeCompetition.php</action>
-  </module>
-
-  <module droit="Competiteur;Entraineur;Parent;Secretaire">
-    <nom>PageCompetition</nom>
-    <action>/Vue/vue_PageCompetition.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>ModifierCompetition</nom>
-    <action>/Vue/vue_ModifierCompetition.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>SaveCourse</nom>
-    <action>/Modele/saveCourse.php</action>
-    <action>/Vue/vue_SaveCourse.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>AjouterCourse</nom>
-    <action>/Modele/ajouterCourse.php</action>
-    <action>/Vue/vue_AjouterCourse.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>SupprimerCourse</nom>
-    <action>/Modele/supprimerCourse.php</action>
-    <action>/Vue/vue_SupprimerCourse.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>ModifierCompetition</nom>
-    <action>/Vue/vue_ModifierCompetition.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>PageAjoutCompetition</nom>
-    <action>/Vue/vue_PageAjoutCompetition.php</action>
-  </module>
-
-  <module droit="Entraineur">
-    <nom>AjouterCompetition</nom>
-    <action>/Modele/ajouterCompetition.php</action>
-    <action>/Vue/vue_AjouterCompetition.php</action>
-  </module>
-
-  <module droit="Adherent">
-    <nom>PagePalmares</nom>
-    <action>/Vue/vue_PagePalmares.php</action>
   </module>
 
 </navigation>

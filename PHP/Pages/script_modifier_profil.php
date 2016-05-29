@@ -1,3 +1,0 @@
-<?php
-	$UtilisateurEnCours->save(true);
-?>

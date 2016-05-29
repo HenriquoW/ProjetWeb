@@ -11,18 +11,21 @@ function initialiser()
 		'btnAccueilConnecter' : Action,
 		'btnPageConnexion' : Action,
 		'btnPageInscription' : Action,
+		'btnPagePalmares' : Action,
+		'btnPageAjoutCompetition' : Action,
+		'btnPageListeCompetition' : Action,
+		'btnPageListeCompetitionConnecter' : Action,
 		'btnConnexion' : Action,
 		'btnDeconnexion' : Action,
 		'btnInscription' : Action,
-		'btnSaveProfil' : Action,
 		'btnModifierProfil' : Action,
 		'btnHeaderModifierProfil' : Action,
-		'bntPagePalmares' : Action,
-		'btnPageAjoutCompetition' : Action,
-		'btnPageListeCompetition' : Action,
-		'btnAddObjectif' : Action,
+		'btnSaveProfil' : Action,
+		'btnSaveCompetition' : Action,
+		'btnAjouterObjectif' : Action,
 		'btnAjouterCompetition' : Action,
-		'btnSaveCompetition' : Action
+		'btnAjouterPalmares' : Action,
+		'btnAjouterTransport' : Action
 	};
 
 	//Ajout d'un écouteur d'événement onClick sur la page
