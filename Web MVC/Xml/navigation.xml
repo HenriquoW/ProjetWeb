@@ -100,7 +100,7 @@
     <action>/Vue/vue_PageInscription.php</action>
   </module>
 
-  <module droit="Adherent;Entraineur;Parent;Secretaire">
+  <module droit="Visiteur;Adherent;Entraineur;Parent;Secretaire">
     <nom>PageListeCompetition</nom>
     <action>/Vue/vue_PageListeCompetition.php</action>
   </module>

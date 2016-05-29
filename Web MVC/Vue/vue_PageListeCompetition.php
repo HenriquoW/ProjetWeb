@@ -34,8 +34,8 @@ foreach($competitions as $competition){
                   </td>'):(''))
                 .'';
 
-  if($_SESSION['UtilisateurCourant']->asDroit(array("Entraineur","Secretaire"))){
-    $res = $res .'<input type="submit" id="btnModifierCompetition_'.$index.'" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier" onclick="Action(btnModifierCompetition_'.$index.')"/>';
+  if(isset($_COOKIE['Connect']) && $_SESSION['UtilisateurCourant']->asDroit(array("Entraineur","Secretaire"))){
+    $res = $res .'<td><input type="submit" id="btnModifierCompetition_'.$index.'" module="ModifierCompetition" regionSucess="#competition" regionError="#listeCompetition" donne="Competition_'.$index.'" value="Modifier" onclick="Action(btnModifierCompetition_'.$index.')"/></td>';
   }
 
   $res = $res .'</td></tr>';
