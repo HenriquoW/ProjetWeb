@@ -1,5 +1,5 @@
 <?php
-$_SERVER["RACINE"] = $_SERVER["DOCUMENT_ROOT"]."/ProjetWeb/Web MVC";
+$_SERVER["RACINE"] = $_SERVER["DOCUMENT_ROOT"]."/ProjetWeb/Web_MVC";
 
 require_once "../Core/XML/class_xml.php";
 require_once "../Core/BDD/class_bdd.php";

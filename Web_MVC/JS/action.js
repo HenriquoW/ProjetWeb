@@ -82,7 +82,7 @@ function Action(evenement){
                   'json'
                 );
 		}
-        }, 100 * i);
+        }, 200 * i);
     }(i));
    
   }
